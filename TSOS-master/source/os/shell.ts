@@ -247,7 +247,7 @@ module TSOS {
                         break;
 
                     case "cls":
-                        _StdOut.putText("Cls clears the prompt screen");
+                        _StdOut.putText("Cls clears the CLI");
                         break;
 
                     case "man":
@@ -265,7 +265,7 @@ module TSOS {
                         break;
 
                     case "prompt":
-                        _StdOut.putText("Changes the prompt character. Currently, the character is "+ promptStr +".");
+                        _StdOut.putText("Changes the prompt character. Currently, the character is "+ this.promptStr +".");
                         break;
 
                     default:

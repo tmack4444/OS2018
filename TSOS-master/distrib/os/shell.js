@@ -202,7 +202,7 @@ var TSOS;
                         _StdOut.putText("Shutdown Shutsdown the OS (big surprise there).");
                         break;
                     case "cls":
-                        _StdOut.putText("Cls clears the prompt screen");
+                        _StdOut.putText("Cls clears the CLI");
                         break;
                     case "man":
                         _StdOut.putText("Displays the manual entry for a command (it's what you used to see this).");
@@ -216,7 +216,7 @@ var TSOS;
                         _StdOut.putText("This can be \"Decrypted\" by simply doing another rot13 on the encrypted text");
                         break;
                     case "prompt":
-                        _StdOut.putText("Changes the prompt character. Currently, the character is " + promptStr + ".");
+                        _StdOut.putText("Changes the prompt character. Currently, the character is " + this.promptStr + ".");
                         break;
                     default:
                         _StdOut.putText("No manual entry for " + args[0] + ".");
