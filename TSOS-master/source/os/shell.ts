@@ -246,8 +246,28 @@ module TSOS {
                         _StdOut.putText("Shutdown Shutsdown the OS (big surprise there).");
                         break;
 
+                    case "cls":
+                        _StdOut.putText("Cls clears the prompt screen");
+                        break;
 
-                    // TODO: Make descriptive MANual page entries for the the rest of the shell commands here.
+                    case "man":
+                        _StdOut.putText("Displays the manual entry for a command (it's what you used to see this).");
+                        break;
+
+                    case "trace":
+                        _StdOut.putText("Turns the trace on or off (that thing to the right).");
+                        break;
+
+                    case "rot13":
+                        _StdOut.putText("Uses a Ceasarian Cipher to \"Encrypt\" any text by 13 characters.");
+                        _StdOut.advanceLine();
+                        _StdOut.putText("This can be \"Decrypted\" by simply doing another rot13 on the encrypted text")
+                        break;
+
+                    case "prompt":
+                        _StdOut.putText("Changes the prompt character. Currently, the character is "+ promptStr +".");
+                        break;
+
                     default:
                         _StdOut.putText("No manual entry for " + args[0] + ".");
                 }
