@@ -268,6 +268,10 @@ module TSOS {
                         _StdOut.putText("Changes the prompt character. Currently, the character is "+ this.promptStr +".");
                         break;
 
+                    case "whereami":
+                        _StdOut.putText("The OS will guess your current location");
+                        break;
+
                     default:
                         _StdOut.putText("No manual entry for " + args[0] + ".");
                 }
@@ -315,6 +319,32 @@ module TSOS {
             } else {
                 _StdOut.putText("Usage: prompt <string>  Please supply a string.");
             }
+        }
+        public shellWhere() {
+
+             switch((Math.floor(Math.random() * 5) + 1)) {
+
+               case 1:
+                 _StdOut.putText("Toledo, Ohio?");
+                 break;
+
+               case 2:
+                 _StdOut.putText("Poughkeepsie, New York?");
+                 break;
+
+               case 3:
+                 _StdOut.putText("Wyckoff, New Jersey?");
+                 break;
+
+               case 4:
+                 _StdOut.putText("Las Vegas, Nevada?");
+                 break;
+
+               case 5:
+                 _StdOut.putText("Kathmandu, Nepal?");
+                 break;
+             }
+
         }
 
     }
