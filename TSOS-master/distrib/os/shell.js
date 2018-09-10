@@ -48,6 +48,8 @@ var TSOS;
             this.commandList[this.commandList.length] = sc;
             // prompt <string>
             sc = new TSOS.ShellCommand(this.shellPrompt, "prompt", "<string> - Sets the prompt.");
+            // whereami
+            sc = new TSOS.ShellCommand(this.shellWhere, "whereami", "- Has the OS guess your location with advanced algorithms and stuff.");
             this.commandList[this.commandList.length] = sc;
             // ps  - list the running processes and their IDs
             // kill <id> - kills the specified process id.
@@ -218,6 +220,9 @@ var TSOS;
                     case "prompt":
                         _StdOut.putText("Changes the prompt character. Currently, the character is " + this.promptStr + ".");
                         break;
+                    case "whereami":
+                        _StdOut.putText("The OS will guess your current location");
+                        break;
                     default:
                         _StdOut.putText("No manual entry for " + args[0] + ".");
                 }
@@ -266,6 +271,25 @@ var TSOS;
             }
             else {
                 _StdOut.putText("Usage: prompt <string>  Please supply a string.");
+            }
+        };
+        Shell.prototype.shellWhere = function () {
+            switch ((Math.floor(Math.random() * 5) + 1)) {
+                case 1:
+                    _StdOut.putText("Toledo, Ohio?");
+                    break;
+                case 2:
+                    _StdOut.putText("Poughkeepsie, New York?");
+                    break;
+                case 3:
+                    _StdOut.putText("Wyckoff, New Jersey?");
+                    break;
+                case 4:
+                    _StdOut.putText("Las Vegas, Nevada?");
+                    break;
+                case 5:
+                    _StdOut.putText("Kathmandu, Nepal?");
+                    break;
             }
         };
         return Shell;

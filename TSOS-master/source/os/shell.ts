@@ -77,6 +77,13 @@ module TSOS {
             sc = new ShellCommand(this.shellPrompt,
                                   "prompt",
                                   "<string> - Sets the prompt.");
+
+            // whereami
+            sc = new ShellCommand(this.shellWhere,
+                                  "whereami",
+                                  "- Has the OS guess your location with advanced algorithms and stuff.");
+
+
             this.commandList[this.commandList.length] = sc;
 
             // ps  - list the running processes and their IDs
