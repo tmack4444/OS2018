@@ -83,6 +83,11 @@ module TSOS {
                                   "whereami",
                                   "- Has the OS guess your location with advanced algorithms and stuff.");
 
+            //date
+            sc = new ShellCommand(this.shellDate,
+                                  "date",
+                                  "- Prints the current date.");
+
 
             this.commandList[this.commandList.length] = sc;
 
@@ -279,6 +284,10 @@ module TSOS {
                         _StdOut.putText("The OS will guess your current location");
                         break;
 
+                    case "date":
+                        _StdOut.putText("Prints the current date to the CLI");
+                        break;
+
                     default:
                         _StdOut.putText("No manual entry for " + args[0] + ".");
                 }
@@ -327,8 +336,8 @@ module TSOS {
                 _StdOut.putText("Usage: prompt <string>  Please supply a string.");
             }
         }
-        public shellWhere() {
 
+        public shellWhere() {
              switch((Math.floor(Math.random() * 5) + 1)) {
 
                case 1:
@@ -351,7 +360,11 @@ module TSOS {
                  _StdOut.putText("Kathmandu, Nepal?");
                  break;
              }
+        }
 
+        public shellDate(){
+          var currentDate: Date = new Date();
+          _StdOut.putText("Today is " + currentDate.toString());
         }
 
     }

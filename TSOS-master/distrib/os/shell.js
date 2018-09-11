@@ -50,6 +50,8 @@ var TSOS;
             sc = new TSOS.ShellCommand(this.shellPrompt, "prompt", "<string> - Sets the prompt.");
             // whereami
             sc = new TSOS.ShellCommand(this.shellWhere, "whereami", "- Has the OS guess your location with advanced algorithms and stuff.");
+            //date
+            sc = new TSOS.ShellCommand(this.shellDate, "date", "- Prints the current date.");
             this.commandList[this.commandList.length] = sc;
             // ps  - list the running processes and their IDs
             // kill <id> - kills the specified process id.
@@ -223,6 +225,9 @@ var TSOS;
                     case "whereami":
                         _StdOut.putText("The OS will guess your current location");
                         break;
+                    case "date":
+                        _StdOut.putText("Prints the current date to the CLI");
+                        break;
                     default:
                         _StdOut.putText("No manual entry for " + args[0] + ".");
                 }
@@ -291,6 +296,10 @@ var TSOS;
                     _StdOut.putText("Kathmandu, Nepal?");
                     break;
             }
+        };
+        Shell.prototype.shellDate = function () {
+            var currentDate = new Date();
+            _StdOut.putText("Today is " + currentDate.toString());
         };
         return Shell;
     }());
