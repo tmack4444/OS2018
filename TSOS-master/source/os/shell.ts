@@ -77,18 +77,25 @@ module TSOS {
             sc = new ShellCommand(this.shellPrompt,
                                   "prompt",
                                   "<string> - Sets the prompt.");
+            this.commandList[this.commandList.length] = sc;
 
             // whereami
             sc = new ShellCommand(this.shellWhere,
                                   "whereami",
                                   "- Has the OS guess your location with advanced algorithms and stuff.");
 
+           this.commandList[this.commandList.length] = sc;
             //date
             sc = new ShellCommand(this.shellDate,
                                   "date",
                                   "- Prints the current date.");
 
+            this.commandList[this.commandList.length] = sc;
 
+            //shellSomethingElse
+            sc = new ShellCommand(this.shellSomethingElse,
+                                  "somethingelse",
+                                   "- Does something else.");
             this.commandList[this.commandList.length] = sc;
 
             // ps  - list the running processes and their IDs
@@ -365,6 +372,10 @@ module TSOS {
         public shellDate(){
           var currentDate: Date = new Date();
           _StdOut.putText("Today is " + currentDate.toString());
+        }
+
+        public shellSomethingElse(){
+          _StdOut.putText("somethingElse");
         }
 
     }

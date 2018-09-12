@@ -48,10 +48,15 @@ var TSOS;
             this.commandList[this.commandList.length] = sc;
             // prompt <string>
             sc = new TSOS.ShellCommand(this.shellPrompt, "prompt", "<string> - Sets the prompt.");
+            this.commandList[this.commandList.length] = sc;
             // whereami
             sc = new TSOS.ShellCommand(this.shellWhere, "whereami", "- Has the OS guess your location with advanced algorithms and stuff.");
+            this.commandList[this.commandList.length] = sc;
             //date
             sc = new TSOS.ShellCommand(this.shellDate, "date", "- Prints the current date.");
+            this.commandList[this.commandList.length] = sc;
+            //shellSomethingElse
+            sc = new TSOS.ShellCommand(this.shellSomethingElse, "somethingelse", "- Does something else.");
             this.commandList[this.commandList.length] = sc;
             // ps  - list the running processes and their IDs
             // kill <id> - kills the specified process id.
@@ -300,6 +305,9 @@ var TSOS;
         Shell.prototype.shellDate = function () {
             var currentDate = new Date();
             _StdOut.putText("Today is " + currentDate.toString());
+        };
+        Shell.prototype.shellSomethingElse = function () {
+            _StdOut.putText("somethingElse");
         };
         return Shell;
     }());
