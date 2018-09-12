@@ -54,10 +54,55 @@ module TSOS {
                         (keyCode == 13)) {                       // enter
                 chr = String.fromCharCode(keyCode);
                 _KernelInputQueue.enqueue(chr);
-                // Special Characters (! . , etc)
-            } else if ((keyCode >= 33) && (keyCode <= 47)) {
-                chr = String.fromCharCode(keyCode);
-                _KernelInputQueue.enqueue(chr);
+
+            } else if (((isShifted) && (keyCode >= 48) && (keyCode <= 57))) {
+             //special characters related to numbers don't really follow a pattern
+             //so, I'll use a switch to see which number key was shift-pressed
+             //and then use that info to print the correct special character
+                switch(keyCode) {
+
+                  case 48: chr = String.fromCharCode(41);
+                           _KernelInputQueue.enqueue(chr);    //)
+                           break;
+
+                  case 49: chr = String.fromCharCode(33);
+                          _KernelInputQueue.enqueue(chr);    //!
+                          break;
+
+                  case 50: chr = String.fromCharCode(64);
+                          _KernelInputQueue.enqueue(chr);    //@
+                                                    break;
+
+                  case 51: chr = String.fromCharCode(35);
+                          _KernelInputQueue.enqueue(chr);    //#
+                          break;
+
+                  case 52: chr = String.fromCharCode(36);
+                          _KernelInputQueue.enqueue(chr);    //$
+                          break;
+
+                  case 53: chr = String.fromCharCode(37);
+                          _KernelInputQueue.enqueue(chr);    //%
+                          break;
+
+                  case 54: chr = String.fromCharCode(94);
+                          _KernelInputQueue.enqueue(chr);    //^
+                          break;
+
+                  case 55: chr = String.fromCharCode(38);
+                          _KernelInputQueue.enqueue(chr);    //&
+                          break;
+
+                  case 56: chr = String.fromCharCode(42);
+                          _KernelInputQueue.enqueue(chr);    //*
+                          break;
+
+                  case 57: chr = String.fromCharCode(40);
+                          _KernelInputQueue.enqueue(chr);    //()
+                          break;
+
+                  default: break; //This should never happen, but still, just in CASE
+                }
             }
 
 
