@@ -96,7 +96,7 @@ var TSOS;
             this.buffer = this.buffer.slice(0, -1); //This should remove the last item in the buffer.
             var delteOffset = _DrawingContext.measureText(this.currentFont, this.currentFontSize, remove);
             this.currentXPosition = this.currentXPosition - delteOffset;
-            _DrawingContext.clearRect(this.currentXPosition, (this.currentYPosition + _DefaultFontSize), delteOffset, _DefaultFontSize); // Ok so we need to clear the space that character was in.
+            _DrawingContext.clearRect(this.currentXPosition, (this.currentYPosition - _DefaultFontSize), delteOffset + 2, _DefaultFontSize + 2); // Ok so we need to clear the space that character was in.
         };
         return Console;
     }());
