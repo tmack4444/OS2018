@@ -9,7 +9,7 @@
      ------------ */
 var TSOS;
 (function (TSOS) {
-    var Console = (function () {
+    var Console = /** @class */ (function () {
         function Console(currentFont, currentFontSize, currentXPosition, currentYPosition, buffer) {
             if (currentFont === void 0) { currentFont = _DefaultFontFamily; }
             if (currentFontSize === void 0) { currentFontSize = _DefaultFontSize; }
@@ -38,12 +38,16 @@ var TSOS;
                 // Get the next character from the kernel input queue.
                 var chr = _KernelInputQueue.dequeue();
                 // Check to see if it's "special" (enter or ctrl-c) or "normal" (anything else that the keyboard device driver gave us).
-                if (chr === String.fromCharCode(13)) {
+                if (chr === String.fromCharCode(13)) { //     Enter key
                     // The enter key marks the end of a console command, so ...
                     // ... tell the shell ...
                     _OsShell.handleInput(this.buffer);
                     // ... and reset our buffer.
                     this.buffer = "";
+                }
+                else if (chr === String.fromCharCode(8) && this.buffer.length > 0) {
+                    // if the character is a backspace, we have to do some more work.
+                    this.backspace();
                 }
                 else {
                     // This is a "normal" character, so ...
@@ -52,6 +56,7 @@ var TSOS;
                     // ... and add it to our buffer.
                     this.buffer += chr;
                 }
+                // TODO: Write a case for Ctrl-C.
             }
         };
         Console.prototype.putText = function (text) {
@@ -83,7 +88,17 @@ var TSOS;
                 _FontHeightMargin;
             // TODO: Handle scrolling. (iProject 1)
         };
+        Console.prototype.backspace = function () {
+            //If it's a backspace character we've got a bit more work to do
+            //We need to 1) Remove the item from our buffer
+            //and 2) Remove the item from the screen.
+            var remove = this.buffer.slice(-1);
+            this.buffer = this.buffer.slice(0, -1); //This should remove the last item in the buffer.
+            var delteOffset = _DrawingContext.measureText(this.currentFont, this.currentFontSize, remove);
+            this.currentXPosition = this.currentXPosition - delteOffset;
+            _DrawingContext.clearRect(this.currentXPosition, (this.currentYPosition + _DefaultFontSize), delteOffset, _DefaultFontSize); // Ok so we need to clear the space that character was in.
+        };
         return Console;
-    })();
+    }());
     TSOS.Console = Console;
 })(TSOS || (TSOS = {}));

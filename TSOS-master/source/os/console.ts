@@ -45,6 +45,9 @@ module TSOS {
                     _OsShell.handleInput(this.buffer);
                     // ... and reset our buffer.
                     this.buffer = "";
+                } else if (chr === String.fromCharCode(8) && this.buffer.length > 0) {
+                    // if the character is a backspace, we have to do some more work.
+                    this.backspace();
                 } else {
                     // This is a "normal" character, so ...
                     // ... draw it on the screen...
@@ -81,11 +84,22 @@ module TSOS {
              * Font descent measures from the baseline to the lowest point in the font.
              * Font height margin is extra spacing between the lines.
              */
-            this.currentYPosition += _DefaultFontSize + 
+            this.currentYPosition += _DefaultFontSize +
                                      _DrawingContext.fontDescent(this.currentFont, this.currentFontSize) +
                                      _FontHeightMargin;
 
             // TODO: Handle scrolling. (iProject 1)
+        }
+
+        public backspace(): void {
+          //If it's a backspace character we've got a bit more work to do
+          //We need to 1) Remove the item from our buffer
+          //and 2) Remove the item from the screen.
+          var remove = this.buffer.slice(-1);
+          this.buffer = this.buffer.slice(0,-1); //This should remove the last item in the buffer.
+          var delteOffset = _DrawingContext.measureText(this.currentFont, this.currentFontSize, remove);
+          this.currentXPosition = this.currentXPosition - delteOffset;
+          _DrawingContext.clearRect(this.currentXPosition, (this.currentYPosition + _DefaultFontSize), delteOffset, _DefaultFontSize);// Ok so we need to clear the space that character was in.
         }
     }
  }
