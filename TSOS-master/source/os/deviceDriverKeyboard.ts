@@ -61,51 +61,103 @@ module TSOS {
              //and then use that info to print the correct special character
                 switch(keyCode) {
 
-                  case 48: chr = String.fromCharCode(41);
+                  case 48: chr = String.fromCharCode(41);     //0
                            _KernelInputQueue.enqueue(chr);    //)
                            break;
 
-                  case 49: chr = String.fromCharCode(33);
+                  case 49: chr = String.fromCharCode(33);    //1
                           _KernelInputQueue.enqueue(chr);    //!
                           break;
 
-                  case 50: chr = String.fromCharCode(64);
+                  case 50: chr = String.fromCharCode(64);    //2
                           _KernelInputQueue.enqueue(chr);    //@
-                                                    break;
+                          break;
 
-                  case 51: chr = String.fromCharCode(35);
+                  case 51: chr = String.fromCharCode(35);    //3
                           _KernelInputQueue.enqueue(chr);    //#
                           break;
 
-                  case 52: chr = String.fromCharCode(36);
+                  case 52: chr = String.fromCharCode(36);    //4
                           _KernelInputQueue.enqueue(chr);    //$
                           break;
 
-                  case 53: chr = String.fromCharCode(37);
+                  case 53: chr = String.fromCharCode(37);    //5
                           _KernelInputQueue.enqueue(chr);    //%
                           break;
 
-                  case 54: chr = String.fromCharCode(94);
+                  case 54: chr = String.fromCharCode(94);    //6
                           _KernelInputQueue.enqueue(chr);    //^
                           break;
 
-                  case 55: chr = String.fromCharCode(38);
+                  case 55: chr = String.fromCharCode(38);    //7
                           _KernelInputQueue.enqueue(chr);    //&
                           break;
 
-                  case 56: chr = String.fromCharCode(42);
+                  case 56: chr = String.fromCharCode(42);    //8
                           _KernelInputQueue.enqueue(chr);    //*
                           break;
 
-                  case 57: chr = String.fromCharCode(40);
-                          _KernelInputQueue.enqueue(chr);    //()
+                  case 57: chr = String.fromCharCode(40);    //9
+                          _KernelInputQueue.enqueue(chr);    //(
                           break;
 
-                  default: break; //This should never happen, but still, just in CASE
+                  default: break; //Just in CASE there is an invalid key press
                 }
+            } else if  (((keyCode >= 187) && (keyCode <= 191)) ||  //other valid keys on the keyboard
+                       ((keyCode >= 219) && (keyCode <= 221)) ){
+
+                if(!isShifted) {
+                  //if a valid key is entered and shift is not pressed, print the correct char
+                  chr = String.fromCharCode(keyCode);
+                  _KernelInputQueue.enqueue(chr);
+
+              } else {
+                //if shift is pressed, figure out which char to print and print it.
+                //Like with number special characters, there is no real pattern to figure out
+                //Which unicode character is printed when the key is entered, vs when the key is shift-entered
+                //so I have to hard code which unicode character gets printed.
+                //I understand, this is not how I would normally want to do this but I don't see another way.
+
+                 switch(keyCode){
+
+                   case 188: chr = String.fromCharCode(60);     //,
+                            _KernelInputQueue.enqueue(chr);    //<
+                            break;
+
+                   case 189: chr = String.fromCharCode(95);     //-
+                            _KernelInputQueue.enqueue(chr);    //_
+                            break;
+
+                   case 190: chr = String.fromCharCode(62);     //.
+                            _KernelInputQueue.enqueue(chr);    //>
+                            break;
+
+                   case 191: chr = String.fromCharCode(63);     // /
+                            _KernelInputQueue.enqueue(chr);    // ?
+                            break;
+
+                   case 187: chr = String.fromCharCode(43);     //=
+                            _KernelInputQueue.enqueue(chr);    //+
+                            break;
+
+                   case 219: chr = String.fromCharCode(123);    //[
+                            _KernelInputQueue.enqueue(chr);    //{
+                            break;
+
+                   case 220: chr = String.fromCharCode(124);    // \
+                            _KernelInputQueue.enqueue(chr);    // |
+                            break;
+
+                   case 221: chr = String.fromCharCode(125);    //]
+                            _KernelInputQueue.enqueue(chr);    //}
+                            break;
+
+                  default: break; //Once again, just in CASE of an invalid keypress
+
+
+                 }
+              }
             }
-
-
         }
     }
 }
