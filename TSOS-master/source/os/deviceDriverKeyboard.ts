@@ -106,51 +106,101 @@ module TSOS {
             } else if  (((keyCode >= 187) && (keyCode <= 191)) ||  //other valid keys on the keyboard
                        ((keyCode >= 219) && (keyCode <= 221)) ){
 
-                if(!isShifted) {
-                  //if a valid key is entered and shift is not pressed, print the correct char
-                  chr = String.fromCharCode(keyCode);
-                  _KernelInputQueue.enqueue(chr);
-
-              } else {
-                //if shift is pressed, figure out which char to print and print it.
+                //Figure out which key was pressed, then if shift was pressed, then print it.
                 //Like with number special characters, there is no real pattern to figure out
                 //Which unicode character is printed when the key is entered, vs when the key is shift-entered
                 //so I have to hard code which unicode character gets printed.
                 //I understand, this is not how I would normally want to do this but I don't see another way.
 
+                //Just as annoying, it seems the keyCodes for the non shift special characters , . / [ ] - =
+                //Are different than the unicode number for those characters, and theres no pattern for that either
+                //So unlike with every other case I have to hardcode all of this. There has to be a better way,
+                //But for now this looks like it's all I can do.
+
                  switch(keyCode){
 
-                   case 188: chr = String.fromCharCode(60);     //,
-                            _KernelInputQueue.enqueue(chr);    //<
-                            break;
+                   case 188: if(isShifted) {                      //,
+                               chr = String.fromCharCode(60);
+                               _KernelInputQueue.enqueue(chr);    //<
+                               break;
+                           } else {
+                               chr = String.fromCharCode(44);     //,
+                               _KernelInputQueue.enqueue(chr);
+                               break;
+                           }
 
-                   case 189: chr = String.fromCharCode(95);     //-
-                            _KernelInputQueue.enqueue(chr);    //_
-                            break;
+                   case 189: if(isShifted) {                       //-
+                               chr = String.fromCharCode(95);
+                               _KernelInputQueue.enqueue(chr);     //_
+                               break;
+                           } else {
+                               chr = String.fromCharCode(45);      //-
+                               _KernelInputQueue.enqueue(chr);
+                               break;
+                            }
 
-                   case 190: chr = String.fromCharCode(62);     //.
-                            _KernelInputQueue.enqueue(chr);    //>
-                            break;
+                   case 190: if(isShifted) {                      //.
+                               chr = String.fromCharCode(62);
+                               _KernelInputQueue.enqueue(chr);    //>
+                               break;
+                             } else {
+                               chr = String.fromCharCode(46);
+                               _KernelInputQueue.enqueue(chr);    //.
+                               break;
+                             }
 
-                   case 191: chr = String.fromCharCode(63);     // /
-                            _KernelInputQueue.enqueue(chr);    // ?
-                            break;
+                   case 191: if(isShifted) {                      // /
+                               chr = String.fromCharCode(63);
+                               _KernelInputQueue.enqueue(chr);    // ?
+                               break;
+                           } else {
+                               chr = String.fromCharCode(47);
+                               _KernelInputQueue.enqueue(chr);    // /
+                               break;
+                          }
 
-                   case 187: chr = String.fromCharCode(43);     //=
-                            _KernelInputQueue.enqueue(chr);    //+
-                            break;
+                   case 187: if(isShifted) {                      // =
+                               chr = String.fromCharCode(43);
+                               _KernelInputQueue.enqueue(chr);    // +
+                               break;
+                          } else {
+                               chr = String.fromCharCode(61);
+                               _KernelInputQueue.enqueue(chr);    // =
+                               break;
+                          }
 
-                   case 219: chr = String.fromCharCode(123);    //[
-                            _KernelInputQueue.enqueue(chr);    //{
-                            break;
+                   case 219: if(isShifted) {                      // [
+                               chr = String.fromCharCode(123);
+                               _KernelInputQueue.enqueue(chr);    // {
+                               break;
+                           } else {
+                               chr = String.fromCharCode(91);
+                               _KernelInputQueue.enqueue(chr);    // [
+                               break;
+                          }
 
-                   case 220: chr = String.fromCharCode(124);    // \
-                            _KernelInputQueue.enqueue(chr);    // |
-                            break;
 
-                   case 221: chr = String.fromCharCode(125);    //]
-                            _KernelInputQueue.enqueue(chr);    //}
-                            break;
+                   case 220: if(isShifted) {                      // \
+                               chr = String.fromCharCode(124);
+                               _KernelInputQueue.enqueue(chr);    // |
+                               break;
+                           } else {
+                               chr = String.fromCharCode(92);
+                               _KernelInputQueue.enqueue(chr);    // \
+                               break;
+                          }
+
+
+                   case 221: if(isShifted) {                      // ]
+                               chr = String.fromCharCode(125);
+                               _KernelInputQueue.enqueue(chr);    // }
+                               break;
+                           } else {
+                               chr = String.fromCharCode(93);
+                               _KernelInputQueue.enqueue(chr);    // ]
+                               break;
+                          }
+
 
                   default: break; //Once again, just in CASE of an invalid keypress
 
