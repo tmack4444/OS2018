@@ -337,24 +337,24 @@ var TSOS;
                 _StdOut.putText("Invalid input. Only Hex Characters are allowed");
                 return;
             }
-            validateInput.replace(/A/g, " "); //To validate this input, I'm going to
-            validateInput.replace(/B/g, " "); //Replace all valid characters with whitespace
-            validateInput.replace(/C/g, " "); //Then check to see if the string contains anything
-            validateInput.replace(/D/g, " "); //other than whitespace.  If it does, then input is
-            validateInput.replace(/E/g, " "); //invalid, and I need to warn the user of that.
-            validateInput.replace(/F/g, " ");
-            validateInput.replace(/0/g, " ");
-            validateInput.replace(/1/g, " ");
-            validateInput.replace(/2/g, " ");
-            validateInput.replace(/3/g, " ");
-            validateInput.replace(/4/g, " ");
-            validateInput.replace(/5/g, " ");
-            validateInput.replace(/6/g, " ");
-            validateInput.replace(/7/g, " ");
-            validateInput.replace(/8/g, " ");
-            validateInput.replace(/9/g, " ");
+            validateInput = validateInput.replace(/A/g, " "); //To validate this input, I'm going to
+            validateInput = validateInput.replace(/B/g, " "); //Replace all valid characters with whitespace
+            validateInput = validateInput.replace(/C/g, " "); //Then check to see if the string contains anything
+            validateInput = validateInput.replace(/D/g, " "); //other than whitespace.  If it does, then input is
+            validateInput = validateInput.replace(/E/g, " "); //invalid, and I need to warn the user of that.
+            validateInput = validateInput.replace(/F/g, " ");
+            validateInput = validateInput.replace(/0/g, " ");
+            validateInput = validateInput.replace(/1/g, " ");
+            validateInput = validateInput.replace(/2/g, " ");
+            validateInput = validateInput.replace(/3/g, " ");
+            validateInput = validateInput.replace(/4/g, " ");
+            validateInput = validateInput.replace(/5/g, " ");
+            validateInput = validateInput.replace(/6/g, " ");
+            validateInput = validateInput.replace(/7/g, " ");
+            validateInput = validateInput.replace(/8/g, " ");
+            validateInput = validateInput.replace(/9/g, " ");
+            validateInput = validateInput.replace(/\s/g, "");
             if (validateInput != "") {
-                _StdOut.putText(validateInput);
                 _StdOut.putText("Invalid input. Only Hex Characters are allowed");
             }
             else {
