@@ -20,6 +20,7 @@ var TSOS;
             this.commandList = [];
             this.curses = "[fuvg],[cvff],[shpx],[phag],[pbpxfhpxre],[zbgureshpxre],[gvgf]";
             this.apologies = "[sorry]";
+            this.status = "I love Operating Systems!";
         }
         Shell.prototype.init = function () {
             var sc;
@@ -57,6 +58,9 @@ var TSOS;
             this.commandList[this.commandList.length] = sc;
             //shellSomethingElse
             sc = new TSOS.ShellCommand(this.shellSomethingElse, "somethingelse", "- Does something else.");
+            this.commandList[this.commandList.length] = sc;
+            //shellStatus
+            sc = new TSOS.ShellCommand(this.shellStatus, "status", "- updates the status message.");
             this.commandList[this.commandList.length] = sc;
             // ps  - list the running processes and their IDs
             // kill <id> - kills the specified process id.
@@ -300,6 +304,8 @@ var TSOS;
                 case 5:
                     _StdOut.putText("Kathmandu, Nepal?");
                     break;
+                default: //This case should never happen, but still. Best practices and whatnot
+                    _StdOut.putText("Hmmmmm, I don't really know");
             }
         };
         Shell.prototype.shellDate = function () {
@@ -308,6 +314,9 @@ var TSOS;
         };
         Shell.prototype.shellSomethingElse = function () {
             _StdOut.putText("somethingElse");
+        };
+        Shell.prototype.shellStatus = function () {
+            document.getElementById("statusOut").innerHTML = status;
         };
         return Shell;
     }());

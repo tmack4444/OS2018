@@ -92,7 +92,7 @@ var TSOS;
             //If it's a backspace character we've got a bit more work to do
             //We need to 1) Remove the item from our buffer
             //and 2) Remove the item from the screen.
-            var remove = this.buffer.slice(-1);
+            var remove = this.buffer.slice(-1); // we use this to keep track of how wide we should delete
             this.buffer = this.buffer.slice(0, -1); //This should remove the last item in the buffer.
             var delteOffset = _DrawingContext.measureText(this.currentFont, this.currentFontSize, remove);
             this.currentXPosition = this.currentXPosition - delteOffset;

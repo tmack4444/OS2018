@@ -22,6 +22,7 @@ module TSOS {
         public commandList = [];
         public curses = "[fuvg],[cvff],[shpx],[phag],[pbpxfhpxre],[zbgureshpxre],[gvgf]";
         public apologies = "[sorry]";
+        public status = "I love Operating Systems!";
 
         constructor() {
         }
@@ -96,6 +97,12 @@ module TSOS {
             sc = new ShellCommand(this.shellSomethingElse,
                                   "somethingelse",
                                    "- Does something else.");
+            this.commandList[this.commandList.length] = sc;
+
+            //shellStatus
+            sc = new ShellCommand(this.shellStatus,
+                                  "status",
+                                   "- updates the status message.");
             this.commandList[this.commandList.length] = sc;
 
             // ps  - list the running processes and their IDs
@@ -366,6 +373,9 @@ module TSOS {
                case 5:
                  _StdOut.putText("Kathmandu, Nepal?");
                  break;
+
+               default: //This case should never happen, but still. Best practices and whatnot
+                 _StdOut.putText("Hmmmmm, I don't really know");
              }
         }
 
@@ -376,6 +386,10 @@ module TSOS {
 
         public shellSomethingElse(){
           _StdOut.putText("somethingElse");
+        }
+
+        public shellStatus() {
+          document.getElementById("statusOut").innerHTML = status;
         }
 
     }

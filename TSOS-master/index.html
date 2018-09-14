@@ -32,7 +32,7 @@
    <script type="text/javascript" src="distrib/utils.js"></script>
    <!-- Uncomment the line below to enable GLaDOS testing. -->
    <script type="text/javascript" src="http://alanclasses.github.io/TSOS/test/glados-ip0.js"></script>
-   
+
 </head>
 
 <body onload="onDocumentLoad()">
@@ -75,6 +75,19 @@
       </canvas>
    </div>
 
+   <div id="statusOut" style="margin-left:520px;">
+      <label>
+         M*Y*O*S Status
+         <br>
+         <textarea name="taStatusOut"
+                   id  ="taStatusOut"
+                   rows="4"
+                   cols="48"
+        readonly ></textarea>
+      </label>
+   </div>
+   </div>
+
    <div id="divLog" style="margin-left:520px;">
       <label>
          Host Log
@@ -83,7 +96,7 @@
                    id  ="taHostLog"
                    rows="26"
                    cols="48"
-         ></textarea>
+         readonly></textarea>
       </label>
    </div>
 
