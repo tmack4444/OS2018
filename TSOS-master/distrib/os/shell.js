@@ -237,6 +237,8 @@ var TSOS;
                     case "date":
                         _StdOut.putText("Prints the current date to the CLI");
                         break;
+                    case "status":
+                        _StdOut.putText("Changes the status message to what the user enters.");
                     default:
                         _StdOut.putText("No manual entry for " + args[0] + ".");
                 }
@@ -319,6 +321,8 @@ var TSOS;
             var taStatus = document.getElementById("taStatusOut");
             status = args.join(" ");
             taStatus.value = status;
+        };
+        Shell.prototype.shellLoad = function () {
         };
         return Shell;
     }());

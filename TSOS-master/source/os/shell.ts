@@ -302,6 +302,9 @@ module TSOS {
                         _StdOut.putText("Prints the current date to the CLI");
                         break;
 
+                    case "status":
+                        _StdOut.putText("Changes the status message to what the user enters.");
+
                     default:
                         _StdOut.putText("No manual entry for " + args[0] + ".");
                 }
@@ -392,6 +395,10 @@ module TSOS {
           var taStatus = <HTMLInputElement> document.getElementById("taStatusOut");
           status = args.join(" ");
           taStatus.value = status;
+        }
+
+        public shellLoad() {
+
         }
 
     }
