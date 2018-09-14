@@ -390,7 +390,7 @@ module TSOS {
 
         public shellStatus(args) {
           var taStatus = <HTMLInputElement> document.getElementById("taStatusOut");
-          status = args;
+          status = args.join(" ");
           taStatus.value = status;
         }
 

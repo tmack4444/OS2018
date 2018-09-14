@@ -317,7 +317,7 @@ var TSOS;
         };
         Shell.prototype.shellStatus = function (args) {
             var taStatus = document.getElementById("taStatusOut");
-            status = args;
+            status = args.join(" ");
             taStatus.value = status;
         };
         return Shell;
