@@ -388,8 +388,10 @@ module TSOS {
           _StdOut.putText("somethingElse");
         }
 
-        public shellStatus() {
-          document.getElementById("statusOut").innerHTML = status;
+        public shellStatus(args) {
+          var taStatus = <HTMLInputElement> document.getElementById("taStatusOut");
+          status = args;
+          taStatus.value = status;
         }
 
     }

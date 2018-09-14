@@ -315,8 +315,10 @@ var TSOS;
         Shell.prototype.shellSomethingElse = function () {
             _StdOut.putText("somethingElse");
         };
-        Shell.prototype.shellStatus = function () {
-            document.getElementById("statusOut").innerHTML = status;
+        Shell.prototype.shellStatus = function (args) {
+            var taStatus = document.getElementById("taStatusOut");
+            status = args;
+            taStatus.value = status;
         };
         return Shell;
     }());
