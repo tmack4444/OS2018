@@ -105,6 +105,11 @@ module TSOS {
                                    "- updates the status message.");
             this.commandList[this.commandList.length] = sc;
 
+            sc = new ShellCommand(this.shellLoad,
+                                  "load",
+                                   "- Validate input from the input box.");
+            this.commandList[this.commandList.length] = sc;
+
             // ps  - list the running processes and their IDs
             // kill <id> - kills the specified process id.
 
@@ -304,6 +309,11 @@ module TSOS {
 
                     case "status":
                         _StdOut.putText("Changes the status message to what the user enters.");
+                        break;
+
+                    case "load":
+                        _StdOut.putText("Checks if the the input in the input box is valid.");
+                        break;
 
                     default:
                         _StdOut.putText("No manual entry for " + args[0] + ".");
@@ -398,6 +408,39 @@ module TSOS {
         }
 
         public shellLoad() {
+          //Found this bit of code on https://stackoverflow.com/questions/12989741/the-property-value-does-not-exist-on-value-of-type-htmlelement
+          //Basically, typescript doesn't allow you to grab a value from an HTML element, unless you typecast it as
+
+          var input = (<HTMLInputElement>document.getElementById("taProgramInput")).value;
+          var validateInput = input.toUpperCase();
+          if(input == "") {
+            _StdOut.putText("Invalid input. Only Hex Characters are allowed");
+            return;
+          }
+          validateInput.replace(/A/g, " "); //To validate this input, I'm going to
+          validateInput.replace(/B/g, " "); //Replace all valid characters with whitespace
+          validateInput.replace(/C/g, " "); //Then check to see if the string contains anything
+          validateInput.replace(/D/g, " "); //other than whitespace.  If it does, then input is
+          validateInput.replace(/E/g, " "); //invalid, and I need to warn the user of that.
+          validateInput.replace(/F/g, " ");
+          validateInput.replace(/0/g, " ");
+          validateInput.replace(/1/g, " ");
+          validateInput.replace(/2/g, " ");
+          validateInput.replace(/3/g, " ");
+          validateInput.replace(/4/g, " ");
+          validateInput.replace(/5/g, " ");
+          validateInput.replace(/6/g, " ");
+          validateInput.replace(/7/g, " ");
+          validateInput.replace(/8/g, " ");
+          validateInput.replace(/9/g, " ");
+
+          if(validateInput != "") {
+            _StdOut.putText(validateInput);
+            _StdOut.putText("Invalid input. Only Hex Characters are allowed");
+          } else {
+            _StdOut.putText("Congrats, your input is correct");
+          }
+          return;
 
         }
 
