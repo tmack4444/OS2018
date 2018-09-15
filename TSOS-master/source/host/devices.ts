@@ -35,6 +35,7 @@ module TSOS {
             _OSclock++;
             // Call the kernel clock pulse event handler.
             _Kernel.krnOnCPUClockPulse();
+            document.getElementById("taTime").innerHTML = _CPU.statusDate;
         }
 
         //
