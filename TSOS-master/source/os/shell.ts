@@ -111,7 +111,7 @@ module TSOS {
             this.commandList[this.commandList.length] = sc;
 
             sc = new ShellCommand(this.shellBSOD,
-                                  "BSOD",
+                                  "bsod",
                                    "- Break the OS.");
             this.commandList[this.commandList.length] = sc;
 
@@ -320,7 +320,7 @@ module TSOS {
                         _StdOut.putText("Checks if the the input in the input box is valid.");
                         break;
 
-                    case "BSOD":
+                    case "bsod":
                         _StdOut.putText("It's like big shiny red button. Do you really want to push it?");
                         break;
 
@@ -417,7 +417,7 @@ module TSOS {
         }
 
         public shellBSOD() {
-          _Kernel.krnTrapError("You typed BSOD");
+          _Kernel.krnTrapError("");
         }
 
         public shellLoad() {
