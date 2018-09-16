@@ -87,12 +87,16 @@ module TSOS {
              * Font height margin is extra spacing between the lines.
              */
 
-
-            this.currentYPosition += _DefaultFontSize +
-                                     _DrawingContext.fontDescent(this.currentFont, this.currentFontSize) +
-                                     _FontHeightMargin;
-            if(this.currentYPosition > _Canvas.height) {
+            //we save a temporary Y Position, so we can compare it to the canvas size and see if we need to scroll
+            var tempYPosition = this.currentYPosition +
+                               _DefaultFontSize +
+                               _DrawingContext.fontDescent(this.currentFont, this.currentFontSize) +
+                               _FontHeightMargin;
+            if(tempYPosition > _Canvas.height) {
               this.scroll();
+            }
+            else {
+              this.currentYPosition = tempYPosition;
             }
             // TODO: Handle scrolling. (iProject 1)
         }
@@ -111,9 +115,10 @@ module TSOS {
         public scroll(): void{
           //to scroll we need to basically copy the screen below the first line, and paste it up where the first line is
           //then move the cursor to the start of the last row again.
-          _DrawingContext.clearRect(0, 0, _Canvas.width, _DefaultFontSize);
-          var canvasCopy =(_Canvas.getContext('2d').getImageData(this.currentXPosition, this.currentYPosition  - this.currentFontSize, _Canvas.width, _Canvas.height - this.currentFontSize));
-          _Canvas.getContext('2d').putImageData(canvasCopy, 0 ,0);
+          var canvasCopy =(_DrawingContext.getImageData(0, 0 + _DefaultFontSize + _FontHeightMargin, _Canvas.width, _Canvas.height));
+          _DrawingContext.clearRect(0, 0, _Canvas.width, _Canvas.height);
+          _DrawingContext.putImageData(canvasCopy, 0, 0);
+          this.currentXPosition = 0;
 
         }
     }
