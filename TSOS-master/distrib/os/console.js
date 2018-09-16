@@ -86,6 +86,9 @@ var TSOS;
             this.currentYPosition += _DefaultFontSize +
                 _DrawingContext.fontDescent(this.currentFont, this.currentFontSize) +
                 _FontHeightMargin;
+            if (this.currentYPosition > _Canvas.height) {
+                this.scroll();
+            }
             // TODO: Handle scrolling. (iProject 1)
         };
         Console.prototype.backspace = function () {
@@ -97,6 +100,14 @@ var TSOS;
             var delteOffset = _DrawingContext.measureText(this.currentFont, this.currentFontSize, remove);
             this.currentXPosition = this.currentXPosition - delteOffset;
             _DrawingContext.clearRect(this.currentXPosition, (this.currentYPosition - _DefaultFontSize), delteOffset + 2, _DefaultFontSize + 2); // Ok so we need to clear the space that character was in.
+        };
+        Console.prototype.scroll = function () {
+            //to scroll we need to basically copy the screen below the first line, and paste it up where the first line is
+            //then move the cursor to the start of the last row again.
+            _DrawingContext.clearRect(0, 0, _Canvas.width, _Canvas.height);
+            this.currentXPosition = 0;
+            this.currentYPosition = this.currentFontSize;
+            // The name of the canvas for the console is display
         };
         return Console;
     }());

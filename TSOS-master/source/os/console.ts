@@ -17,7 +17,8 @@ module TSOS {
                     public currentFontSize = _DefaultFontSize,
                     public currentXPosition = 0,
                     public currentYPosition = _DefaultFontSize,
-                    public buffer = "") {
+                    public buffer = "",
+                    public historyBuffer: String[] = []) {
         }
 
         public init(): void {
@@ -43,7 +44,8 @@ module TSOS {
                     // The enter key marks the end of a console command, so ...
                     // ... tell the shell ...
                     _OsShell.handleInput(this.buffer);
-                    // ... and reset our buffer.
+                    // ... and reset our buffer, after adding the command to our history buffer.
+                    this.historyBuffer.push(this.buffer);
                     this.buffer = "";
                 } else if (chr === String.fromCharCode(8)) {
                     // if the character is a backspace, we have to do some more work.
@@ -84,10 +86,14 @@ module TSOS {
              * Font descent measures from the baseline to the lowest point in the font.
              * Font height margin is extra spacing between the lines.
              */
+
+
             this.currentYPosition += _DefaultFontSize +
                                      _DrawingContext.fontDescent(this.currentFont, this.currentFontSize) +
                                      _FontHeightMargin;
-
+            if(this.currentYPosition > _Canvas.height) {
+              this.scroll();
+            }
             // TODO: Handle scrolling. (iProject 1)
         }
 
@@ -100,6 +106,16 @@ module TSOS {
           var delteOffset = _DrawingContext.measureText(this.currentFont, this.currentFontSize, remove);
           this.currentXPosition = this.currentXPosition - delteOffset;
           _DrawingContext.clearRect(this.currentXPosition, (this.currentYPosition - _DefaultFontSize), delteOffset+2, _DefaultFontSize+2);// Ok so we need to clear the space that character was in.
+        }
+
+        public scroll(): void{
+          //to scroll we need to basically copy the screen below the first line, and paste it up where the first line is
+          //then move the cursor to the start of the last row again.
+          _DrawingContext.clearRect(0, 0, _Canvas.width, _Canvas.height);
+          this.currentXPosition = 0;
+          this.currentYPosition = this.currentFontSize;
+          // The name of the canvas for the console is display
+
         }
     }
  }
