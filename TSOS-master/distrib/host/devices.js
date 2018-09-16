@@ -1,4 +1,6 @@
 ///<reference path="../globals.ts" />
+///<reference path="control.ts" />
+///<reference path="../os/Interrupt.ts"/>
 /* ------------
      Devices.ts
 
@@ -19,7 +21,7 @@
      ------------ */
 var TSOS;
 (function (TSOS) {
-    var Devices = (function () {
+    var Devices = /** @class */ (function () {
         function Devices() {
             _hardwareClockID = -1;
         }
@@ -56,6 +58,6 @@ var TSOS;
             }
         };
         return Devices;
-    })();
+    }());
     TSOS.Devices = Devices;
 })(TSOS || (TSOS = {}));

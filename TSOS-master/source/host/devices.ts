@@ -1,4 +1,7 @@
 ///<reference path="../globals.ts" />
+///<reference path="control.ts" />
+///<reference path="../os/Interrupt.ts"/>
+
 
 /* ------------
      Devices.ts
