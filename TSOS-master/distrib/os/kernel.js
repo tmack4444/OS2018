@@ -74,6 +74,7 @@ var TSOS;
                This, on the other hand, is the clock pulse from the hardware / VM / host that tells the kernel
                that it has to look for interrupts and process them if it finds any.                           */
             var taDate = document.getElementById("taTime");
+            var _statusDate = new Date();
             taDate.value = _statusDate.toString();
             // Check for an interrupt, are any. Page 560
             if (_KernelInterruptQueue != null && _KernelInterruptQueue.getSize() > 0) {
