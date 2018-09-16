@@ -19,7 +19,7 @@
      ------------ */
 var TSOS;
 (function (TSOS) {
-    var Devices = /** @class */ (function () {
+    var Devices = (function () {
         function Devices() {
             _hardwareClockID = -1;
         }
@@ -31,7 +31,6 @@ var TSOS;
             _OSclock++;
             // Call the kernel clock pulse event handler.
             _Kernel.krnOnCPUClockPulse();
-            document.getElementById("taTime").innerHTML = _CPU.statusDate;
         };
         //
         // Keyboard Interrupt, a HARDWARE Interrupt Request. (See pages 560-561 in our text book.)
@@ -53,10 +52,10 @@ var TSOS;
                 // Note the pressed key code in the params (Mozilla-specific).
                 var params = new Array(event.which, event.shiftKey);
                 // Enqueue this interrupt on the kernel interrupt queue so that it gets to the Interrupt handler.
-                _KernelInterruptQueue.enqueue(new Interrupt(KEYBOARD_IRQ, params));
+                _KernelInterruptQueue.enqueue(new TSOS.Interrupt(KEYBOARD_IRQ, params));
             }
         };
         return Devices;
-    }());
+    })();
     TSOS.Devices = Devices;
 })(TSOS || (TSOS = {}));

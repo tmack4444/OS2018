@@ -59,7 +59,8 @@ var TSOS;
             }
             else if (((!isShifted) && (keyCode >= 48) && (keyCode <= 57)) || // digits (make sure a special char isn't being entered too)
                 (keyCode == 32) || // space
-                (keyCode == 13)) { // enter
+                (keyCode == 13) || // enter
+                (keyCode == 8)) { // backspace
                 chr = String.fromCharCode(keyCode);
                 _KernelInputQueue.enqueue(chr);
             }

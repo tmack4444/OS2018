@@ -45,7 +45,7 @@ var TSOS;
                     // ... and reset our buffer.
                     this.buffer = "";
                 }
-                else if (chr === String.fromCharCode(8) && this.buffer.length > 0) {
+                else if (chr === String.fromCharCode(8)) {
                     // if the character is a backspace, we have to do some more work.
                     this.backspace();
                 }
