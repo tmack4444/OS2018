@@ -1,5 +1,10 @@
 ///<reference path="../globals.ts" />
+///<reference path="../host/Control.ts"/>
+///<reference path="../host/Devices.ts"/>
 ///<reference path="queue.ts" />
+///<reference path="console.ts"/>
+///<reference path="DeviceDriverKeyboard.ts"/>
+///<reference path="shell.ts"/>
 /* ------------
      Kernel.ts
 
@@ -13,7 +18,7 @@
      ------------ */
 var TSOS;
 (function (TSOS) {
-    var Kernel = (function () {
+    var Kernel = /** @class */ (function () {
         function Kernel() {
         }
         //
@@ -68,17 +73,19 @@ var TSOS;
                This is NOT the same as a TIMER, which causes an interrupt and is handled like other interrupts.
                This, on the other hand, is the clock pulse from the hardware / VM / host that tells the kernel
                that it has to look for interrupts and process them if it finds any.                           */
+            var taDate = document.getElementById("taTime");
+            taDate.value = _statusDate.toString();
             // Check for an interrupt, are any. Page 560
-            if (_KernelInterruptQueue.getSize() > 0) {
+            if (_KernelInterruptQueue != null && _KernelInterruptQueue.getSize() > 0) {
                 // Process the first interrupt on the interrupt queue.
                 // TODO: Implement a priority queue based on the IRQ number/id to enforce interrupt priority.
                 var interrupt = _KernelInterruptQueue.dequeue();
                 this.krnInterruptHandler(interrupt.irq, interrupt.params);
             }
-            else if (_CPU.isExecuting) {
+            else if (_CPU.isExecuting) { // If there are no interrupts then run one CPU cycle if there is anything being processed. {
                 _CPU.cycle();
             }
-            else {
+            else { // If there are no interrupts and there is nothing being executed then just be idle. {
                 this.krnTrace("Idle");
             }
         };
@@ -158,6 +165,6 @@ var TSOS;
             this.krnShutdown();
         };
         return Kernel;
-    })();
+    }());
     TSOS.Kernel = Kernel;
 })(TSOS || (TSOS = {}));
