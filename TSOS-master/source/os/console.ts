@@ -111,10 +111,9 @@ module TSOS {
         public scroll(): void{
           //to scroll we need to basically copy the screen below the first line, and paste it up where the first line is
           //then move the cursor to the start of the last row again.
-          _DrawingContext.clearRect(0, 0, _Canvas.width, _Canvas.height);
-          this.currentXPosition = 0;
-          this.currentYPosition = this.currentFontSize;
-          // The name of the canvas for the console is display
+          _DrawingContext.clearRect(0, 0, _Canvas.width, _DefaultFontSize);
+          var canvasCopy =(_Canvas.getContext('2d').getImageData(this.currentXPosition, this.currentYPosition  - this.currentFontSize, _Canvas.width, _Canvas.height - this.currentFontSize));
+          _Canvas.getContext('2d').putImageData(canvasCopy, 0 ,0);
 
         }
     }

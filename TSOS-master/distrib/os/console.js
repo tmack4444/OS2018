@@ -10,17 +10,19 @@
 var TSOS;
 (function (TSOS) {
     var Console = /** @class */ (function () {
-        function Console(currentFont, currentFontSize, currentXPosition, currentYPosition, buffer) {
+        function Console(currentFont, currentFontSize, currentXPosition, currentYPosition, buffer, historyBuffer) {
             if (currentFont === void 0) { currentFont = _DefaultFontFamily; }
             if (currentFontSize === void 0) { currentFontSize = _DefaultFontSize; }
             if (currentXPosition === void 0) { currentXPosition = 0; }
             if (currentYPosition === void 0) { currentYPosition = _DefaultFontSize; }
             if (buffer === void 0) { buffer = ""; }
+            if (historyBuffer === void 0) { historyBuffer = []; }
             this.currentFont = currentFont;
             this.currentFontSize = currentFontSize;
             this.currentXPosition = currentXPosition;
             this.currentYPosition = currentYPosition;
             this.buffer = buffer;
+            this.historyBuffer = historyBuffer;
         }
         Console.prototype.init = function () {
             this.clearScreen();
@@ -42,7 +44,8 @@ var TSOS;
                     // The enter key marks the end of a console command, so ...
                     // ... tell the shell ...
                     _OsShell.handleInput(this.buffer);
-                    // ... and reset our buffer.
+                    // ... and reset our buffer, after adding the command to our history buffer.
+                    this.historyBuffer.push(this.buffer);
                     this.buffer = "";
                 }
                 else if (chr === String.fromCharCode(8)) {
@@ -104,10 +107,9 @@ var TSOS;
         Console.prototype.scroll = function () {
             //to scroll we need to basically copy the screen below the first line, and paste it up where the first line is
             //then move the cursor to the start of the last row again.
-            _DrawingContext.clearRect(0, 0, _Canvas.width, _Canvas.height);
-            this.currentXPosition = 0;
-            this.currentYPosition = this.currentFontSize;
-            // The name of the canvas for the console is display
+            _DrawingContext.clearRect(0, 0, _Canvas.width, _DefaultFontSize);
+            var canvasCopy = (_Canvas.getContext('2d').getImageData(this.currentXPosition, this.currentYPosition - this.currentFontSize, _Canvas.width, _Canvas.height - this.currentFontSize));
+            _Canvas.getContext('2d').putImageData(canvasCopy, 0, 0);
         };
         return Console;
     }());
