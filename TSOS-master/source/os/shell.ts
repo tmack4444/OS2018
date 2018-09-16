@@ -110,6 +110,11 @@ module TSOS {
                                    "- Validate input from the input box.");
             this.commandList[this.commandList.length] = sc;
 
+            sc = new ShellCommand(this.shellBSOD,
+                                  "BSOD",
+                                   "- Break the OS.");
+            this.commandList[this.commandList.length] = sc;
+
             // ps  - list the running processes and their IDs
             // kill <id> - kills the specified process id.
 
@@ -315,6 +320,10 @@ module TSOS {
                         _StdOut.putText("Checks if the the input in the input box is valid.");
                         break;
 
+                    case "BSOD":
+                        _StdOut.putText("It's like big shiny red button. Do you really want to push it?");
+                        break;
+
                     default:
                         _StdOut.putText("No manual entry for " + args[0] + ".");
                 }
@@ -405,6 +414,10 @@ module TSOS {
           var taStatus = <HTMLInputElement> document.getElementById("taStatusOut");
           status = args.join(" ");
           taStatus.value = status;
+        }
+
+        public shellBSOD() {
+          _Kernel.krnTrapError("You typed BSOD");
         }
 
         public shellLoad() {

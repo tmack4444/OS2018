@@ -64,6 +64,8 @@ var TSOS;
             this.commandList[this.commandList.length] = sc;
             sc = new TSOS.ShellCommand(this.shellLoad, "load", "- Validate input from the input box.");
             this.commandList[this.commandList.length] = sc;
+            sc = new TSOS.ShellCommand(this.shellBSOD, "BSOD", "- Break the OS.");
+            this.commandList[this.commandList.length] = sc;
             // ps  - list the running processes and their IDs
             // kill <id> - kills the specified process id.
             //
@@ -245,6 +247,9 @@ var TSOS;
                     case "load":
                         _StdOut.putText("Checks if the the input in the input box is valid.");
                         break;
+                    case "BSOD":
+                        _StdOut.putText("It's like big shiny red button. Do you really want to push it?");
+                        break;
                     default:
                         _StdOut.putText("No manual entry for " + args[0] + ".");
                 }
@@ -327,6 +332,9 @@ var TSOS;
             var taStatus = document.getElementById("taStatusOut");
             status = args.join(" ");
             taStatus.value = status;
+        };
+        Shell.prototype.shellBSOD = function () {
+            _Kernel.krnTrapError("You typed BSOD");
         };
         Shell.prototype.shellLoad = function () {
             //Found this bit of code on https://stackoverflow.com/questions/12989741/the-property-value-does-not-exist-on-value-of-type-htmlelement
