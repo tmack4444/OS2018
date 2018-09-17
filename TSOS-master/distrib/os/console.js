@@ -10,19 +10,21 @@
 var TSOS;
 (function (TSOS) {
     var Console = /** @class */ (function () {
-        function Console(currentFont, currentFontSize, currentXPosition, currentYPosition, buffer, historyBuffer) {
+        function Console(currentFont, currentFontSize, currentXPosition, currentYPosition, buffer, historyBuffer, historyIndex) {
             if (currentFont === void 0) { currentFont = _DefaultFontFamily; }
             if (currentFontSize === void 0) { currentFontSize = _DefaultFontSize; }
             if (currentXPosition === void 0) { currentXPosition = 0; }
             if (currentYPosition === void 0) { currentYPosition = _DefaultFontSize; }
             if (buffer === void 0) { buffer = ""; }
             if (historyBuffer === void 0) { historyBuffer = []; }
+            if (historyIndex === void 0) { historyIndex = 0; }
             this.currentFont = currentFont;
             this.currentFontSize = currentFontSize;
             this.currentXPosition = currentXPosition;
             this.currentYPosition = currentYPosition;
             this.buffer = buffer;
             this.historyBuffer = historyBuffer;
+            this.historyIndex = historyIndex;
         }
         Console.prototype.init = function () {
             this.clearScreen();
@@ -46,6 +48,8 @@ var TSOS;
                     _OsShell.handleInput(this.buffer);
                     // ... and reset our buffer, after adding the command to our history buffer.
                     this.historyBuffer.push(this.buffer);
+                    console.log(this.historyBuffer[this.historyIndex]);
+                    this.historyIndex = 0;
                     this.buffer = "";
                 }
                 else if (chr === String.fromCharCode(8)) {
@@ -60,6 +64,26 @@ var TSOS;
                     this.buffer += chr;
                 }
                 // TODO: Write a case for Ctrl-C.
+            }
+        };
+        Console.prototype.historyScrollUp = function () {
+            var lastCommand = this.historyBuffer[this.historyBuffer.length - 1 - this.historyIndex];
+            var tempSave = this.buffer;
+            this.buffer = lastCommand;
+            this.historyBuffer[this.historyBuffer.length - 1 - this.historyIndex] = tempSave;
+            _DrawingContext.clearRect(_OsShell.promptStr.width, this.currentYPosition, _Canvas.width, this.currentFont);
+            _StdOut.putText(this.buffer);
+            this.historyIndex++;
+        };
+        Console.prototype.historyScrollDown = function () {
+            if (this.historyIndex > 0) {
+                var lastCommand = this.historyBuffer[this.historyBuffer.length - this.historyIndex];
+                var tempSave = this.buffer;
+                this.buffer = lastCommand;
+                this.historyBuffer[this.historyBuffer.length - this.historyIndex] = tempSave;
+                _DrawingContext.clearRect(_OsShell.promptStr.width, this.currentYPosition, _Canvas.width, this.currentFont);
+                _StdOut.putText(this.buffer);
+                this.historyIndex--;
             }
         };
         Console.prototype.putText = function (text) {

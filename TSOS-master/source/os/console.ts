@@ -18,7 +18,8 @@ module TSOS {
                     public currentXPosition = 0,
                     public currentYPosition = _DefaultFontSize,
                     public buffer = "",
-                    public historyBuffer: String[] = []) {
+                    public historyBuffer: string[] = [],
+                    public historyIndex: number = 0) {
         }
 
         public init(): void {
@@ -46,6 +47,8 @@ module TSOS {
                     _OsShell.handleInput(this.buffer);
                     // ... and reset our buffer, after adding the command to our history buffer.
                     this.historyBuffer.push(this.buffer);
+                    console.log(this.historyBuffer[this.historyIndex]);
+                    this.historyIndex = 0;
                     this.buffer = "";
                 } else if (chr === String.fromCharCode(8)) {
                     // if the character is a backspace, we have to do some more work.
@@ -59,6 +62,29 @@ module TSOS {
                 }
                 // TODO: Write a case for Ctrl-C.
             }
+        }
+
+        public historyScrollUp() {
+          var lastCommand = this.historyBuffer[this.historyBuffer.length - 1 - this.historyIndex];
+          var tempSave = this.buffer;
+          this.buffer = lastCommand;
+          this.historyBuffer[this.historyBuffer.length - 1 - this.historyIndex] = tempSave;
+          _DrawingContext.clearRect(_OsShell.promptStr.width, this.currentYPosition, _Canvas.width, this.currentFont);
+          _StdOut.putText(this.buffer);
+          this.historyIndex++;
+
+        }
+
+        public historyScrollDown() {
+          if(this.historyIndex > 0) {
+            var lastCommand = this.historyBuffer[this.historyBuffer.length - this.historyIndex];
+            var tempSave = this.buffer;
+            this.buffer = lastCommand;
+            this.historyBuffer[this.historyBuffer.length - this.historyIndex] = tempSave;
+            _DrawingContext.clearRect(_OsShell.promptStr.width, this.currentYPosition, _Canvas.width, this.currentFont);
+            _StdOut.putText(this.buffer);
+            this.historyIndex--;
+          }
         }
 
         public putText(text): void {
