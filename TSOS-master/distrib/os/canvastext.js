@@ -1,3 +1,4 @@
+///<reference path="console.ts" />
 /* ----------------- *
  * CanvasText.ts   *
  *
@@ -18,7 +19,7 @@
  * ----------------- */
 var TSOS;
 (function (TSOS) {
-    var CanvasTextFunctions = (function () {
+    var CanvasTextFunctions = /** @class */ (function () {
         function CanvasTextFunctions() {
         }
         CanvasTextFunctions.letter = function (ch) {
@@ -53,6 +54,14 @@ var TSOS;
                 var c = CanvasTextFunctions.letter(str.charAt(i));
                 if (!c) {
                     continue;
+                }
+                console.log(_Console.currentXPosition + c.width);
+                console.log(_Canvas.width);
+                if (x + c.width > _Canvas.width - 4) {
+                    console.log("Got here");
+                    _Console.advanceLine();
+                    y = _Console.currentYPosition;
+                    x = _Console.currentXPosition;
                 }
                 ctx.beginPath();
                 var penUp = true;
@@ -189,6 +198,6 @@ var TSOS;
             '~': { width: 24, points: [[3, 6], [3, 8], [4, 11], [6, 12], [8, 12], [10, 11], [14, 8], [16, 7], [18, 7], [20, 8], [21, 10], [-1, -1], [3, 8], [4, 10], [6, 11], [8, 11], [10, 10], [14, 7], [16, 6], [18, 6], [20, 7], [21, 10], [21, 12]] }
         };
         return CanvasTextFunctions;
-    })();
+    }());
     TSOS.CanvasTextFunctions = CanvasTextFunctions;
 })(TSOS || (TSOS = {}));

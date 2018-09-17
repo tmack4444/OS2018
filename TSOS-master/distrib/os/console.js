@@ -72,24 +72,6 @@ var TSOS;
             // UPDATE: Even though we are now working in TypeScript, char and string remain undistinguished.
             //         Consider fixing that.
             if (text !== "") {
-                // Draw the text at the current X and Y coordinates.
-                // After checking the X and Y coordinates to ensure it won't go out of the Console
-                var textSize = _DrawingContext.measureText(this.currentFont, this.currentFontSize, text);
-                if (this.currentXPosition > _Canvas.width - 4) {
-                    this.advanceLine();
-                }
-                if (textSize > _Canvas.width - 4) {
-                    var totalSize = 0;
-                    var index = 0;
-                    for (var i = 0; i < text.length; i++) {
-                        totalSize += _DrawingContext.measureText(this.currentFont, this.currentFontSize, text.charAt(i));
-                        if (totalSize > _Canvas.width - 4) {
-                            index = i;
-                            break;
-                        }
-                    }
-                    text.concat(text.slice(0, index), "\n", text.slice(index + 1, text.length));
-                }
                 _DrawingContext.drawText(this.currentFont, this.currentFontSize, this.currentXPosition, this.currentYPosition, text);
                 // Move the current X position.
                 var offset = _DrawingContext.measureText(this.currentFont, this.currentFontSize, text);

@@ -1,3 +1,4 @@
+///<reference path="console.ts" />
 /* ----------------- *
  * CanvasText.ts   *
  *
@@ -160,6 +161,17 @@ module TSOS {
                 if (!c) {
                     continue;
                 }
+
+                console.log(_Console.currentXPosition + c.width);
+                console.log(_Canvas.width);
+
+                if(x + c.width > _Canvas.width-4){
+                  console.log("Got here");
+                  _Console.advanceLine();
+                  y = _Console.currentYPosition;
+                  x = _Console.currentXPosition;
+                }
+
                 ctx.beginPath();
                 var penUp = true;
                 var needStroke = 0;
