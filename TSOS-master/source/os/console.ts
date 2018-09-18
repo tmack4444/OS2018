@@ -18,7 +18,7 @@ module TSOS {
                     public currentXPosition = 0,
                     public currentYPosition = _DefaultFontSize,
                     public buffer = "",
-                    public historyBuffer: string[] = [],
+                    public historyBuffer: Array<string> = new Array(),
                     public historyIndex: number = 0) {
         }
 
@@ -46,8 +46,9 @@ module TSOS {
                     // ... tell the shell ...
                     _OsShell.handleInput(this.buffer);
                     // ... and reset our buffer, after adding the command to our history buffer.
-                    this.historyBuffer.push(this.buffer);
-                    console.log(this.historyBuffer[this.historyIndex]);
+                    if(this.buffer != ""){
+                      this.historyBuffer.unshift(this.buffer);
+                    }
                     this.historyIndex = 0;
                     this.buffer = "";
                 } else if (chr === String.fromCharCode(8)) {
@@ -65,26 +66,35 @@ module TSOS {
         }
 
         public historyScrollUp() {
-          var lastCommand = this.historyBuffer[this.historyBuffer.length - 1 - this.historyIndex];
-          var tempSave = this.buffer;
-          this.buffer = lastCommand;
-          this.historyBuffer[this.historyBuffer.length - 1 - this.historyIndex] = tempSave;
-          _DrawingContext.clearRect(_OsShell.promptStr.width, this.currentYPosition, _Canvas.width, this.currentFont);
-          _StdOut.putText(this.buffer);
-          this.historyIndex++;
-
+          //scrollUp is for pressing the up arrow
+          //Start off by making sure we aren't already at the end of our history.
+          //If we aren't then get the next item, then if we won't go out of bounds, increment the historyIndex
+          if(this.historyIndex < this.historyBuffer.length) {
+            this.history();
+            if(!(this.historyIndex+1 >= this.historyBuffer.length)){
+              this.historyIndex++;
+            }
+          }
         }
 
         public historyScrollDown() {
+          //scrollDown is for pressing the down arrow.
+          //If you press it, start by making sure we're not at position 0, then subtract the historyIndex and get the element
+          //This is because if you press down, you want the command directly before the one you just entered, where as with
+          //Scroll up, you want to print the current command and then increment to the next one.
           if(this.historyIndex > 0) {
-            var lastCommand = this.historyBuffer[this.historyBuffer.length - this.historyIndex];
-            var tempSave = this.buffer;
-            this.buffer = lastCommand;
-            this.historyBuffer[this.historyBuffer.length - this.historyIndex] = tempSave;
-            _DrawingContext.clearRect(_OsShell.promptStr.width, this.currentYPosition, _Canvas.width, this.currentFont);
-            _StdOut.putText(this.buffer);
             this.historyIndex--;
+            this.history();
           }
+        }
+
+        public history() {
+          //ok so the history function simply takes the historyIndex, and uses it to find and load that particular command
+          //We also clear the command bar, except for the prompt arrow, and print JUST the command that was loaded.
+          var lastCommand = this.historyBuffer[this.historyIndex];
+          this.buffer = lastCommand;
+          _DrawingContext.clearRect(_OsShell.promptStr.width, this.currentYPosition + _DefaultFontSize, _Canvas.width, this.currentFont);
+          _StdOut.putText(this.buffer);
         }
 
         public putText(text): void {
