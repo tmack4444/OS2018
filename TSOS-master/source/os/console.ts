@@ -160,6 +160,7 @@ module TSOS {
           var delteOffset = _DrawingContext.measureText(this.currentFont, this.currentFontSize, remove);
           this.currentXPosition = this.currentXPosition - delteOffset;
           _DrawingContext.clearRect(this.currentXPosition, (this.currentYPosition - _DefaultFontSize), delteOffset+2, _DefaultFontSize+2);// Ok so we need to clear the space that character was in.
+          this.tabIndex = 0;
         }
 
         public scroll(): void{
@@ -175,7 +176,9 @@ module TSOS {
           //tab complete uses this.buffer to figure out what command you're typing in based on what you've typed in so far
           //If there are multiple options (Say you type an s and hit tab, which could be status or shutdown) then the avalible
           //options will cycle through, like Command Prompt does.
-          if(this.buffer.length > 0) {
+
+          //I added a few comments to mark which brackets end whcih for loop. It got a bit messy so I figured that would help a bit with debugging and readability
+          if(this.buffer.length > 0 && this.tabIndex == 0) {
             for(var i = 0; i < _OsShell.commandList.length; i++) {
               for(var j = 0; j < this.buffer.length; j++) {
                 var currCharFromList = _OsShell.commandList[i].command.charAt(j);
@@ -192,7 +195,12 @@ module TSOS {
             }//end of for var i
           }
           if(this.areSimilar.length > 0){
+            if(this.tabIndex >= this.areSimilar.length){
+            console.log("Reset tabIndex");
+              this.tabIndex = 0;
+            }
             for(this.tabIndex; this.tabIndex < this.areSimilar.length; this.tabIndex++){
+              console.log(this.tabIndex);
               if(this.areSimilar[this.tabIndex]){
                 this.currentXPosition = 0
                 _DrawingContext.clearRect(this.currentXPosition, (this.currentYPosition - _DefaultFontSize), _Canvas.width, _DefaultFontSize+2);
@@ -203,9 +211,6 @@ module TSOS {
                 break;
               }
             }//end of for var l
-            if(this.tabIndex > this.areSimilar.length){
-              this.tabIndex = 0;
-            }
           }
         }
     }
