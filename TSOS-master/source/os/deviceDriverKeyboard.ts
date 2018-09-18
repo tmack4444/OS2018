@@ -207,8 +207,14 @@ module TSOS {
 
 
                  }
+              } else if(keyCode == 38) {  //Up arrow, Down arrow
+                _Console.historyScrollUp();
+              } else if(keyCode == 40) {
+                _Console.historyScrollDown();
+              } else if(keyCode == 9) {
+                _Console.tabComplete();
               }
+
             }
         }
     }
-}

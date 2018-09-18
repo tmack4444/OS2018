@@ -19,7 +19,9 @@ module TSOS {
                     public currentYPosition = _DefaultFontSize,
                     public buffer = "",
                     public historyBuffer: Array<string> = new Array(),
-                    public historyIndex: number = 0) {
+                    public historyIndex: number = 0,
+                    public areSimilar: Boolean[],
+                    public tabIndex: number) {
         }
 
         public init(): void {
@@ -45,15 +47,19 @@ module TSOS {
                     // The enter key marks the end of a console command, so ...
                     // ... tell the shell ...
                     _OsShell.handleInput(this.buffer);
-                    // ... and reset our buffer, after adding the command to our history buffer.
+                    // ... and reset our buffer, after adding the command to our history buffer...
                     if(this.buffer != ""){
                       this.historyBuffer.unshift(this.buffer);
                     }
+                    //..and reset our history index and our similar commands list
                     this.historyIndex = 0;
+                    this.areSimilar = [];
+                    this.tabIndex = 0;
                     this.buffer = "";
                 } else if (chr === String.fromCharCode(8)) {
                     // if the character is a backspace, we have to do some more work.
                     this.backspace();
+                    this.areSimilar = [];
                 } else {
                     // This is a "normal" character, so ...
                     // ... draw it on the screen...
@@ -163,7 +169,44 @@ module TSOS {
           _DrawingContext.clearRect(0, 0, _Canvas.width, _Canvas.height);
           _DrawingContext.putImageData(canvasCopy, 0, 0);
           this.currentXPosition = 0;
+        }
 
+        public tabComplete() {
+          //tab complete uses this.buffer to figure out what command you're typing in based on what you've typed in so far
+          //If there are multiple options (Say you type an s and hit tab, which could be status or shutdown) then the avalible
+          //options will cycle through, like Command Prompt does.
+          if(this.buffer.length > 0) {
+            for(var i = 0; i < _OsShell.commandList.length; i++) {
+              for(var j = 0; j < this.buffer.length; j++) {
+                var currCharFromList = _OsShell.commandList[i].command.charAt(j);
+                var currCharFromBuff = this.buffer.charAt(j);
+                if(currCharFromList == currCharFromBuff) {
+                  this.areSimilar[i] = true;
+                }
+                else {
+                  this.areSimilar[i] = false;
+                  j = this.buffer.length;
+                }
+
+              }//end of for var j
+            }//end of for var i
+          }
+          if(this.areSimilar.length > 0){
+            for(this.tabIndex; this.tabIndex < this.areSimilar.length; this.tabIndex++){
+              console.log(this.areSimilar[this.tabIndex]);
+              if(this.areSimilar[this.tabIndex]){
+                _DrawingContext.clearRect(this.currentXPosition, (this.currentYPosition - _DefaultFontSize), _Canvas.width, _DefaultFontSize+2);
+                _StdOut.putText(_OsShell.commandList[this.tabIndex].command);
+                this.buffer = _OsShell.commandList[this.tabIndex].command;
+                if(this.tabIndex < this.areSimilar.length){
+                  this.tabIndex++;
+                } else {
+                  this.tabIndex = 0;
+                }
+                break;
+              }
+            }//end of for var l
+          }
         }
     }
  }
