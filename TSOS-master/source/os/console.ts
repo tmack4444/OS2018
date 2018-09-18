@@ -193,19 +193,19 @@ module TSOS {
           }
           if(this.areSimilar.length > 0){
             for(this.tabIndex; this.tabIndex < this.areSimilar.length; this.tabIndex++){
-              console.log(this.areSimilar[this.tabIndex]);
               if(this.areSimilar[this.tabIndex]){
+                this.currentXPosition = 0
                 _DrawingContext.clearRect(this.currentXPosition, (this.currentYPosition - _DefaultFontSize), _Canvas.width, _DefaultFontSize+2);
+                _StdOut.putText(_OsShell.promptStr);
                 _StdOut.putText(_OsShell.commandList[this.tabIndex].command);
                 this.buffer = _OsShell.commandList[this.tabIndex].command;
-                if(this.tabIndex < this.areSimilar.length){
-                  this.tabIndex++;
-                } else {
-                  this.tabIndex = 0;
-                }
+                this.tabIndex++;
                 break;
               }
             }//end of for var l
+            if(this.tabIndex > this.areSimilar.length){
+              this.tabIndex = 0;
+            }
           }
         }
     }
