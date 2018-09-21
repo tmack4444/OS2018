@@ -53,7 +53,7 @@ var _StdOut;
 var _Console: TSOS.Console;
 var _OsShell: TSOS.Shell;
 
-var memory = TSOS.CoreMem;
+var _Memory = TSOS.CoreMem;
 
 // At least this OS is not trying to kill you. (Yet.)
 var _SarcasticMode: boolean = false;

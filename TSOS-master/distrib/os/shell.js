@@ -366,7 +366,10 @@ var TSOS;
                 _StdOut.putText("Invalid input. Only Hex Characters are allowed");
             }
             else {
-                _StdOut.putText("Congrats, your input is correct");
+                //else the input is correct, we have to load it into memory
+                _Memory = input.split(" ");
+                var PID = 0;
+                _StdOut.putText("Process saved with Process ID (PID): " + PID);
             }
             return;
         };
