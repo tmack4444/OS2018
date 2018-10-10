@@ -15,8 +15,8 @@
      ------------ */
 var TSOS;
 (function (TSOS) {
-    var Cpu = (function () {
-        function Cpu(PC, Acc, Xreg, Yreg, Zflag, isExecuting) {
+    var Cpu = /** @class */ (function () {
+        function Cpu(PC, Acc, Xreg, Yreg, Zflag, isExecuting, opCodes) {
             if (PC === void 0) { PC = 0; }
             if (Acc === void 0) { Acc = 0; }
             if (Xreg === void 0) { Xreg = 0; }
@@ -29,6 +29,7 @@ var TSOS;
             this.Yreg = Yreg;
             this.Zflag = Zflag;
             this.isExecuting = isExecuting;
+            this.opCodes = opCodes;
         }
         Cpu.prototype.init = function () {
             this.PC = 0;
@@ -37,6 +38,20 @@ var TSOS;
             this.Yreg = 0;
             this.Zflag = 0;
             this.isExecuting = false;
+            this.opCodes = ["A9",
+                "AD",
+                "8D",
+                "6D",
+                "A2",
+                "AE",
+                "A0",
+                "AC",
+                "EA",
+                "00",
+                "EC",
+                "D0",
+                "EE",
+                "FF"]; // SYS
         };
         Cpu.prototype.cycle = function () {
             _Kernel.krnTrace('CPU cycle');
@@ -44,6 +59,6 @@ var TSOS;
             // Do the real work here. Be sure to set this.isExecuting appropriately.
         };
         return Cpu;
-    })();
+    }());
     TSOS.Cpu = Cpu;
 })(TSOS || (TSOS = {}));

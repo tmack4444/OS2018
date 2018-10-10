@@ -24,7 +24,8 @@ module TSOS {
                     public Xreg: number = 0,
                     public Yreg: number = 0,
                     public Zflag: number = 0,
-                    public isExecuting: boolean = false) {
+                    public isExecuting: boolean = false,
+                    public opCodes: string[]) {
 
         }
 
@@ -35,6 +36,20 @@ module TSOS {
             this.Yreg = 0;
             this.Zflag = 0;
             this.isExecuting = false;
+            this.opCodes = ["A9", //LDA with constant
+                            "AD", //LDA with value from memory
+                            "8D", //STA
+                            "6D", //ADC add with carry
+                            "A2", // LDX load X with constant
+                            "AE", // LDX load X from memory
+                            "A0", // LDY load Y with constant
+                            "AC", // LDY load Y from memory
+                            "EA", // NOP
+                            "00", // BRK
+                            "EC", // CPX Compare value from mem with X
+                            "D0", // BNE Branch n bytes if z = 0
+                            "EE", // INC
+                            "FF"]; // SYS
         }
 
         public cycle(): void {
@@ -42,5 +57,6 @@ module TSOS {
             // TODO: Accumulate CPU usage and profiling statistics here.
             // Do the real work here. Be sure to set this.isExecuting appropriately.
         }
+
     }
 }
