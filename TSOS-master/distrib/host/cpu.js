@@ -58,6 +58,41 @@ var TSOS;
             // TODO: Accumulate CPU usage and profiling statistics here.
             // Do the real work here. Be sure to set this.isExecuting appropriately.
         };
+        Cpu.prototype.LDAConst = function (value) {
+            this.Acc = parseInt(value, 16);
+        };
+        Cpu.prototype.LDAMem = function (address) {
+            this.Acc = parseInt(_Memory.get(address), 16);
+        };
+        Cpu.prototype.STA = function (address) {
+            _Memory.put(address, this.Acc);
+        };
+        Cpu.prototype.ADC = function (address) {
+            this.Acc += parseInt(_Memory.get(address), 16);
+        };
+        Cpu.prototype.LDXConst = function (value) {
+            this.Xreg = parseInt(value, 16);
+        };
+        Cpu.prototype.LDXMem = function (address) {
+            this.Xreg = parseInt(_Memory.get(address), 16);
+        };
+        Cpu.prototype.LDYConst = function (value) {
+            this.Yreg = parseInt(value, 16);
+        };
+        Cpu.prototype.LDYMem = function (address) {
+            this.Xreg = parseInt(_Memory.get(address), 16);
+        };
+        Cpu.prototype.CDX = function (address) {
+            if (this.Xreg == parseInt(_Memory.get(address), 16)) {
+                this.Zflag = 0;
+            }
+            else {
+                this.Zflag = 1;
+            }
+        };
+        Cpu.prototype.INC = function () {
+            this.Acc++;
+        };
         return Cpu;
     }());
     TSOS.Cpu = Cpu;

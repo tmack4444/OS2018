@@ -16,6 +16,12 @@ var TSOS;
                 this.Storage[i] = elems[i];
             }
         };
+        CoreMem.prototype.get = function (address) {
+            return this.Storage[address];
+        };
+        CoreMem.prototype.put = function (address, value) {
+            this.Storage[address] = value;
+        };
         return CoreMem;
     }());
     TSOS.CoreMem = CoreMem;

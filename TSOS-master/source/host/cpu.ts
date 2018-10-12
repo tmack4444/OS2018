@@ -36,10 +36,10 @@ module TSOS {
             this.Yreg = 0;
             this.Zflag = 0;
             this.isExecuting = false;
-            this.opCodes = ["A9", //LDA with constant
-                            "AD", //LDA with value from memory
-                            "8D", //STA
-                            "6D", //ADC add with carry
+            this.opCodes = ["A9", // LDA with constant
+                            "AD", // LDA with value from memory
+                            "8D", // STA
+                            "6D", // ADC add with carry
                             "A2", // LDX load X with constant
                             "AE", // LDX load X from memory
                             "A0", // LDY load Y with constant
@@ -56,6 +56,50 @@ module TSOS {
             _Kernel.krnTrace('CPU cycle');
             // TODO: Accumulate CPU usage and profiling statistics here.
             // Do the real work here. Be sure to set this.isExecuting appropriately.
+        }
+
+        public LDAConst(value): void{
+          this.Acc = parseInt(value, 16);
+        }
+
+        public LDAMem(address): void{
+          this.Acc = parseInt(_Memory.get(address), 16);
+        }
+
+        public STA(address): void{
+          _Memory.put(address, this.Acc);
+        }
+
+        public ADC(address): void{
+          this.Acc += parseInt(_Memory.get(address), 16);
+        }
+
+        public LDXConst(value): void{
+          this.Xreg = parseInt(value, 16);
+        }
+
+        public LDXMem(address): void {
+          this.Xreg = parseInt(_Memory.get(address), 16);
+        }
+
+        public LDYConst(value): void{
+          this.Yreg = parseInt(value, 16);
+        }
+
+        public LDYMem(address): void {
+          this.Xreg = parseInt(_Memory.get(address), 16);
+        }
+
+        public CDX(address): void {
+          if(this.Xreg == parseInt(_Memory.get(address), 16) ) {
+            this.Zflag = 0;
+          } else {
+            this.Zflag = 1;
+          }
+        }
+
+        public INC():void {
+          this.Acc++;
         }
 
     }

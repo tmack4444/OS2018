@@ -19,5 +19,13 @@ module TSOS {
             this.Storage[i] = elems[i];
           }
         }
+
+        public get(address): string{
+          return this.Storage[address];
+        }
+
+        public put(address, value): void {
+          this.Storage[address] = value;
+        }
     }
 }
