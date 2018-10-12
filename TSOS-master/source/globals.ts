@@ -1,3 +1,6 @@
+///<reference path="host/cpu.ts" />
+///<reference path="os/kernel.ts" />
+///<reference path="host/coreMem.ts" />
 /* ------------
    Globals.ts
 
@@ -12,7 +15,7 @@
 // Global CONSTANTS (TypeScript 1.5 introduced const. Very cool.)
 //
 const APP_NAME: string    = "M*Y*O*S";   // 'cause Bob and I were at a loss for a better name.
-const APP_VERSION: string = "0.08";   // What did you expect?
+const APP_VERSION: string = "0.1";   // What did you expect?
 
 const CPU_CLOCK_INTERVAL: number = 100;   // This is in ms (milliseconds) so 1000 = 1 second.
 
@@ -53,7 +56,7 @@ var _StdOut;
 var _Console: TSOS.Console;
 var _OsShell: TSOS.Shell;
 
-var _Memory = TSOS.CoreMem;
+var _Memory: TSOS.CoreMem;
 
 // At least this OS is not trying to kill you. (Yet.)
 var _SarcasticMode: boolean = false;

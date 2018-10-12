@@ -115,6 +115,11 @@ module TSOS {
                                    "- Break the OS.");
             this.commandList[this.commandList.length] = sc;
 
+            sc = new ShellCommand(this.shellRun,
+                                  "run",
+                                  "- Run the stored Program");
+            this.commandList[this.commandList.length] = sc;
+
             // ps  - list the running processes and their IDs
             // kill <id> - kills the specified process id.
 
@@ -424,8 +429,8 @@ module TSOS {
           //Found this bit of code on https://stackoverflow.com/questions/12989741/the-property-value-does-not-exist-on-value-of-type-htmlelement
           //Basically, typescript doesn't allow you to grab a value from an HTML element, unless you typecast it as
 
-          var input = (<HTMLInputElement>document.getElementById("taProgramInput")).value;
-          var validateInput = input.toUpperCase();
+          var input = (<HTMLInputElement>document.getElementById("taProgramInput")).value.toUpperCase();
+          var validateInput = input;
           if(input == "") {
             _StdOut.putText("Invalid input. Only Hex Characters are allowed");
             return;
@@ -450,9 +455,12 @@ module TSOS {
 
           if(validateInput != "") {
             _StdOut.putText("Invalid input. Only Hex Characters are allowed");
-          } else {
+            } else {
             //else the input is correct, we have to load it into memory
-            _Memory = input.split(" ");
+            for(var i = 0; i < input.length; i++){
+              _Memory.Storage[i] = input[i];
+              _StdOut.putText(_Memory.Storage[i]);
+            }
             var PID: number = 0;
             _StdOut.putText("Process saved with Process ID (PID): " + PID);
           }
@@ -460,5 +468,9 @@ module TSOS {
 
         }
 
+        public shellRun() {
+
+           }
+        }
+
     }
-}

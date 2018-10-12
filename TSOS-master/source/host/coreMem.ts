@@ -5,8 +5,8 @@ module TSOS {
 
     export class CoreMem {
 
-        constructor (public Storage: Array<String>) {
-           this.Storage.length = 256;
+        constructor (public Storage: string[]) {
+          this.Storage.length = 256;
         }
 
         public init(): void {

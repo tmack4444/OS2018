@@ -1,3 +1,6 @@
+///<reference path="host/cpu.ts" />
+///<reference path="os/kernel.ts" />
+///<reference path="host/coreMem.ts" />
 /* ------------
    Globals.ts
 
@@ -11,7 +14,7 @@
 // Global CONSTANTS (TypeScript 1.5 introduced const. Very cool.)
 //
 var APP_NAME = "M*Y*O*S"; // 'cause Bob and I were at a loss for a better name.
-var APP_VERSION = "0.08"; // What did you expect?
+var APP_VERSION = "0.1"; // What did you expect?
 var CPU_CLOCK_INTERVAL = 100; // This is in ms (milliseconds) so 1000 = 1 second.
 var TIMER_IRQ = 0; // Pages 23 (timer), 9 (interrupts), and 561 (interrupt priority).
 // NOTE: The timer is different from hardware/host clock pulses. Don't confuse these.
@@ -40,7 +43,7 @@ var _StdOut;
 // UI
 var _Console;
 var _OsShell;
-var _Memory = TSOS.CoreMem;
+var _Memory;
 // At least this OS is not trying to kill you. (Yet.)
 var _SarcasticMode = false;
 // Global Device Driver Objects - page 12
