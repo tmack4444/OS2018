@@ -56,6 +56,53 @@ module TSOS {
             _Kernel.krnTrace('CPU cycle');
             // TODO: Accumulate CPU usage and profiling statistics here.
             // Do the real work here. Be sure to set this.isExecuting appropriately.
+            if(this.isExecuting) {
+              var currentInstruction = _Memory.get(this.PC); //fetch
+              switch(currentInstruction) {                   //decode
+                case "A9": this.LDAConst(parseInt(_Memory.get(this.PC+1), 16));   //execute
+                  break;
+
+                case "AD": this.LDAMem(parseInt(_Memory.get(this.PC+1), 16));
+                  break;
+
+                case "8D": this.STA(parseInt(_Memory.get(this.PC+1), 16));
+                  break;
+
+                case "6D": this.ADC(parseInt(_Memory.get(this.PC+1), 16));
+                  break;
+
+                case "A2": this.LDXConst(parseInt(_Memory.get(this.PC+1), 16));
+                  break;
+
+                case "AE": this.LDXMem(parseInt(_Memory.get(this.PC+1), 16));
+                  break;
+
+                case "A0": this.LDYConst(parseInt(_Memory.get(this.PC+1), 16));
+                  break;
+
+                case "AC": this.LDYMem(parseInt(_Memory.get(this.PC+1), 16));
+                  break;
+
+                case "EA": break;
+
+                case "00": this.isExecuting = false;
+                  return;
+
+                case "EC": this.CDX(parseInt(_Memory.get(this.PC+1), 16));
+                  break;
+
+                case "D0": this.BNE(parseInt(_Memory.get(this.PC+1), 16));
+                  break;
+
+                case "EE": this.INC();
+                  break;
+
+                default: this.isExecuting = false; //invalid opCode, error?
+                  currentInstruction = "00";
+                  break;
+
+              }
+            }
         }
 
         public LDAConst(value): void{
@@ -95,6 +142,12 @@ module TSOS {
             this.Zflag = 0;
           } else {
             this.Zflag = 1;
+          }
+        }
+
+        public BNE(value): void {
+          if(this.Zflag == 0) {
+            this.PC += value;
           }
         }
 

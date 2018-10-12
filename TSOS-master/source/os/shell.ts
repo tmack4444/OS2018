@@ -466,8 +466,8 @@ module TSOS {
         }
 
         public shellRun() {
-          for(var i = 0; i < _Memory.Storage.length; i++) {
-            _StdOut.putText(_Memory.Storage[i].toString());
+          _CPU.isExecuting = true;
+          while(_CPU.isExecuting){
           }
         }
       }

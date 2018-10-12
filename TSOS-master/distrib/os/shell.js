@@ -376,8 +376,8 @@ var TSOS;
             return;
         };
         Shell.prototype.shellRun = function () {
-            for (var i = 0; i < _Memory.Storage.length; i++) {
-                _StdOut.putText(_Memory.Storage[i].toString());
+            _CPU.isExecuting = true;
+            while (_CPU.isExecuting) {
             }
         };
         return Shell;
