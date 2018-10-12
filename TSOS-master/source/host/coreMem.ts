@@ -5,14 +5,19 @@ module TSOS {
 
     export class CoreMem {
 
-        constructor (public Storage: string[]) {
-          this.Storage.length = 256;
+        constructor (public Storage: string[] = ["00"]) {
         }
 
         public init(): void {
-            for(var i = 0; i < this.Storage.length; i++) {
-              this.Storage[i] = "0";
-            }
+          for(var i = 0; i < 256; i++) {
+            this.Storage[i] = "00";
+          }
+        }
+
+        public store(elems): void {
+          for(var i = 0; i < elems.length; i++) {
+            this.Storage[i] = elems[i];
+          }
         }
     }
 }

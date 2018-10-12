@@ -369,16 +369,16 @@ var TSOS;
             }
             else {
                 //else the input is correct, we have to load it into memory
-                for (var i = 0; i < input.length; i++) {
-                    _Memory.Storage[i] = input[i];
-                    _StdOut.putText(_Memory.Storage[i]);
-                }
+                _Memory.store(input);
                 var PID = 0;
                 _StdOut.putText("Process saved with Process ID (PID): " + PID);
             }
             return;
         };
         Shell.prototype.shellRun = function () {
+            for (var i = 0; i < _Memory.Storage.length; i++) {
+                _StdOut.putText(_Memory.Storage[i].toString());
+            }
         };
         return Shell;
     }());

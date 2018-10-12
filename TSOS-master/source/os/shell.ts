@@ -457,10 +457,7 @@ module TSOS {
             _StdOut.putText("Invalid input. Only Hex Characters are allowed");
             } else {
             //else the input is correct, we have to load it into memory
-            for(var i = 0; i < input.length; i++){
-              _Memory.Storage[i] = input[i];
-              _StdOut.putText(_Memory.Storage[i]);
-            }
+              _Memory.store(input);
             var PID: number = 0;
             _StdOut.putText("Process saved with Process ID (PID): " + PID);
           }
@@ -469,8 +466,10 @@ module TSOS {
         }
 
         public shellRun() {
-
-           }
+          for(var i = 0; i < _Memory.Storage.length; i++) {
+            _StdOut.putText(_Memory.Storage[i].toString());
+          }
         }
+      }
 
     }

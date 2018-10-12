@@ -3,12 +3,17 @@ var TSOS;
 (function (TSOS) {
     var CoreMem = /** @class */ (function () {
         function CoreMem(Storage) {
+            if (Storage === void 0) { Storage = ["00"]; }
             this.Storage = Storage;
-            this.Storage.length = 256;
         }
         CoreMem.prototype.init = function () {
-            for (var i = 0; i < this.Storage.length; i++) {
-                this.Storage[i] = "0";
+            for (var i = 0; i < 256; i++) {
+                this.Storage[i] = "00";
+            }
+        };
+        CoreMem.prototype.store = function (elems) {
+            for (var i = 0; i < elems.length; i++) {
+                this.Storage[i] = elems[i];
             }
         };
         return CoreMem;
