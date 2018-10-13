@@ -457,9 +457,11 @@ module TSOS {
             _StdOut.putText("Invalid input. Only Hex Characters are allowed");
             } else {
             //else the input is correct, we have to load it into memory
-              _Memory.store(input);
+            _Memory.store(input);
             var PID: number = 0;
             _StdOut.putText("Process saved with Process ID (PID): " + PID);
+            var _PCB = new PCB(PID);
+
           }
           return;
 
@@ -467,8 +469,6 @@ module TSOS {
 
         public shellRun() {
           _CPU.isExecuting = true;
-          while(_CPU.isExecuting){
-          }
         }
       }
 

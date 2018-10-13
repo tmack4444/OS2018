@@ -377,8 +377,6 @@ var TSOS;
         };
         Shell.prototype.shellRun = function () {
             _CPU.isExecuting = true;
-            while (_CPU.isExecuting) {
-            }
         };
         return Shell;
     }());
