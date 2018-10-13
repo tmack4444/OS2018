@@ -7,7 +7,6 @@ var TSOS;
             if (Xreg === void 0) { Xreg = 0; }
             if (Yreg === void 0) { Yreg = 0; }
             if (Zflag === void 0) { Zflag = 0; }
-            if (pid === void 0) { pid = 0; }
             this.PC = PC;
             this.Acc = Acc;
             this.Xreg = Xreg;
