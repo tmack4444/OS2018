@@ -66,32 +66,32 @@ module TSOS {
                   this.PC += 2;
                   break;
 
-                case "AD": this.LDAMem(_Memory.get(this.PC+1));
-                  this.PC += 2;
+                case "AD": this.LDAMem(_Memory.get(this.PC+1) + _Memory.get(this.PC+2));
+                  this.PC += 3;
                   break;
 
-                case "8D": this.STA(_Memory.get(this.PC+1));
-                  this.PC += 2;
+                case "8D": this.STA(_Memory.get(this.PC+1) + _Memory.get(this.PC+2));
+                  this.PC += 3;
                   break;
 
-                case "6D": this.ADC(_Memory.get(this.PC+1));
-                  this.PC += 2;
+                case "6D": this.ADC(_Memory.get(this.PC+1) + _Memory.get(this.PC+2));
+                  this.PC += 3;
                   break;
 
                 case "A2": this.LDXConst(_Memory.get(this.PC+1));
                   this.PC += 2;
                   break;
 
-                case "AE": this.LDXMem(_Memory.get(this.PC+1));
-                  this.PC += 2;
+                case "AE": this.LDXMem(_Memory.get(this.PC+1) + _Memory.get(this.PC+2));
+                  this.PC += 3;
                   break;
 
                 case "A0": this.LDYConst(_Memory.get(this.PC+1));
                   this.PC += 2;
                   break;
 
-                case "AC": this.LDYMem(_Memory.get(this.PC+1));
-                  this.PC += 2;
+                case "AC": this.LDYMem(_Memory.get(this.PC+1) + _Memory.get(this.PC+2));
+                  this.PC += 3;
                   break;
 
                 case "EA": this.PC += 1;
@@ -101,15 +101,16 @@ module TSOS {
                   this.PC = 0;
                   return;
 
-                case "EC": this.CDX(_Memory.get(this.PC+1));
-                  this.PC += 2;
+                case "EC": this.CDX(_Memory.get(this.PC+1) + _Memory.get(this.PC+2));
+                  this.PC += 3;
                   break;
 
                 case "D0": this.BNE(_Memory.get(this.PC+1));
-                  this.PC += 1;
+                  this.PC += 2;
                   break;
 
-                case "EE": this.INC();
+                case "EE": this.INC(_Memory.get(this.PC+1) + _Memory.get(this.PC+2));
+                  this.PC += 3;
                   break;
 
                 case "FF": this.SYS();
@@ -188,9 +189,9 @@ module TSOS {
           }
         }
 
-        public INC():void {
+        public INC(address):void {
           this.updateDisplay();
-          this.Acc++;
+          _Memory.put(address,_Memory.get(address)+1);
         }
 
         public SYS(): void {
@@ -203,6 +204,7 @@ module TSOS {
                 this.Yreg++;
               }
           }
+          this.PC ++;
         }
 
     }

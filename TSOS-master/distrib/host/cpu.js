@@ -58,42 +58,42 @@ var TSOS;
             // TODO: Accumulate CPU usage and profiling statistics here.
             // Do the real work here. Be sure to set this.isExecuting appropriately.
             this.updateDisplay();
-            console.log("It Is Executing");
             var currentInstruction = _Memory.get(this.PC); //fetch
             if (this.isExecuting) {
                 console.log(currentInstruction);
+                console.log(this.PC);
                 switch (currentInstruction) { //decode
                     case "A9":
                         this.LDAConst(_Memory.get(this.PC + 1)); //execute
                         this.PC += 2;
                         break;
                     case "AD":
-                        this.LDAMem(_Memory.get(this.PC + 1));
-                        this.PC += 2;
+                        this.LDAMem(_Memory.get(this.PC + 1) + _Memory.get(this.PC + 2));
+                        this.PC += 3;
                         break;
                     case "8D":
-                        this.STA(_Memory.get(this.PC + 1));
-                        this.PC += 2;
+                        this.STA(_Memory.get(this.PC + 1) + _Memory.get(this.PC + 2));
+                        this.PC += 3;
                         break;
                     case "6D":
-                        this.ADC(_Memory.get(this.PC + 1));
-                        this.PC += 2;
+                        this.ADC(_Memory.get(this.PC + 1) + _Memory.get(this.PC + 2));
+                        this.PC += 3;
                         break;
                     case "A2":
                         this.LDXConst(_Memory.get(this.PC + 1));
                         this.PC += 2;
                         break;
                     case "AE":
-                        this.LDXMem(_Memory.get(this.PC + 1));
-                        this.PC += 2;
+                        this.LDXMem(_Memory.get(this.PC + 1) + _Memory.get(this.PC + 2));
+                        this.PC += 3;
                         break;
                     case "A0":
                         this.LDYConst(_Memory.get(this.PC + 1));
                         this.PC += 2;
                         break;
                     case "AC":
-                        this.LDYMem(_Memory.get(this.PC + 1));
-                        this.PC += 2;
+                        this.LDYMem(_Memory.get(this.PC + 1) + _Memory.get(this.PC + 2));
+                        this.PC += 3;
                         break;
                     case "EA":
                         this.PC += 1;
@@ -103,15 +103,16 @@ var TSOS;
                         this.PC = 0;
                         return;
                     case "EC":
-                        this.CDX(_Memory.get(this.PC + 1));
-                        this.PC += 2;
+                        this.CDX(_Memory.get(this.PC + 1) + _Memory.get(this.PC + 2));
+                        this.PC += 3;
                         break;
                     case "D0":
                         this.BNE(_Memory.get(this.PC + 1));
-                        this.PC += 1;
+                        this.PC += 2;
                         break;
                     case "EE":
-                        this.INC();
+                        this.INC(_Memory.get(this.PC + 1) + _Memory.get(this.PC + 2));
+                        this.PC += 3;
                         break;
                     case "FF":
                         this.SYS();
@@ -179,9 +180,9 @@ var TSOS;
                 this.PC += value;
             }
         };
-        Cpu.prototype.INC = function () {
+        Cpu.prototype.INC = function (address) {
             this.updateDisplay();
-            this.Acc++;
+            _Memory.put(address, _Memory.get(address) + 1);
         };
         Cpu.prototype.SYS = function () {
             if (this.Xreg == 1) {
@@ -194,6 +195,7 @@ var TSOS;
                     this.Yreg++;
                 }
             }
+            this.PC++;
         };
         return Cpu;
     }());
