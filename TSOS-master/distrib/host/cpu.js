@@ -1,4 +1,4 @@
-_Memory; ///<reference path="../globals.ts" />
+///<reference path="../globals.ts" />
 /* ------------
      CPU.ts
 
@@ -54,47 +54,61 @@ var TSOS;
                 "FF"]; // SYS
         };
         Cpu.prototype.cycle = function () {
-            console.log(this.isExecuting);
             _Kernel.krnTrace('CPU cycle');
             // TODO: Accumulate CPU usage and profiling statistics here.
             // Do the real work here. Be sure to set this.isExecuting appropriately.
+            this.updateDisplay();
+            console.log("It Is Executing");
+            var currentInstruction = _Memory.get(this.PC); //fetch
             if (this.isExecuting) {
-                console.log("It Is Executing");
-                var currentInstruction = _Memory.get(this.PC); //fetch
+                console.log(currentInstruction);
                 switch (currentInstruction) { //decode
                     case "A9":
-                        this.LDAConst(parseInt(_Memory.get(this.PC + 1), 16)); //execute
+                        this.LDAConst(_Memory.get(this.PC + 1)); //execute
+                        this.PC += 2;
                         break;
                     case "AD":
-                        this.LDAMem(parseInt(_Memory.get(this.PC + 1), 16));
+                        this.LDAMem(_Memory.get(this.PC + 1));
+                        this.PC += 2;
                         break;
                     case "8D":
-                        this.STA(parseInt(_Memory.get(this.PC + 1), 16));
+                        this.STA(_Memory.get(this.PC + 1));
+                        this.PC += 2;
                         break;
                     case "6D":
-                        this.ADC(parseInt(_Memory.get(this.PC + 1), 16));
+                        this.ADC(_Memory.get(this.PC + 1));
+                        this.PC += 2;
                         break;
                     case "A2":
-                        this.LDXConst(parseInt(_Memory.get(this.PC + 1), 16));
+                        this.LDXConst(_Memory.get(this.PC + 1));
+                        this.PC += 2;
                         break;
                     case "AE":
-                        this.LDXMem(parseInt(_Memory.get(this.PC + 1), 16));
+                        this.LDXMem(_Memory.get(this.PC + 1));
+                        this.PC += 2;
                         break;
                     case "A0":
-                        this.LDYConst(parseInt(_Memory.get(this.PC + 1), 16));
+                        this.LDYConst(_Memory.get(this.PC + 1));
+                        this.PC += 2;
                         break;
                     case "AC":
-                        this.LDYMem(parseInt(_Memory.get(this.PC + 1), 16));
+                        this.LDYMem(_Memory.get(this.PC + 1));
+                        this.PC += 2;
                         break;
-                    case "EA": break;
+                    case "EA":
+                        this.PC += 1;
+                        break;
                     case "00":
                         this.isExecuting = false;
+                        this.PC = 0;
                         return;
                     case "EC":
-                        this.CDX(parseInt(_Memory.get(this.PC + 1), 16));
+                        this.CDX(_Memory.get(this.PC + 1));
+                        this.PC += 2;
                         break;
                     case "D0":
-                        this.BNE(parseInt(_Memory.get(this.PC + 1), 16));
+                        this.BNE(_Memory.get(this.PC + 1));
+                        this.PC += 1;
                         break;
                     case "EE":
                         this.INC();
@@ -102,33 +116,53 @@ var TSOS;
                     case "FF":
                         this.SYS();
                         break;
-                    default: break;
+                    default:
+                        currentInstruction = "00";
+                        break;
                 }
             }
         };
+        Cpu.prototype.updateDisplay = function () {
+            var cpuStatus = "PC: " + this.PC
+                + "ACC: " + this.Acc
+                + "X: " + this.Xreg
+                + "Y: " + this.Yreg
+                + "Z: " + this.Zflag
+                + "isEx: " + this.isExecuting;
+            var cpuMonitor = document.getElementById("taCPUStatus");
+            cpuMonitor.value = cpuStatus;
+        };
         Cpu.prototype.LDAConst = function (value) {
             this.Acc = parseInt(value, 16);
+            this.updateDisplay();
         };
         Cpu.prototype.LDAMem = function (address) {
             this.Acc = parseInt(_Memory.get(address), 16);
+            this.updateDisplay();
         };
         Cpu.prototype.STA = function (address) {
             _Memory.put(address, this.Acc);
+            this.updateDisplay();
         };
         Cpu.prototype.ADC = function (address) {
             this.Acc += parseInt(_Memory.get(address), 16);
+            this.updateDisplay();
         };
         Cpu.prototype.LDXConst = function (value) {
             this.Xreg = parseInt(value, 16);
+            this.updateDisplay();
         };
         Cpu.prototype.LDXMem = function (address) {
             this.Xreg = parseInt(_Memory.get(address), 16);
+            this.updateDisplay();
         };
         Cpu.prototype.LDYConst = function (value) {
             this.Yreg = parseInt(value, 16);
+            this.updateDisplay();
         };
         Cpu.prototype.LDYMem = function (address) {
             this.Xreg = parseInt(_Memory.get(address), 16);
+            this.updateDisplay();
         };
         Cpu.prototype.CDX = function (address) {
             if (this.Xreg == parseInt(_Memory.get(address), 16)) {
@@ -137,13 +171,16 @@ var TSOS;
             else {
                 this.Zflag = 1;
             }
+            this.updateDisplay();
         };
         Cpu.prototype.BNE = function (value) {
             if (this.Zflag == 0) {
+                this.updateDisplay();
                 this.PC += value;
             }
         };
         Cpu.prototype.INC = function () {
+            this.updateDisplay();
             this.Acc++;
         };
         Cpu.prototype.SYS = function () {
@@ -152,6 +189,7 @@ var TSOS;
             }
             else if (this.Xreg == 2) {
                 while (_Memory.get(this.Yreg) != "00") {
+                    this.updateDisplay();
                     _StdOut.putText(_Memory.get(this.Yreg));
                     this.Yreg++;
                 }

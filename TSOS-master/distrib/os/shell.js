@@ -354,22 +354,14 @@ var TSOS;
             validateInput = validateInput.replace(/D/g, " "); //other than whitespace.  If it does, then input is
             validateInput = validateInput.replace(/E/g, " "); //invalid, and I need to warn the user of that.
             validateInput = validateInput.replace(/F/g, " ");
-            validateInput = validateInput.replace(/0/g, " ");
-            validateInput = validateInput.replace(/1/g, " ");
-            validateInput = validateInput.replace(/2/g, " ");
-            validateInput = validateInput.replace(/3/g, " ");
-            validateInput = validateInput.replace(/4/g, " ");
-            validateInput = validateInput.replace(/5/g, " ");
-            validateInput = validateInput.replace(/6/g, " ");
-            validateInput = validateInput.replace(/7/g, " ");
-            validateInput = validateInput.replace(/8/g, " ");
-            validateInput = validateInput.replace(/9/g, " ");
+            validateInput = validateInput.replace(/[0-9]/g, " ");
             validateInput = validateInput.replace(/\s/g, "");
             if (validateInput != "") {
                 _StdOut.putText("Invalid input. Only Hex Characters are allowed");
             }
             else {
                 //else the input is correct, we have to load it into memory
+                input = input.replace(/\s/g, ""); //time to format our input before we load it. Start by removing whitespace
                 _Memory.store(input);
                 var PID = 0;
                 _StdOut.putText("Process saved with Process ID (PID): " + PID);

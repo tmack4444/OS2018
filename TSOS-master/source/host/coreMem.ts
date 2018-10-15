@@ -15,8 +15,10 @@ module TSOS {
         }
 
         public store(elems): void { //used when initially loading a program into memory
+          var k = 0;
           for(var i = 0; i < elems.length; i++) {
-            this.Storage[i] = elems[i];
+            this.Storage[i] = elems[k] + elems[k+1];
+            k += 2;
           }
         }
 

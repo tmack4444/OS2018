@@ -12,8 +12,10 @@ var TSOS;
             }
         };
         CoreMem.prototype.store = function (elems) {
+            var k = 0;
             for (var i = 0; i < elems.length; i++) {
-                this.Storage[i] = elems[i];
+                this.Storage[i] = elems[k] + elems[k + 1];
+                k += 2;
             }
         };
         CoreMem.prototype.get = function (address) {

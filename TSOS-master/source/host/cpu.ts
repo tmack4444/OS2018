@@ -53,88 +53,123 @@ module TSOS {
         }
 
         public cycle(): void {
-            _Kernel.krnTrace('CPU cycle');
-            // TODO: Accumulate CPU usage and profiling statistics here.
-            // Do the real work here. Be sure to set this.isExecuting appropriately.
+          _Kernel.krnTrace('CPU cycle');
+          // TODO: Accumulate CPU usage and profiling statistics here.
+          // Do the real work here. Be sure to set this.isExecuting appropriately.
+          this.updateDisplay();
+            var currentInstruction = _Memory.get(this.PC); //fetch
             if(this.isExecuting) {
-              var currentInstruction = _Memory.get(this.PC); //fetch
+              console.log(currentInstruction);
+              console.log(this.PC);
               switch(currentInstruction) {                   //decode
-                case "A9": this.LDAConst(parseInt(_Memory.get(this.PC+1), 16));   //execute
+                case "A9": this.LDAConst(_Memory.get(this.PC+1));   //execute
+                  this.PC += 2;
                   break;
 
-                case "AD": this.LDAMem(parseInt(_Memory.get(this.PC+1), 16));
+                case "AD": this.LDAMem(_Memory.get(this.PC+1));
+                  this.PC += 2;
                   break;
 
-                case "8D": this.STA(parseInt(_Memory.get(this.PC+1), 16));
+                case "8D": this.STA(_Memory.get(this.PC+1));
+                  this.PC += 2;
                   break;
 
-                case "6D": this.ADC(parseInt(_Memory.get(this.PC+1), 16));
+                case "6D": this.ADC(_Memory.get(this.PC+1));
+                  this.PC += 2;
                   break;
 
-                case "A2": this.LDXConst(parseInt(_Memory.get(this.PC+1), 16));
+                case "A2": this.LDXConst(_Memory.get(this.PC+1));
+                  this.PC += 2;
                   break;
 
-                case "AE": this.LDXMem(parseInt(_Memory.get(this.PC+1), 16));
+                case "AE": this.LDXMem(_Memory.get(this.PC+1));
+                  this.PC += 2;
                   break;
 
-                case "A0": this.LDYConst(parseInt(_Memory.get(this.PC+1), 16));
+                case "A0": this.LDYConst(_Memory.get(this.PC+1));
+                  this.PC += 2;
                   break;
 
-                case "AC": this.LDYMem(parseInt(_Memory.get(this.PC+1), 16));
+                case "AC": this.LDYMem(_Memory.get(this.PC+1));
+                  this.PC += 2;
                   break;
 
-                case "EA": break;
+                case "EA": this.PC += 1;
+                  break;
 
                 case "00": this.isExecuting = false;
+                  this.PC = 0;
                   return;
 
-                case "EC": this.CDX(parseInt(_Memory.get(this.PC+1), 16));
+                case "EC": this.CDX(_Memory.get(this.PC+1));
+                  this.PC += 2;
                   break;
 
-                case "D0": this.BNE(parseInt(_Memory.get(this.PC+1), 16));
+                case "D0": this.BNE(_Memory.get(this.PC+1));
+                  this.PC += 1;
                   break;
 
                 case "EE": this.INC();
                   break;
 
-                default: this.isExecuting = false; //invalid opCode, error?
-                  currentInstruction = "00";
+                case "FF": this.SYS();
                   break;
 
-              }
+                default: currentInstruction = "00";
+                  break;
+                }
             }
+        }
+
+        public updateDisplay(): void{
+          var cpuStatus: string = "PC: " + this.PC
+            + "ACC: " + this.Acc
+            + "X: " + this.Xreg
+            + "Y: " + this.Yreg
+            + "Z: " + this.Zflag
+            + "isEx: " + this.isExecuting;
+          var cpuMonitor = <HTMLInputElement> document.getElementById("taCPUStatus");
+          cpuMonitor.value = cpuStatus;
         }
 
         public LDAConst(value): void{
           this.Acc = parseInt(value, 16);
+          this.updateDisplay();
         }
 
         public LDAMem(address): void{
           this.Acc = parseInt(_Memory.get(address), 16);
+          this.updateDisplay();
         }
 
         public STA(address): void{
           _Memory.put(address, this.Acc);
+          this.updateDisplay();
         }
 
         public ADC(address): void{
           this.Acc += parseInt(_Memory.get(address), 16);
+          this.updateDisplay();
         }
 
         public LDXConst(value): void{
           this.Xreg = parseInt(value, 16);
+          this.updateDisplay();
         }
 
         public LDXMem(address): void {
           this.Xreg = parseInt(_Memory.get(address), 16);
+          this.updateDisplay();
         }
 
         public LDYConst(value): void{
           this.Yreg = parseInt(value, 16);
+          this.updateDisplay();
         }
 
         public LDYMem(address): void {
           this.Xreg = parseInt(_Memory.get(address), 16);
+          this.updateDisplay();
         }
 
         public CDX(address): void {
@@ -143,16 +178,31 @@ module TSOS {
           } else {
             this.Zflag = 1;
           }
+          this.updateDisplay();
         }
 
         public BNE(value): void {
           if(this.Zflag == 0) {
+            this.updateDisplay();
             this.PC += value;
           }
         }
 
         public INC():void {
+          this.updateDisplay();
           this.Acc++;
+        }
+
+        public SYS(): void {
+          if(this.Xreg == 1){
+            _StdOut.putText(this.Yreg);
+          } else if(this.Xreg == 2) {
+              while(_Memory.get(this.Yreg) != "00"){
+                this.updateDisplay();
+                _StdOut.putText(_Memory.get(this.Yreg));
+                this.Yreg++;
+              }
+          }
         }
 
     }
