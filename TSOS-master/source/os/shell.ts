@@ -1,5 +1,6 @@
 ///<reference path="../globals.ts" />
 ///<reference path="../utils.ts" />
+///<reference path="PCB.ts" />
 ///<reference path="shellCommand.ts" />
 ///<reference path="userCommand.ts" />
 ///<reference path="memManager.ts" />
@@ -24,6 +25,7 @@ module TSOS {
         public curses = "[fuvg],[cvff],[shpx],[phag],[pbpxfhpxre],[zbgureshpxre],[gvgf]";
         public apologies = "[sorry]";
         public status = "I love Operating Systems!";
+        public PIDCount = 0;
 
         constructor() {
         }
@@ -452,9 +454,12 @@ module TSOS {
             //else the input is correct, we have to load it into memory
             input = input.replace(/\s/g, ""); //time to format our input before we load it. Start by removing whitespace
             _Memory.store(input);
-            var PID: number = 0;
-            _StdOut.putText("Process saved with Process ID (PID): " + PID);
-            //var _PCB = new PCB(PID);
+            if(this.PIDCount > 2) {
+              this.PIDCount = 0;
+            }
+            _StdOut.putText("Process saved with Process ID (PID): " + 0);
+            var ProgPCB = new PCB(0);
+            ProgPCB.init();
 
           }
           return;
