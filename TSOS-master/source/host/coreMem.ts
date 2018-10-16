@@ -5,13 +5,20 @@ module TSOS {
 
     export class CoreMem {
 
-        constructor (public Storage: string[] = ["00"]) {
+        constructor (public Storage: string[] = ["00"],
+                     public memoryDisplay) {
         }
 
         public init(): void {
           for(var i = 0; i < 256; i++) {
             this.Storage[i] = "00";
           }
+          this.memoryDisplay = <HTMLInputElement> document.getElementById("taMemDisplay");
+          this.memoryDisplay.value = this.Storage.join();
+        }
+
+        public updateDisplay(): void {
+          this.memoryDisplay.value = this.Storage.join();
         }
 
         public store(elems): void { //used when initially loading a program into memory

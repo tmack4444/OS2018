@@ -2,14 +2,20 @@
 var TSOS;
 (function (TSOS) {
     var CoreMem = /** @class */ (function () {
-        function CoreMem(Storage) {
+        function CoreMem(Storage, memoryDisplay) {
             if (Storage === void 0) { Storage = ["00"]; }
             this.Storage = Storage;
+            this.memoryDisplay = memoryDisplay;
         }
         CoreMem.prototype.init = function () {
             for (var i = 0; i < 256; i++) {
                 this.Storage[i] = "00";
             }
+            this.memoryDisplay = document.getElementById("taMemDisplay");
+            this.memoryDisplay.value = this.Storage.join();
+        };
+        CoreMem.prototype.updateDisplay = function () {
+            this.memoryDisplay.value = this.Storage.join();
         };
         CoreMem.prototype.store = function (elems) {
             var k = 0;
