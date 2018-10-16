@@ -66,15 +66,15 @@ module TSOS {
                   this.PC += 2;
                   break;
 
-                case "AD": this.LDAMem(_Memory.get(this.PC+1) + _Memory.get(this.PC+2));
+                case "AD": this.LDAMem(_Memory.get(this.PC+2) + _Memory.get(this.PC+1));
                   this.PC += 3;
                   break;
 
-                case "8D": this.STA(_Memory.get(this.PC+1) + _Memory.get(this.PC+2));
+                case "8D": this.STA(_Memory.get(this.PC+2) + _Memory.get(this.PC+1));
                   this.PC += 3;
                   break;
 
-                case "6D": this.ADC(_Memory.get(this.PC+1) + _Memory.get(this.PC+2));
+                case "6D": this.ADC(_Memory.get(this.PC+2) + _Memory.get(this.PC+1));
                   this.PC += 3;
                   break;
 
@@ -82,7 +82,7 @@ module TSOS {
                   this.PC += 2;
                   break;
 
-                case "AE": this.LDXMem(_Memory.get(this.PC+1) + _Memory.get(this.PC+2));
+                case "AE": this.LDXMem(_Memory.get(this.PC+2) + _Memory.get(this.PC+1));
                   this.PC += 3;
                   break;
 
@@ -90,7 +90,7 @@ module TSOS {
                   this.PC += 2;
                   break;
 
-                case "AC": this.LDYMem(_Memory.get(this.PC+1) + _Memory.get(this.PC+2));
+                case "AC": this.LDYMem(_Memory.get(this.PC+2) + _Memory.get(this.PC+1));
                   this.PC += 3;
                   break;
 
@@ -98,10 +98,13 @@ module TSOS {
                   break;
 
                 case "00": this.isExecuting = false;
+                  _StdOut.putText("Done!");
                   this.PC = 0;
+                  _CPU.init();
+                  this.updateDisplay();
                   return;
 
-                case "EC": this.CDX(_Memory.get(this.PC+1) + _Memory.get(this.PC+2));
+                case "EC": this.CDX(_Memory.get(this.PC+2) + _Memory.get(this.PC+1));
                   this.PC += 3;
                   break;
 
@@ -109,11 +112,12 @@ module TSOS {
                   this.PC += 2;
                   break;
 
-                case "EE": this.INC(_Memory.get(this.PC+1) + _Memory.get(this.PC+2));
+                case "EE": this.INC(_Memory.get(this.PC+2) + _Memory.get(this.PC+1));
                   this.PC += 3;
                   break;
 
                 case "FF": this.SYS();
+                  this.PC += 1;
                   break;
 
                 default: currentInstruction = "00";
@@ -124,11 +128,11 @@ module TSOS {
 
         public updateDisplay(): void{
           var cpuStatus: string = "PC: " + this.PC
-            + "ACC: " + this.Acc
-            + "X: " + this.Xreg
-            + "Y: " + this.Yreg
-            + "Z: " + this.Zflag
-            + "isEx: " + this.isExecuting;
+            + " ACC: " + this.Acc
+            + " X: " + this.Xreg
+            + " Y: " + this.Yreg
+            + " Z: " + this.Zflag
+            + " isEx: " + this.isExecuting;
           var cpuMonitor = <HTMLInputElement> document.getElementById("taCPUStatus");
           cpuMonitor.value = cpuStatus;
         }
@@ -139,17 +143,17 @@ module TSOS {
         }
 
         public LDAMem(address): void{
-          this.Acc = parseInt(_Memory.get(address), 16);
+          this.Acc = parseInt(_Memory.get(parseInt(address,16)), 16);
           this.updateDisplay();
         }
 
         public STA(address): void{
-          _Memory.put(address, this.Acc);
+          _Memory.put(parseInt(address, 16), this.Acc);
           this.updateDisplay();
         }
 
         public ADC(address): void{
-          this.Acc += parseInt(_Memory.get(address), 16);
+          this.Acc += parseInt(_Memory.get(parseInt(address,16)), 16);
           this.updateDisplay();
         }
 
@@ -159,7 +163,7 @@ module TSOS {
         }
 
         public LDXMem(address): void {
-          this.Xreg = parseInt(_Memory.get(address), 16);
+          this.Xreg = parseInt(_Memory.get(parseInt(address,16)), 16);
           this.updateDisplay();
         }
 
@@ -169,12 +173,12 @@ module TSOS {
         }
 
         public LDYMem(address): void {
-          this.Xreg = parseInt(_Memory.get(address), 16);
+          this.Yreg = parseInt(_Memory.get(parseInt(address,16)), 16);
           this.updateDisplay();
         }
 
         public CDX(address): void {
-          if(this.Xreg == parseInt(_Memory.get(address), 16) ) {
+          if(this.Xreg == parseInt(_Memory.get(parseInt(address,16)), 16) ) {
             this.Zflag = 0;
           } else {
             this.Zflag = 1;
@@ -185,26 +189,35 @@ module TSOS {
         public BNE(value): void {
           if(this.Zflag == 0) {
             this.updateDisplay();
-            this.PC += value;
+            this.PC += parseInt(value, 16);
           }
         }
 
         public INC(address):void {
           this.updateDisplay();
-          _Memory.put(address,_Memory.get(address)+1);
+          var value: number = parseInt(_Memory.get(parseInt(address,16)), 16);
+          value++;
+          _Memory.put(parseInt(address, 16), value.toString(16));
         }
 
         public SYS(): void {
           if(this.Xreg == 1){
-            _StdOut.putText(this.Yreg);
+            console.log("Xreg 1");
+            _StdOut.putText(this.Yreg.toString());
           } else if(this.Xreg == 2) {
-              while(_Memory.get(this.Yreg) != "00"){
+              console.log("Xreg 2");
+              var tempYreg = this.Yreg;
+              var outStr = "";
+              while(_Memory.get(tempYreg) != "00"){
                 this.updateDisplay();
-                _StdOut.putText(_Memory.get(this.Yreg));
-                this.Yreg++;
+                outStr += String.fromCharCode(parseInt(_Memory.get(tempYreg),16) );
+                console.log(outStr);
+                console.log(tempYreg);
+                console.log(_Memory.get(tempYreg));
+                tempYreg++;
               }
+              _StdOut.putText(outStr);
           }
-          this.PC ++;
         }
 
     }
