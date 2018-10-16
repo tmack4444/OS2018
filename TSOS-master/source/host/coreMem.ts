@@ -23,10 +23,11 @@ module TSOS {
 
         public store(elems): void { //used when initially loading a program into memory
           var k = 0;
-          for(var i = 0; i < elems.length; i++) {
+          for(var i = 0; i < elems.length/2; i++) {
             this.Storage[i] = elems[k] + elems[k+1];
             k += 2;
           }
+          this.updateDisplay();
         }
 
         public get(address): string{
@@ -35,6 +36,7 @@ module TSOS {
 
         public put(address, value): void {
           this.Storage[address] = value;
+          this.updateDisplay();
         }
     }
 }

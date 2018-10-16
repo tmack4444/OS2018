@@ -19,16 +19,18 @@ var TSOS;
         };
         CoreMem.prototype.store = function (elems) {
             var k = 0;
-            for (var i = 0; i < elems.length; i++) {
+            for (var i = 0; i < elems.length / 2; i++) {
                 this.Storage[i] = elems[k] + elems[k + 1];
                 k += 2;
             }
+            this.updateDisplay();
         };
         CoreMem.prototype.get = function (address) {
             return this.Storage[address];
         };
         CoreMem.prototype.put = function (address, value) {
             this.Storage[address] = value;
+            this.updateDisplay();
         };
         return CoreMem;
     }());
