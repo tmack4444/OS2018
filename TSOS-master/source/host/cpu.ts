@@ -25,7 +25,8 @@ module TSOS {
                     public Yreg: number = 0,
                     public Zflag: number = 0,
                     public isExecuting: boolean = false,
-                    public opCodes: string[]) {
+                    public opCodes: string[],
+                    public singleStep: boolean = false) {
 
         }
 
@@ -50,6 +51,7 @@ module TSOS {
                             "D0", // BNE Branch n bytes if z = 0
                             "EE", // INC
                             "FF"]; // SYS
+            this.singleStep = false;
         }
 
         public cycle(): void {
@@ -61,6 +63,10 @@ module TSOS {
             if(this.isExecuting) {
               console.log(currentInstruction);
               console.log(this.PC);
+              if(this.singleStep){
+                this.isExecuting = false;
+                this.singleStep = false;
+              }
               switch(currentInstruction) {                   //decode
                 case "A9": this.LDAConst(_Memory.get(this.PC+1));   //execute
                   this.PC += 2;

@@ -16,13 +16,14 @@
 var TSOS;
 (function (TSOS) {
     var Cpu = /** @class */ (function () {
-        function Cpu(PC, Acc, Xreg, Yreg, Zflag, isExecuting, opCodes) {
+        function Cpu(PC, Acc, Xreg, Yreg, Zflag, isExecuting, opCodes, singleStep) {
             if (PC === void 0) { PC = 0; }
             if (Acc === void 0) { Acc = 0; }
             if (Xreg === void 0) { Xreg = 0; }
             if (Yreg === void 0) { Yreg = 0; }
             if (Zflag === void 0) { Zflag = 0; }
             if (isExecuting === void 0) { isExecuting = false; }
+            if (singleStep === void 0) { singleStep = false; }
             this.PC = PC;
             this.Acc = Acc;
             this.Xreg = Xreg;
@@ -30,6 +31,7 @@ var TSOS;
             this.Zflag = Zflag;
             this.isExecuting = isExecuting;
             this.opCodes = opCodes;
+            this.singleStep = singleStep;
         }
         Cpu.prototype.init = function () {
             this.PC = 0;
@@ -52,6 +54,7 @@ var TSOS;
                 "D0",
                 "EE",
                 "FF"]; // SYS
+            this.singleStep = false;
         };
         Cpu.prototype.cycle = function () {
             _Kernel.krnTrace('CPU cycle');
@@ -62,6 +65,10 @@ var TSOS;
             if (this.isExecuting) {
                 console.log(currentInstruction);
                 console.log(this.PC);
+                if (this.singleStep) {
+                    this.isExecuting = false;
+                    this.singleStep = false;
+                }
                 switch (currentInstruction) { //decode
                     case "A9":
                         this.LDAConst(_Memory.get(this.PC + 1)); //execute
