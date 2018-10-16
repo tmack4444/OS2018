@@ -61,12 +61,14 @@ module TSOS {
           this.updateDisplay();
             var currentInstruction = _Memory.get(this.PC); //fetch
             if(this.isExecuting) {
-              console.log(currentInstruction);
-              console.log(this.PC);
               if(this.singleStep){
                 this.isExecuting = false;
                 this.singleStep = false;
               }
+              if(this.PC > 255){
+                this.PC = this.PC - 255;
+              }
+              this.updateDisplay();
               switch(currentInstruction) {                   //decode
                 case "A9": this.LDAConst(_Memory.get(this.PC+1));   //execute
                   this.PC += 2;
@@ -104,8 +106,6 @@ module TSOS {
                   break;
 
                 case "00": this.isExecuting = false;
-                  _StdOut.putText("Done!");
-                  this.PC = 0;
                   _CPU.init();
                   this.updateDisplay();
                   return;
@@ -115,7 +115,7 @@ module TSOS {
                   break;
 
                 case "D0": this.BNE(_Memory.get(this.PC+1));
-                  this.PC += 2;
+                  this.PC += 1;
                   break;
 
                 case "EE": this.INC(_Memory.get(this.PC+2) + _Memory.get(this.PC+1));
@@ -133,74 +133,65 @@ module TSOS {
         }
 
         public updateDisplay(): void{
-          var cpuStatus: string = "PC: " + this.PC
-            + " ACC: " + this.Acc
-            + " X: " + this.Xreg
-            + " Y: " + this.Yreg
-            + " Z: " + this.Zflag
-            + " isEx: " + this.isExecuting;
+          var cpuStatus: string = "PC: " + this.PC.toString(16).toUpperCase()
+            + " IR: " + _Memory.get(this.PC)
+            + " ACC: " + this.Acc.toString(16)
+            + " X: " + this.Xreg.toString(16)
+            + " Y: " + this.Yreg.toString(16)
+            + " Z: " + this.Zflag;
           var cpuMonitor = <HTMLInputElement> document.getElementById("taCPUStatus");
           cpuMonitor.value = cpuStatus;
         }
 
         public LDAConst(value): void{
           this.Acc = parseInt(value, 16);
-          this.updateDisplay();
         }
 
         public LDAMem(address): void{
           this.Acc = parseInt(_Memory.get(parseInt(address,16)), 16);
-          this.updateDisplay();
         }
 
         public STA(address): void{
           _Memory.put(parseInt(address, 16), this.Acc.toString(16));
-          this.updateDisplay();
         }
 
         public ADC(address): void{
           this.Acc += parseInt(_Memory.get(parseInt(address,16)), 16);
-          this.updateDisplay();
         }
 
         public LDXConst(value): void{
           this.Xreg = parseInt(value, 16);
-          this.updateDisplay();
         }
 
         public LDXMem(address): void {
           this.Xreg = parseInt(_Memory.get(parseInt(address,16)), 16);
-          this.updateDisplay();
         }
 
         public LDYConst(value): void{
           this.Yreg = parseInt(value, 16);
-          this.updateDisplay();
         }
 
         public LDYMem(address): void {
           this.Yreg = parseInt(_Memory.get(parseInt(address,16)), 16);
-          this.updateDisplay();
         }
 
         public CDX(address): void {
           if(this.Xreg == parseInt(_Memory.get(parseInt(address,16)), 16) ) {
-            this.Zflag = 0;
-          } else {
             this.Zflag = 1;
+          } else {
+            this.Zflag = 0;
           }
-          this.updateDisplay();
         }
 
         public BNE(value): void {
           if(this.Zflag == 0) {
-            this.updateDisplay();
             this.PC += parseInt(value, 16);
-          }
+          } else{
+            this.PC++; //since we always want to increment one, this case here lets us increment an extra one
+          }            //In case we don't want to branch, but also want to get the next instruction, and not data
         }
 
         public INC(address):void {
-          this.updateDisplay();
           var value: number = parseInt(_Memory.get(parseInt(address,16)), 16);
           value++;
           _Memory.put(parseInt(address, 16), value.toString(16));

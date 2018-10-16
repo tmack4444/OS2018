@@ -63,12 +63,14 @@ var TSOS;
             this.updateDisplay();
             var currentInstruction = _Memory.get(this.PC); //fetch
             if (this.isExecuting) {
-                console.log(currentInstruction);
-                console.log(this.PC);
                 if (this.singleStep) {
                     this.isExecuting = false;
                     this.singleStep = false;
                 }
+                if (this.PC > 255) {
+                    this.PC = this.PC - 255;
+                }
+                this.updateDisplay();
                 switch (currentInstruction) { //decode
                     case "A9":
                         this.LDAConst(_Memory.get(this.PC + 1)); //execute
@@ -107,8 +109,6 @@ var TSOS;
                         break;
                     case "00":
                         this.isExecuting = false;
-                        _StdOut.putText("Done!");
-                        this.PC = 0;
                         _CPU.init();
                         this.updateDisplay();
                         return;
@@ -118,7 +118,7 @@ var TSOS;
                         break;
                     case "D0":
                         this.BNE(_Memory.get(this.PC + 1));
-                        this.PC += 2;
+                        this.PC += 1;
                         break;
                     case "EE":
                         this.INC(_Memory.get(this.PC + 2) + _Memory.get(this.PC + 1));
@@ -135,64 +135,56 @@ var TSOS;
             }
         };
         Cpu.prototype.updateDisplay = function () {
-            var cpuStatus = "PC: " + this.PC
-                + " ACC: " + this.Acc
-                + " X: " + this.Xreg
-                + " Y: " + this.Yreg
-                + " Z: " + this.Zflag
-                + " isEx: " + this.isExecuting;
+            var cpuStatus = "PC: " + this.PC.toString(16).toUpperCase()
+                + " IR: " + _Memory.get(this.PC)
+                + " ACC: " + this.Acc.toString(16)
+                + " X: " + this.Xreg.toString(16)
+                + " Y: " + this.Yreg.toString(16)
+                + " Z: " + this.Zflag;
             var cpuMonitor = document.getElementById("taCPUStatus");
             cpuMonitor.value = cpuStatus;
         };
         Cpu.prototype.LDAConst = function (value) {
             this.Acc = parseInt(value, 16);
-            this.updateDisplay();
         };
         Cpu.prototype.LDAMem = function (address) {
             this.Acc = parseInt(_Memory.get(parseInt(address, 16)), 16);
-            this.updateDisplay();
         };
         Cpu.prototype.STA = function (address) {
             _Memory.put(parseInt(address, 16), this.Acc.toString(16));
-            this.updateDisplay();
         };
         Cpu.prototype.ADC = function (address) {
             this.Acc += parseInt(_Memory.get(parseInt(address, 16)), 16);
-            this.updateDisplay();
         };
         Cpu.prototype.LDXConst = function (value) {
             this.Xreg = parseInt(value, 16);
-            this.updateDisplay();
         };
         Cpu.prototype.LDXMem = function (address) {
             this.Xreg = parseInt(_Memory.get(parseInt(address, 16)), 16);
-            this.updateDisplay();
         };
         Cpu.prototype.LDYConst = function (value) {
             this.Yreg = parseInt(value, 16);
-            this.updateDisplay();
         };
         Cpu.prototype.LDYMem = function (address) {
             this.Yreg = parseInt(_Memory.get(parseInt(address, 16)), 16);
-            this.updateDisplay();
         };
         Cpu.prototype.CDX = function (address) {
             if (this.Xreg == parseInt(_Memory.get(parseInt(address, 16)), 16)) {
-                this.Zflag = 0;
-            }
-            else {
                 this.Zflag = 1;
             }
-            this.updateDisplay();
+            else {
+                this.Zflag = 0;
+            }
         };
         Cpu.prototype.BNE = function (value) {
             if (this.Zflag == 0) {
-                this.updateDisplay();
                 this.PC += parseInt(value, 16);
             }
+            else {
+                this.PC++; //since we always want to increment one, this case here lets us increment an extra one
+            } //In case we don't want to branch, but also want to get the next instruction, and not data
         };
         Cpu.prototype.INC = function (address) {
-            this.updateDisplay();
             var value = parseInt(_Memory.get(parseInt(address, 16)), 16);
             value++;
             _Memory.put(parseInt(address, 16), value.toString(16));
