@@ -124,10 +124,33 @@ module TSOS {
             // be reloaded from the server. If it is false or not specified the browser may reload the
             // page from its cache, which is not what we want.
         }
-        
+
         public static hostBtnSingleStep_click(btn): void {
           _CPU.singleStep = true;
           _CPU.isExecuting = true;
+        }
+
+        public static updateCPUDisp(): void {
+          var cpuStatus: string = "PC: " + _CPU.PC.toString(16).toUpperCase()
+            + " IR: " + _Memory.get(_CPU.PC)
+            + " ACC: " + _CPU.Acc.toString(16)
+            + " X: " + _CPU.Xreg.toString(16)
+            + " Y: " + _CPU.Yreg.toString(16)
+            + " Z: " + _CPU.Zflag;
+          var cpuMonitor = <HTMLInputElement> document.getElementById("taCPUStatus");
+          cpuMonitor.value = cpuStatus;
+        }
+
+        public static updateMemDisp(): void {
+          var memoryDisplay = <HTMLInputElement> document.getElementById("taMemDisplay");
+          memoryDisplay.value = _Memory.Storage.join();
+          memoryDisplay.value = memoryDisplay.value.replace(/,/g, "|");
+        }
+
+        public static higlightMemDispl(PC, numAddresses): void{
+          var memoryDisplay = <HTMLInputElement> document.getElementById("taMemDisplay");
+          memoryDisplay.style.color = "#black";
+          memoryDisplay.value.charAt(PC).
         }
     }
 }

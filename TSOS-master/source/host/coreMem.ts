@@ -13,12 +13,7 @@ module TSOS {
           for(var i = 0; i < 256; i++) {
             this.Storage[i] = "00";
           }
-          this.memoryDisplay = <HTMLInputElement> document.getElementById("taMemDisplay");
-          this.memoryDisplay.value = this.Storage.join();
-        }
-
-        public updateDisplay(): void {
-          this.memoryDisplay.value = this.Storage.join();
+          Control.updateMemDisp();
         }
 
         public store(elems): void { //used when initially loading a program into memory
@@ -27,7 +22,7 @@ module TSOS {
             this.Storage[i] = elems[k] + elems[k+1];
             k += 2;
           }
-          this.updateDisplay();
+          Control.updateMemDisp();
         }
 
         public get(address): string{
@@ -36,7 +31,7 @@ module TSOS {
 
         public put(address, value): void {
           this.Storage[address] = value;
-          this.updateDisplay();
+          Control.updateMemDisp();
         }
     }
 }

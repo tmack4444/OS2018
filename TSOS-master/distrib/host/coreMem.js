@@ -11,11 +11,7 @@ var TSOS;
             for (var i = 0; i < 256; i++) {
                 this.Storage[i] = "00";
             }
-            this.memoryDisplay = document.getElementById("taMemDisplay");
-            this.memoryDisplay.value = this.Storage.join();
-        };
-        CoreMem.prototype.updateDisplay = function () {
-            this.memoryDisplay.value = this.Storage.join();
+            TSOS.Control.updateMemDisp();
         };
         CoreMem.prototype.store = function (elems) {
             var k = 0;
@@ -23,14 +19,14 @@ var TSOS;
                 this.Storage[i] = elems[k] + elems[k + 1];
                 k += 2;
             }
-            this.updateDisplay();
+            TSOS.Control.updateMemDisp();
         };
         CoreMem.prototype.get = function (address) {
             return this.Storage[address];
         };
         CoreMem.prototype.put = function (address, value) {
             this.Storage[address] = value;
-            this.updateDisplay();
+            TSOS.Control.updateMemDisp();
         };
         return CoreMem;
     }());

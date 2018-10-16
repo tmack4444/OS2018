@@ -58,7 +58,7 @@ module TSOS {
           _Kernel.krnTrace('CPU cycle');
           // TODO: Accumulate CPU usage and profiling statistics here.
           // Do the real work here. Be sure to set this.isExecuting appropriately.
-          this.updateDisplay();
+          Control.updateCPUDisp();
             var currentInstruction = _Memory.get(this.PC); //fetch
             if(this.isExecuting) {
               if(this.singleStep){
@@ -68,7 +68,7 @@ module TSOS {
               if(this.PC > 255){
                 this.PC = this.PC - 255;
               }
-              this.updateDisplay();
+              Control.updateCPUDisp();
               switch(currentInstruction) {                   //decode
                 case "A9": this.LDAConst(_Memory.get(this.PC+1));   //execute
                   this.PC += 2;
@@ -107,7 +107,7 @@ module TSOS {
 
                 case "00": this.isExecuting = false;
                   _CPU.init();
-                  this.updateDisplay();
+                  Control.updateCPUDisp();
                   return;
 
                 case "EC": this.CDX(_Memory.get(this.PC+2) + _Memory.get(this.PC+1));
@@ -130,17 +130,6 @@ module TSOS {
                   break;
                 }
             }
-        }
-
-        public updateDisplay(): void{
-          var cpuStatus: string = "PC: " + this.PC.toString(16).toUpperCase()
-            + " IR: " + _Memory.get(this.PC)
-            + " ACC: " + this.Acc.toString(16)
-            + " X: " + this.Xreg.toString(16)
-            + " Y: " + this.Yreg.toString(16)
-            + " Z: " + this.Zflag;
-          var cpuMonitor = <HTMLInputElement> document.getElementById("taCPUStatus");
-          cpuMonitor.value = cpuStatus;
         }
 
         public LDAConst(value): void{
@@ -206,7 +195,7 @@ module TSOS {
               var tempYreg: number = this.Yreg;
               var outStr = "";
               while(_Memory.get(tempYreg) != "00"){
-                this.updateDisplay();
+                Control.updateCPUDisp();
                 outStr += String.fromCharCode(parseInt(_Memory.get(tempYreg),16) );
                 console.log(outStr);
                 console.log(tempYreg);
