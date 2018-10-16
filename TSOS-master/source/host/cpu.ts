@@ -148,7 +148,7 @@ module TSOS {
         }
 
         public STA(address): void{
-          _Memory.put(parseInt(address, 16), this.Acc);
+          _Memory.put(parseInt(address, 16), this.Acc.toString(16));
           this.updateDisplay();
         }
 
@@ -206,7 +206,7 @@ module TSOS {
             _StdOut.putText(this.Yreg.toString());
           } else if(this.Xreg == 2) {
               console.log("Xreg 2");
-              var tempYreg = this.Yreg;
+              var tempYreg: number = this.Yreg;
               var outStr = "";
               while(_Memory.get(tempYreg) != "00"){
                 this.updateDisplay();

@@ -146,7 +146,7 @@ var TSOS;
             this.updateDisplay();
         };
         Cpu.prototype.STA = function (address) {
-            _Memory.put(parseInt(address, 16), this.Acc);
+            _Memory.put(parseInt(address, 16), this.Acc.toString(16));
             this.updateDisplay();
         };
         Cpu.prototype.ADC = function (address) {
