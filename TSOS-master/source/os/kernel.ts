@@ -1,7 +1,7 @@
 ///<reference path="../globals.ts" />
 ///<reference path="../host/Control.ts"/>
 ///<reference path="../host/Devices.ts"/>
-////<reference path="MemManager.ts"/>
+///<reference path="MemManager.ts"/>
 ///<reference path="queue.ts" />
 ///<reference path="console.ts"/>
 ///<reference path="DeviceDriverKeyboard.ts"/>
@@ -38,8 +38,8 @@ module TSOS {
             _Console.init();
 
             // Initialize the memory manager, so we can manage memory. and stuff
-            //_MemManager = new MemManager();
-            //_MemManager.init();
+            _MemManager = new MemManager();
+            _MemManager.init();
 
             // Initialize standard input and output to the _Console.
             _StdIn  = _Console;

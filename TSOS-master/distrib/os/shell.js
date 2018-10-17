@@ -364,7 +364,7 @@ var TSOS;
             else {
                 //else the input is correct, we have to load it into memory
                 input = input.replace(/\s/g, ""); //time to format our input before we load it. Start by removing whitespace
-                _Memory.store(input);
+                _MemManager.store(input);
                 if (this.PIDCount > 2) {
                     this.PIDCount = 0;
                 }

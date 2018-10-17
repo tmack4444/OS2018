@@ -110,7 +110,7 @@ var TSOS;
         };
         Control.updateCPUDisp = function () {
             var cpuStatus = "PC: " + _CPU.PC.toString(16).toUpperCase()
-                + " IR: " + _Memory.get(_CPU.PC)
+                + " IR: " + _MemManager.get(_CPU.PC)
                 + " ACC: " + _CPU.Acc.toString(16)
                 + " X: " + _CPU.Xreg.toString(16)
                 + " Y: " + _CPU.Yreg.toString(16)

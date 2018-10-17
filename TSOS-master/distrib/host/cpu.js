@@ -53,7 +53,7 @@ var TSOS;
             // TODO: Accumulate CPU usage and profiling statistics here.
             // Do the real work here. Be sure to set this.isExecuting appropriately.
             TSOS.Control.updateCPUDisp();
-            var currentInstruction = _Memory.get(this.PC); //fetch
+            var currentInstruction = _MemManager.get(this.PC); //fetch
             if (this.isExecuting) {
                 if (this.singleStep) {
                     this.isExecuting = false;
@@ -65,35 +65,35 @@ var TSOS;
                 TSOS.Control.updateCPUDisp();
                 switch (currentInstruction) { //decode
                     case "A9":
-                        this.LDAConst(_Memory.get(this.PC + 1)); //execute
+                        this.LDAConst(_MemManager.get(this.PC + 1)); //execute
                         this.PC += 2;
                         break;
                     case "AD":
-                        this.LDAMem(_Memory.get(this.PC + 2) + _Memory.get(this.PC + 1));
+                        this.LDAMem(_MemManager.get(this.PC + 2) + _MemManager.get(this.PC + 1));
                         this.PC += 3;
                         break;
                     case "8D":
-                        this.STA(_Memory.get(this.PC + 2) + _Memory.get(this.PC + 1));
+                        this.STA(_MemManager.get(this.PC + 2) + _MemManager.get(this.PC + 1));
                         this.PC += 3;
                         break;
                     case "6D":
-                        this.ADC(_Memory.get(this.PC + 2) + _Memory.get(this.PC + 1));
+                        this.ADC(_MemManager.get(this.PC + 2) + _MemManager.get(this.PC + 1));
                         this.PC += 3;
                         break;
                     case "A2":
-                        this.LDXConst(_Memory.get(this.PC + 1));
+                        this.LDXConst(_MemManager.get(this.PC + 1));
                         this.PC += 2;
                         break;
                     case "AE":
-                        this.LDXMem(_Memory.get(this.PC + 2) + _Memory.get(this.PC + 1));
+                        this.LDXMem(_MemManager.get(this.PC + 2) + _MemManager.get(this.PC + 1));
                         this.PC += 3;
                         break;
                     case "A0":
-                        this.LDYConst(_Memory.get(this.PC + 1));
+                        this.LDYConst(_MemManager.get(this.PC + 1));
                         this.PC += 2;
                         break;
                     case "AC":
-                        this.LDYMem(_Memory.get(this.PC + 2) + _Memory.get(this.PC + 1));
+                        this.LDYMem(_MemManager.get(this.PC + 2) + _MemManager.get(this.PC + 1));
                         this.PC += 3;
                         break;
                     case "EA":
@@ -105,15 +105,15 @@ var TSOS;
                         TSOS.Control.updateCPUDisp();
                         return;
                     case "EC":
-                        this.CDX(_Memory.get(this.PC + 2) + _Memory.get(this.PC + 1));
+                        this.CDX(_MemManager.get(this.PC + 2) + _MemManager.get(this.PC + 1));
                         this.PC += 3;
                         break;
                     case "D0":
-                        this.BNE(_Memory.get(this.PC + 1));
+                        this.BNE(_MemManager.get(this.PC + 1));
                         this.PC += 1;
                         break;
                     case "EE":
-                        this.INC(_Memory.get(this.PC + 2) + _Memory.get(this.PC + 1));
+                        this.INC(_MemManager.get(this.PC + 2) + _MemManager.get(this.PC + 1));
                         this.PC += 3;
                         break;
                     case "FF":
@@ -130,28 +130,28 @@ var TSOS;
             this.Acc = parseInt(value, 16);
         };
         Cpu.prototype.LDAMem = function (address) {
-            this.Acc = parseInt(_Memory.get(parseInt(address, 16)), 16);
+            this.Acc = parseInt(_MemManager.get(parseInt(address, 16)), 16);
         };
         Cpu.prototype.STA = function (address) {
-            _Memory.put(parseInt(address, 16), this.Acc.toString(16));
+            _MemManager.put(parseInt(address, 16), this.Acc.toString(16));
         };
         Cpu.prototype.ADC = function (address) {
-            this.Acc += parseInt(_Memory.get(parseInt(address, 16)), 16);
+            this.Acc += parseInt(_MemManager.get(parseInt(address, 16)), 16);
         };
         Cpu.prototype.LDXConst = function (value) {
             this.Xreg = parseInt(value, 16);
         };
         Cpu.prototype.LDXMem = function (address) {
-            this.Xreg = parseInt(_Memory.get(parseInt(address, 16)), 16);
+            this.Xreg = parseInt(_MemManager.get(parseInt(address, 16)), 16);
         };
         Cpu.prototype.LDYConst = function (value) {
             this.Yreg = parseInt(value, 16);
         };
         Cpu.prototype.LDYMem = function (address) {
-            this.Yreg = parseInt(_Memory.get(parseInt(address, 16)), 16);
+            this.Yreg = parseInt(_MemManager.get(parseInt(address, 16)), 16);
         };
         Cpu.prototype.CDX = function (address) {
-            if (this.Xreg == parseInt(_Memory.get(parseInt(address, 16)), 16)) {
+            if (this.Xreg == parseInt(_MemManager.get(parseInt(address, 16)), 16)) {
                 this.Zflag = 1;
             }
             else {
@@ -167,9 +167,9 @@ var TSOS;
             } //In case we don't want to branch, but also want to get the next instruction, and not data
         };
         Cpu.prototype.INC = function (address) {
-            var value = parseInt(_Memory.get(parseInt(address, 16)), 16);
+            var value = parseInt(_MemManager.get(parseInt(address, 16)), 16);
             value++;
-            _Memory.put(parseInt(address, 16), value.toString(16));
+            _MemManager.put(parseInt(address, 16), value.toString(16));
         };
         Cpu.prototype.SYS = function () {
             if (this.Xreg == 1) {
@@ -180,12 +180,12 @@ var TSOS;
                 console.log("Xreg 2");
                 var tempYreg = this.Yreg;
                 var outStr = "";
-                while (_Memory.get(tempYreg) != "00") {
+                while (_MemManager.get(tempYreg) != "00") {
                     TSOS.Control.updateCPUDisp();
-                    outStr += String.fromCharCode(parseInt(_Memory.get(tempYreg), 16));
+                    outStr += String.fromCharCode(parseInt(_MemManager.get(tempYreg), 16));
                     console.log(outStr);
                     console.log(tempYreg);
-                    console.log(_Memory.get(tempYreg));
+                    console.log(_MemManager.get(tempYreg));
                     tempYreg++;
                 }
                 _StdOut.putText(outStr);

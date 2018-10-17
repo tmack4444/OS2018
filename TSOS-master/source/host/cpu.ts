@@ -60,7 +60,7 @@ module TSOS {
           // TODO: Accumulate CPU usage and profiling statistics here.
           // Do the real work here. Be sure to set this.isExecuting appropriately.
           Control.updateCPUDisp();
-            var currentInstruction = _Memory.get(this.PC); //fetch
+            var currentInstruction = _MemManager.get(this.PC); //fetch
             if(this.isExecuting) {
               if(this.singleStep){
                 this.isExecuting = false;
@@ -71,35 +71,35 @@ module TSOS {
               }
               Control.updateCPUDisp();
               switch(currentInstruction) {                   //decode
-                case "A9": this.LDAConst(_Memory.get(this.PC+1));   //execute
+                case "A9": this.LDAConst(_MemManager.get(this.PC+1));   //execute
                   this.PC += 2;
                   break;
 
-                case "AD": this.LDAMem(_Memory.get(this.PC+2) + _Memory.get(this.PC+1));
+                case "AD": this.LDAMem(_MemManager.get(this.PC+2) + _MemManager.get(this.PC+1));
                   this.PC += 3;
                   break;
 
-                case "8D": this.STA(_Memory.get(this.PC+2) + _Memory.get(this.PC+1));
+                case "8D": this.STA(_MemManager.get(this.PC+2) + _MemManager.get(this.PC+1));
                   this.PC += 3;
                   break;
 
-                case "6D": this.ADC(_Memory.get(this.PC+2) + _Memory.get(this.PC+1));
+                case "6D": this.ADC(_MemManager.get(this.PC+2) + _MemManager.get(this.PC+1));
                   this.PC += 3;
                   break;
 
-                case "A2": this.LDXConst(_Memory.get(this.PC+1));
+                case "A2": this.LDXConst(_MemManager.get(this.PC+1));
                   this.PC += 2;
                   break;
 
-                case "AE": this.LDXMem(_Memory.get(this.PC+2) + _Memory.get(this.PC+1));
+                case "AE": this.LDXMem(_MemManager.get(this.PC+2) + _MemManager.get(this.PC+1));
                   this.PC += 3;
                   break;
 
-                case "A0": this.LDYConst(_Memory.get(this.PC+1));
+                case "A0": this.LDYConst(_MemManager.get(this.PC+1));
                   this.PC += 2;
                   break;
 
-                case "AC": this.LDYMem(_Memory.get(this.PC+2) + _Memory.get(this.PC+1));
+                case "AC": this.LDYMem(_MemManager.get(this.PC+2) + _MemManager.get(this.PC+1));
                   this.PC += 3;
                   break;
 
@@ -111,15 +111,15 @@ module TSOS {
                   Control.updateCPUDisp();
                   return;
 
-                case "EC": this.CDX(_Memory.get(this.PC+2) + _Memory.get(this.PC+1));
+                case "EC": this.CDX(_MemManager.get(this.PC+2) + _MemManager.get(this.PC+1));
                   this.PC += 3;
                   break;
 
-                case "D0": this.BNE(_Memory.get(this.PC+1));
+                case "D0": this.BNE(_MemManager.get(this.PC+1));
                   this.PC += 1;
                   break;
 
-                case "EE": this.INC(_Memory.get(this.PC+2) + _Memory.get(this.PC+1));
+                case "EE": this.INC(_MemManager.get(this.PC+2) + _MemManager.get(this.PC+1));
                   this.PC += 3;
                   break;
 
@@ -138,15 +138,15 @@ module TSOS {
         }
 
         public LDAMem(address): void{
-          this.Acc = parseInt(_Memory.get(parseInt(address,16)), 16);
+          this.Acc = parseInt(_MemManager.get(parseInt(address,16)), 16);
         }
 
         public STA(address): void{
-          _Memory.put(parseInt(address, 16), this.Acc.toString(16));
+          _MemManager.put(parseInt(address, 16), this.Acc.toString(16));
         }
 
         public ADC(address): void{
-          this.Acc += parseInt(_Memory.get(parseInt(address,16)), 16);
+          this.Acc += parseInt(_MemManager.get(parseInt(address,16)), 16);
         }
 
         public LDXConst(value): void{
@@ -154,7 +154,7 @@ module TSOS {
         }
 
         public LDXMem(address): void {
-          this.Xreg = parseInt(_Memory.get(parseInt(address,16)), 16);
+          this.Xreg = parseInt(_MemManager.get(parseInt(address,16)), 16);
         }
 
         public LDYConst(value): void{
@@ -162,11 +162,11 @@ module TSOS {
         }
 
         public LDYMem(address): void {
-          this.Yreg = parseInt(_Memory.get(parseInt(address,16)), 16);
+          this.Yreg = parseInt(_MemManager.get(parseInt(address,16)), 16);
         }
 
         public CDX(address): void {
-          if(this.Xreg == parseInt(_Memory.get(parseInt(address,16)), 16) ) {
+          if(this.Xreg == parseInt(_MemManager.get(parseInt(address,16)), 16) ) {
             this.Zflag = 1;
           } else {
             this.Zflag = 0;
@@ -182,9 +182,9 @@ module TSOS {
         }
 
         public INC(address):void {
-          var value: number = parseInt(_Memory.get(parseInt(address,16)), 16);
+          var value: number = parseInt(_MemManager.get(parseInt(address,16)), 16);
           value++;
-          _Memory.put(parseInt(address, 16), value.toString(16));
+          _MemManager.put(parseInt(address, 16), value.toString(16));
         }
 
         public SYS(): void {
@@ -195,12 +195,12 @@ module TSOS {
               console.log("Xreg 2");
               var tempYreg: number = this.Yreg;
               var outStr = "";
-              while(_Memory.get(tempYreg) != "00"){
+              while(_MemManager.get(tempYreg) != "00"){
                 Control.updateCPUDisp();
-                outStr += String.fromCharCode(parseInt(_Memory.get(tempYreg),16) );
+                outStr += String.fromCharCode(parseInt(_MemManager.get(tempYreg),16) );
                 console.log(outStr);
                 console.log(tempYreg);
-                console.log(_Memory.get(tempYreg));
+                console.log(_MemManager.get(tempYreg));
                 tempYreg++;
               }
               _StdOut.putText(outStr);
