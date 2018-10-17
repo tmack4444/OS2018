@@ -19,6 +19,14 @@ module TSOS {
             this.Yreg = 0;
             this.Zflag = 0;
 
+            var PCBStatus: string = "PC: " + this.PC.toString(16).toUpperCase()
+              + " IR: " + _MemManager.get(this.PC)
+              + " ACC: " + this.Acc
+              + " X: " + this.Xreg.toString(16)
+              + " Y: " + this.Yreg.toString(16)
+              + " Z: " + this.Zflag;
+            var PCBMonitor = <HTMLInputElement> document.getElementById("taPCBStatus");
+            PCBMonitor.value = PCBStatus;
         }
     }
 }
