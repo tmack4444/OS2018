@@ -60,7 +60,7 @@ var TSOS;
                     this.singleStep = false;
                 }
                 if (this.PC > 255) {
-                    this.PC = this.PC - 255;
+                    this.PC = this.PC - 256;
                 }
                 TSOS.Control.updateCPUDisp();
                 switch (currentInstruction) { //decode
@@ -160,10 +160,10 @@ var TSOS;
         };
         Cpu.prototype.BNE = function (value) {
             if (this.Zflag == 0) {
-                this.PC += parseInt(value, 16);
+                this.PC += parseInt(value, 16) + 1;
             }
             else {
-                this.PC++; //since we always want to increment one, this case here lets us increment an extra one
+                this.PC += 1; //since we always want to increment one, this case here lets us increment an extra one
             } //In case we don't want to branch, but also want to get the next instruction, and not data
         };
         Cpu.prototype.INC = function (address) {
