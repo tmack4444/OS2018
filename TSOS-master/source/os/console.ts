@@ -13,15 +13,17 @@ module TSOS {
 
     export class Console {
 
-        constructor(public currentFont = _DefaultFontFamily,
-                    public currentFontSize = _DefaultFontSize,
-                    public currentXPosition = 0,
-                    public currentYPosition = _DefaultFontSize,
-                    public buffer = "",
-                    public historyBuffer: Array<string> = new Array(),
-                    public historyIndex: number = 0,
-                    public areSimilar: Boolean[],
-                    public tabIndex: number) {
+      public currentFont = _DefaultFontFamily;
+      public currentFontSize = _DefaultFontSize;
+      public currentXPosition = 0;
+      public currentYPosition = _DefaultFontSize;
+      public buffer = "";
+      public historyBuffer: Array<string> = new Array();
+      public historyIndex: number = 0;
+      public areSimilar: Boolean[];
+      public tabIndex: number;
+
+        constructor() {
         }
 
         public init(): void {

@@ -10,23 +10,14 @@
 var TSOS;
 (function (TSOS) {
     var Console = /** @class */ (function () {
-        function Console(currentFont, currentFontSize, currentXPosition, currentYPosition, buffer, historyBuffer, historyIndex, areSimilar, tabIndex) {
-            if (currentFont === void 0) { currentFont = _DefaultFontFamily; }
-            if (currentFontSize === void 0) { currentFontSize = _DefaultFontSize; }
-            if (currentXPosition === void 0) { currentXPosition = 0; }
-            if (currentYPosition === void 0) { currentYPosition = _DefaultFontSize; }
-            if (buffer === void 0) { buffer = ""; }
-            if (historyBuffer === void 0) { historyBuffer = new Array(); }
-            if (historyIndex === void 0) { historyIndex = 0; }
-            this.currentFont = currentFont;
-            this.currentFontSize = currentFontSize;
-            this.currentXPosition = currentXPosition;
-            this.currentYPosition = currentYPosition;
-            this.buffer = buffer;
-            this.historyBuffer = historyBuffer;
-            this.historyIndex = historyIndex;
-            this.areSimilar = areSimilar;
-            this.tabIndex = tabIndex;
+        function Console() {
+            this.currentFont = _DefaultFontFamily;
+            this.currentFontSize = _DefaultFontSize;
+            this.currentXPosition = 0;
+            this.currentYPosition = _DefaultFontSize;
+            this.buffer = "";
+            this.historyBuffer = new Array();
+            this.historyIndex = 0;
         }
         Console.prototype.init = function () {
             this.clearScreen();

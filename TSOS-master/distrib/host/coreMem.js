@@ -2,10 +2,8 @@
 var TSOS;
 (function (TSOS) {
     var CoreMem = /** @class */ (function () {
-        function CoreMem(Storage, memoryDisplay) {
-            if (Storage === void 0) { Storage = ["00"]; }
-            this.Storage = Storage;
-            this.memoryDisplay = memoryDisplay;
+        function CoreMem() {
+            this.Storage = ["00"];
         }
         CoreMem.prototype.init = function () {
             for (var i = 0; i < 256; i++) {

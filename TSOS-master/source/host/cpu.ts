@@ -18,15 +18,16 @@
 module TSOS {
 
     export class Cpu {
+      public PC: number = 0;
+      public Acc: number = 0;
+      public Xreg: number = 0;
+      public Yreg: number = 0;
+      public Zflag: number = 0;
+      public isExecuting: boolean = false;
+      public opCodes: string[];
+      public singleStep: boolean = false;
 
-        constructor(public PC: number = 0,
-                    public Acc: number = 0,
-                    public Xreg: number = 0,
-                    public Yreg: number = 0,
-                    public Zflag: number = 0,
-                    public isExecuting: boolean = false,
-                    public opCodes: string[],
-                    public singleStep: boolean = false) {
+        constructor() {
 
         }
 

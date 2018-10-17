@@ -5,8 +5,10 @@ module TSOS {
 
     export class CoreMem {
 
-        constructor (public Storage: string[] = ["00"],
-                     public memoryDisplay) {
+      public Storage: string[] = ["00"];
+      public memoryDisplay;
+
+        constructor () {
         }
 
         public init(): void {
