@@ -1,9 +1,9 @@
+///<reference path="PCB.ts" />
 ///<reference path="../globals.ts" />
 ///<reference path="../utils.ts" />
-///<reference path="PCB.ts" />
 ///<reference path="shellCommand.ts" />
 ///<reference path="userCommand.ts" />
-///<reference path="memManager.ts" />
+////<reference path="memManager.ts" />
 /* ------------
    Shell.ts
 

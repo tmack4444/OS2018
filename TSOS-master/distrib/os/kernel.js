@@ -1,7 +1,7 @@
 ///<reference path="../globals.ts" />
 ///<reference path="../host/Control.ts"/>
 ///<reference path="../host/Devices.ts"/>
-///<reference path="MemManager.ts"/>
+////<reference path="MemManager.ts"/>
 ///<reference path="queue.ts" />
 ///<reference path="console.ts"/>
 ///<reference path="DeviceDriverKeyboard.ts"/>

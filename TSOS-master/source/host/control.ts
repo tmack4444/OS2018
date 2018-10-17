@@ -1,6 +1,6 @@
 ///<reference path="../globals.ts" />
 ///<reference path="cpu.ts" />
-///<reference path="../os/memManager.ts" />
+////<reference path="../os/MemManager.ts" />
 ///<reference path="../os/canvastext.ts" />
 ///<reference path="../os/kernel.ts" />
 
@@ -145,12 +145,6 @@ module TSOS {
           var memoryDisplay = <HTMLInputElement> document.getElementById("taMemDisplay");
           memoryDisplay.value = _Memory.Storage.join();
           memoryDisplay.value = memoryDisplay.value.replace(/,/g, "|");
-        }
-
-        public static higlightMemDispl(PC, numAddresses): void{
-          var memoryDisplay = <HTMLInputElement> document.getElementById("taMemDisplay");
-          memoryDisplay.style.color = "#black";
-          memoryDisplay.value.charAt(PC).
         }
     }
 }

@@ -1,6 +1,6 @@
 ///<reference path="../globals.ts" />
 ///<reference path="cpu.ts" />
-///<reference path="../os/memManager.ts" />
+////<reference path="../os/MemManager.ts" />
 ///<reference path="../os/canvastext.ts" />
 ///<reference path="../os/kernel.ts" />
 /* ------------
