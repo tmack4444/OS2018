@@ -11,6 +11,9 @@ var TSOS;
             this.Xreg = 0;
             this.Yreg = 0;
             this.Zflag = 0;
+            this.updateStatus();
+        };
+        PCB.prototype.updateStatus = function () {
             var PCBStatus = "PC: " + this.PC.toString(16).toUpperCase()
                 + " IR: " + _MemManager.get(this.PC)
                 + " ACC: " + this.Acc

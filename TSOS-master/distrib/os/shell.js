@@ -1,9 +1,9 @@
-///<reference path="PCB.ts" />
 ///<reference path="../globals.ts" />
 ///<reference path="../utils.ts" />
 ///<reference path="shellCommand.ts" />
 ///<reference path="userCommand.ts" />
-////<reference path="memManager.ts" />
+///<reference path="memManager.ts" />
+///<reference path="PCB.ts" />
 /* ------------
    Shell.ts
 
@@ -24,6 +24,9 @@ var TSOS;
             this.apologies = "[sorry]";
             this.status = "I love Operating Systems!";
             this.PIDCount = 0;
+            this.activePCB = [];
+            this.PIDCount = 0;
+            this.activePCB = [0];
         }
         Shell.prototype.init = function () {
             var sc;
@@ -343,7 +346,7 @@ var TSOS;
         };
         Shell.prototype.shellLoad = function () {
             //Found this bit of code on https://stackoverflow.com/questions/12989741/the-property-value-does-not-exist-on-value-of-type-htmlelement
-            //Basically, typescript doesn't allow you to grab a value from an HTML element, unless you typecast it as
+            //Basically, typescript doesn't allow you to grab a value from an HTML element, unless you typecast it as an HTMLInputElement
             var input = document.getElementById("taProgramInput").value.toUpperCase();
             var validateInput = input;
             if (input == "") {
@@ -365,12 +368,10 @@ var TSOS;
                 //else the input is correct, we have to load it into memory
                 input = input.replace(/\s/g, ""); //time to format our input before we load it. Start by removing whitespace
                 _MemManager.store(input);
-                if (this.PIDCount > 2) {
-                    this.PIDCount = 0;
-                }
-                _StdOut.putText("Process saved with Process ID (PID): " + 0);
-                var ProgPCB = new TSOS.PCB(0);
-                ProgPCB.init();
+                _StdOut.putText("Process saved with Process ID (PID): " + this.PIDCount);
+                this.activePCB[this.PIDCount] = new TSOS.PCB(this.PIDCount);
+                this.activePCB[this.PIDCount].init();
+                this.PIDCount++;
             }
             return;
         };

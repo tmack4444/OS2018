@@ -1,9 +1,9 @@
-///<reference path="PCB.ts" />
 ///<reference path="../globals.ts" />
 ///<reference path="../utils.ts" />
 ///<reference path="shellCommand.ts" />
 ///<reference path="userCommand.ts" />
-////<reference path="memManager.ts" />
+///<reference path="memManager.ts" />
+///<reference path="PCB.ts" />
 
 
 /* ------------
@@ -26,8 +26,11 @@ module TSOS {
         public apologies = "[sorry]";
         public status = "I love Operating Systems!";
         public PIDCount = 0;
+        public activePCB = [];
 
         constructor() {
+          this.PIDCount = 0;
+          this.activePCB = [0];
         }
 
         public init() {
@@ -431,7 +434,7 @@ module TSOS {
 
         public shellLoad() {
           //Found this bit of code on https://stackoverflow.com/questions/12989741/the-property-value-does-not-exist-on-value-of-type-htmlelement
-          //Basically, typescript doesn't allow you to grab a value from an HTML element, unless you typecast it as
+          //Basically, typescript doesn't allow you to grab a value from an HTML element, unless you typecast it as an HTMLInputElement
 
           var input = (<HTMLInputElement>document.getElementById("taProgramInput")).value.toUpperCase();
           var validateInput = input;
@@ -454,12 +457,10 @@ module TSOS {
             //else the input is correct, we have to load it into memory
             input = input.replace(/\s/g, ""); //time to format our input before we load it. Start by removing whitespace
             _MemManager.store(input);
-            if(this.PIDCount > 2) {
-              this.PIDCount = 0;
-            }
-            _StdOut.putText("Process saved with Process ID (PID): " + 0);
-            var ProgPCB = new PCB(0);
-            ProgPCB.init();
+            _StdOut.putText("Process saved with Process ID (PID): " + this.PIDCount);
+            this.activePCB[this.PIDCount] = new PCB(this.PIDCount);
+            this.activePCB[this.PIDCount].init();
+            this.PIDCount++;
 
           }
           return;
