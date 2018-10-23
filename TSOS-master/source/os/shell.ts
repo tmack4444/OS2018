@@ -25,12 +25,8 @@ module TSOS {
         public curses = "[fuvg],[cvff],[shpx],[phag],[pbpxfhpxre],[zbgureshpxre],[gvgf]";
         public apologies = "[sorry]";
         public status = "I love Operating Systems!";
-        public PIDCount = 0;
-        public activePCB = [];
 
         constructor() {
-          this.PIDCount = 0;
-          this.activePCB = [0];
         }
 
         public init() {
@@ -457,10 +453,11 @@ module TSOS {
             //else the input is correct, we have to load it into memory
             input = input.replace(/\s/g, ""); //time to format our input before we load it. Start by removing whitespace
             _MemManager.store(input);
-            _StdOut.putText("Process saved with Process ID (PID): " + this.PIDCount);
-            this.activePCB[this.PIDCount] = new PCB(this.PIDCount);
-            this.activePCB[this.PIDCount].init();
-            this.PIDCount++;
+            _StdOut.putText("Process saved with Process ID (PID): " + _PID );
+            var activePCB = new PCB(_PID)
+            activePCB[_PID] = activePCB;
+            activePCB[_PID].init();
+            _PID++;
 
           }
           return;

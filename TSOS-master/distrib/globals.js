@@ -1,6 +1,8 @@
 ///<reference path="host/cpu.ts" />
 ///<reference path="os/kernel.ts" />
+///<reference path="os/memManager.ts" />
 ///<reference path="host/coreMem.ts" />
+///<reference path="os/PCB.ts" />
 /* ------------
    Globals.ts
 
@@ -25,6 +27,7 @@ var KEYBOARD_IRQ = 1;
 //
 var _CPU; // Utilize TypeScript's type annotation system to ensure that _CPU is an instance of the Cpu class.var _OSclock: number = 0;  // Page 23.
 var _Memory; // Initialize our Memory nice and early in globals to prevent issues when going to JavaScript
+var _MemManager; //... and initialize our memory manager
 var _Mode = 0; // (currently unused)  0 = Kernel Mode, 1 = User Mode.  See page 21.
 var _Canvas; // Initialized in Control.hostInit().
 var _DrawingContext; // = _Canvas.getContext("2d");  // Assigned here for type safety, but re-initialized in Control.hostInit() for OCD and logic.
@@ -38,6 +41,8 @@ var _Kernel;
 var _KernelInterruptQueue; // Initializing this to null (which I would normally do) would then require us to specify the 'any' type, as below.
 var _KernelInputQueue = null; // Is this better? I don't like uninitialized variables. But I also don't like using the type specifier 'any'
 var _KernelBuffers = null; // when clearly 'any' is not what we want. There is likely a better way, but what is it?
+var _PID = 0;
+var _activePCB = [];
 // Standard input and output
 var _StdIn; // Same "to null or not to null" issue as above.
 var _StdOut;

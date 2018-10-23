@@ -23,10 +23,6 @@ var TSOS;
             this.curses = "[fuvg],[cvff],[shpx],[phag],[pbpxfhpxre],[zbgureshpxre],[gvgf]";
             this.apologies = "[sorry]";
             this.status = "I love Operating Systems!";
-            this.PIDCount = 0;
-            this.activePCB = [];
-            this.PIDCount = 0;
-            this.activePCB = [0];
         }
         Shell.prototype.init = function () {
             var sc;
@@ -368,10 +364,11 @@ var TSOS;
                 //else the input is correct, we have to load it into memory
                 input = input.replace(/\s/g, ""); //time to format our input before we load it. Start by removing whitespace
                 _MemManager.store(input);
-                _StdOut.putText("Process saved with Process ID (PID): " + this.PIDCount);
-                this.activePCB[this.PIDCount] = new TSOS.PCB(this.PIDCount);
-                this.activePCB[this.PIDCount].init();
-                this.PIDCount++;
+                _StdOut.putText("Process saved with Process ID (PID): " + _PID);
+                var activePCB = new TSOS.PCB(_PID);
+                activePCB[_PID] = activePCB;
+                activePCB[_PID].init();
+                _PID++;
             }
             return;
         };
