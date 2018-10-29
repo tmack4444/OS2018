@@ -121,24 +121,35 @@ var TSOS;
         Control.initMemDispl = function () {
             //remember functions table.insertRow();, row.insertCell, and remmeber to print an address
             var memoryDisplay = document.getElementById("taMemDisplay");
-            var part = 0;
-            for (var i = 0; i < 9; i++) {
-                memoryDisplay.insertRow(i);
+            for (var i = 0; i < 32; i++) {
+                memoryDisplay.insertRow(i); //insert a row
                 console.log("InsertedRow");
-                memoryDisplay.rows[i].insertCell(0);
-                console.log("InsertedCell");
+                for (var x = 0; x < 9; x++) {
+                    memoryDisplay.rows[i].insertCell(x); //now insert 9 cells to each row
+                    console.log("InsertedCell");
+                }
             }
             //When assigning our address to the address cell in the table, we need to create the value
-            //If there's 9 cells per row, 8 have values, then we just need to set the value to the hex version of i*8 (i think)
-            for (var j = 0; j < 9; j++) {
-                var iHex = j * 8;
-                var address = part + "x" + iHex.toString(16);
+            //If there's 9 cells per row, 8 have values, then we just need to set the value to the hex version of j*8 (i think(now I know))
+            for (var j = 0; j < 32; j++) {
+                var jHex = j * 8;
+                var address = "0X";
+                if (j < 32) { // Make sure we add a leading 0 if J is less than 100x16
+                    address += "0";
+                }
+                address += jHex.toString(16);
                 memoryDisplay.rows[j].cells[0].innerHTML = address;
             }
         };
         Control.updateMemDisp = function () {
             var memoryDisplay = document.getElementById("taMemDisplay");
-            memoryDisplay.rows[0].cells[0].innerHTML = _Memory.Storage.join();
+            var currMemLoc = 0;
+            for (var i = 0; i < 32; i++) {
+                for (var j = 1; j < 9; j++) {
+                    memoryDisplay.rows[i].cells[j].innerHTML = _Memory.Storage[currMemLoc];
+                    currMemLoc++;
+                }
+            }
         };
         return Control;
     }());

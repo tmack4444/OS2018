@@ -11,6 +11,7 @@ module TSOS {
 
       public init(): void {
         Control.initMemDispl();
+        Control.updateMemDisp();
       }
 
       public store(elems): void { //used when initially loading a program into memory
