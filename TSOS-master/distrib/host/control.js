@@ -120,20 +120,25 @@ var TSOS;
         };
         Control.initMemDispl = function () {
             //remember functions table.insertRow();, row.insertCell, and remmeber to print an address
-            var display = document.getElementById("taMemDisplay");
+            var memoryDisplay = document.getElementById("taMemDisplay");
+            var part = 0;
             for (var i = 0; i < 9; i++) {
-                display.insertRow(i);
-                display.rows[i].insertCell(0);
-                //When assigning our address to the address cell in the table, we need to create the value
-                //If there's 9 cells per row, 8 have values, then we just need to set the value to the hex version of i*8 (i think)
-                var iHex = i * 8;
-                var address = "0x" + iHex.toString(16);
-                display.rows[i].cells[i].nodeValue = address;
+                memoryDisplay.insertRow(i);
+                console.log("InsertedRow");
+                memoryDisplay.rows[i].insertCell(0);
+                console.log("InsertedCell");
+            }
+            //When assigning our address to the address cell in the table, we need to create the value
+            //If there's 9 cells per row, 8 have values, then we just need to set the value to the hex version of i*8 (i think)
+            for (var j = 0; j < 9; j++) {
+                var iHex = j * 8;
+                var address = part + "x" + iHex.toString(16);
+                memoryDisplay.rows[j].cells[0].innerHTML = address;
             }
         };
         Control.updateMemDisp = function () {
             var memoryDisplay = document.getElementById("taMemDisplay");
-            memoryDisplay.rows[0].cells.item(0).innerHTML = _Memory.Storage.join();
+            memoryDisplay.rows[0].cells[0].innerHTML = _Memory.Storage.join();
         };
         return Control;
     }());
