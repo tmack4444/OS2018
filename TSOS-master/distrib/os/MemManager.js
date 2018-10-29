@@ -7,6 +7,7 @@ var TSOS;
             this.memorySize = _Memory.Storage.length;
         }
         MemManager.prototype.init = function () {
+            TSOS.Control.initMemDispl();
         };
         MemManager.prototype.store = function (elems) {
             var k = 0;
