@@ -9,7 +9,6 @@ var TSOS;
             for (var i = 0; i < 256; i++) {
                 this.Storage[i] = "00";
             }
-            TSOS.Control.updateMemDisp();
         };
         return CoreMem;
     }());
