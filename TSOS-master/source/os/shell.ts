@@ -452,12 +452,16 @@ module TSOS {
             } else {
             //else the input is correct, we have to load it into memory
             input = input.replace(/\s/g, ""); //time to format our input before we load it. Start by removing whitespace
-            _MemManager.store(input);
-            _StdOut.putText("Process saved with Process ID (PID): " + _PID );
-            var activePCB = new PCB(_PID)
-            activePCB[_PID] = activePCB;
-            activePCB[_PID].init();
+            if(_lastPart == 3) {
+              _lastPart = 0;
+            }
+            var newPCB = new PCB(_PID, _lastPart);
+            _activePCB[_lastPart] = newPCB;
+            _activePCB[_lastPart].init();
+            _MemManager.store(input, _activePCB[_lastPart].part);
+            _StdOut.putText("Process saved with Process ID (PID): " + _PID);
             _PID++;
+            _lastPart++;
 
           }
           return;

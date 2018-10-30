@@ -1,9 +1,11 @@
 var TSOS;
 (function (TSOS) {
     var PCB = /** @class */ (function () {
-        function PCB(processid) {
+        function PCB(processid, partition) {
             this.processid = processid;
+            this.partition = partition;
             this.pid = processid;
+            this.part = partition;
         }
         PCB.prototype.init = function () {
             this.PC = 0;
@@ -11,6 +13,7 @@ var TSOS;
             this.Xreg = 0;
             this.Yreg = 0;
             this.Zflag = 0;
+            this.isActive = true;
             this.updateStatus();
         };
         PCB.prototype.updateStatus = function () {
@@ -22,6 +25,9 @@ var TSOS;
                 + " Z: " + this.Zflag;
             var PCBMonitor = document.getElementById("taPCBStatus");
             PCBMonitor.value = PCBStatus;
+        };
+        PCB.prototype.inactive = function () {
+            this.isActive = false;
         };
         return PCB;
     }());

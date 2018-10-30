@@ -7,9 +7,12 @@ module TSOS {
       public Yreg: number;
       public Zflag: number;
       public pid: number;
+      public isActive: boolean;
+      public part: number;
 
-        constructor(public processid: number) {
+        constructor(public processid: number, public partition: number) {
           this.pid = processid;
+          this.part = partition;
         }
 
         public init(): void {
@@ -18,6 +21,7 @@ module TSOS {
             this.Xreg = 0;
             this.Yreg = 0;
             this.Zflag = 0;
+            this.isActive = true;
             this.updateStatus();
 
         }
@@ -31,6 +35,10 @@ module TSOS {
             + " Z: " + this.Zflag;
           var PCBMonitor = <HTMLInputElement> document.getElementById("taPCBStatus");
           PCBMonitor.value = PCBStatus;
+        }
+
+        public inactive(): void {
+          this.isActive = false;
         }
     }
 }
