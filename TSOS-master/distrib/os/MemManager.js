@@ -8,6 +8,7 @@ var TSOS;
         }
         MemManager.prototype.init = function () {
             TSOS.Control.initMemDispl();
+            TSOS.Control.updateMemDisp();
         };
         MemManager.prototype.store = function (elems) {
             var k = 0;
