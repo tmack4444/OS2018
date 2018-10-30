@@ -14,15 +14,15 @@ module TSOS {
         Control.updateMemDisp();
       }
 
-      public store(elems, part): void { //used when initially loading a program into memory
+      public store(elems): void { //used when initially loading a program into memory
         var k = 0;
         var offset = 0;
         if(elems.length/2 > 256) {
           _StdOut.putText("Error! Code is larger than memory partition size (256 bytes)!");
           return;
-        } else if(part == 1) {
+        } else if(_activePCB[_currPCB].part == 1) {
           offset = 256;
-        } else if(part == 2) {
+        } else if(_activePCB[_currPCB].part == 2) {
           offset = 512;
         }
         for(var i = 0 + offset; i < elems.length/2; i++) {
@@ -34,8 +34,9 @@ module TSOS {
 
       public get(address): string{
       if(address > 256) {
-        return;
-      } else if (_currPCB == 1) {
+        address = 0;
+      }
+      if (_currPCB == 1) {
         address += 256;
       } else if (_currPCB == 2) {
         address += 512;
@@ -45,8 +46,9 @@ module TSOS {
 
       public put(address, value): void {
         if(address > 256) {
-          return;
-        } else if (_currPCB == 1) {
+          address = 0;
+        }
+        if (_currPCB == 1) {
           address += 256;
         } else if (_currPCB == 2) {
           address += 512;

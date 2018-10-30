@@ -119,7 +119,7 @@ module TSOS {
 
             sc = new ShellCommand(this.shellRun,
                                   "run",
-                                  "- Run the stored Program");
+                                  "<pid> - Run the stored Program with the specified Process ID");
             this.commandList[this.commandList.length] = sc;
 
             // ps  - list the running processes and their IDs
@@ -458,7 +458,7 @@ module TSOS {
             var newPCB = new PCB(_PID, _lastPart);
             _activePCB[_lastPart] = newPCB;
             _activePCB[_lastPart].init();
-            _MemManager.store(input, _activePCB[_lastPart].part);
+            _MemManager.store(input);
             _StdOut.putText("Process saved with Process ID (PID): " + _PID);
             _PID++;
             _lastPart++;
@@ -468,8 +468,27 @@ module TSOS {
 
         }
 
-        public shellRun() {
-          _CPU.isExecuting = true;
+        public shellRun(args) {
+          if(args == null) {
+            _StdOut.putText("Please supply a PID");
+            return;
+          } else {
+            args = parseInt(args);
+            console.log(args);
+          }
+          if(_activePCB[0].pid == args) {
+            _currPCB = 0;
+            _CPU.isExecuting = true;
+          } else if (_activePCB[1].pid == args) {
+            _currPCB = 1;
+            _CPU.isExecuting = true;
+          } else if (_activePCB[2].pid == args) {
+            _currPCB = 2;
+            _CPU.isExecuting = true;
+          } else {
+            _StdOut.putText("Error, no process in memory with a PID of " + args);
+            return;
+          }
         }
       }
     }

@@ -10,17 +10,17 @@ var TSOS;
             TSOS.Control.initMemDispl();
             TSOS.Control.updateMemDisp();
         };
-        MemManager.prototype.store = function (elems, part) {
+        MemManager.prototype.store = function (elems) {
             var k = 0;
             var offset = 0;
             if (elems.length / 2 > 256) {
                 _StdOut.putText("Error! Code is larger than memory partition size (256 bytes)!");
                 return;
             }
-            else if (part == 1) {
+            else if (_activePCB[_currPCB].part == 1) {
                 offset = 256;
             }
-            else if (part == 2) {
+            else if (_activePCB[_currPCB].part == 2) {
                 offset = 512;
             }
             for (var i = 0 + offset; i < elems.length / 2; i++) {
@@ -31,9 +31,9 @@ var TSOS;
         };
         MemManager.prototype.get = function (address) {
             if (address > 256) {
-                return;
+                address = 0;
             }
-            else if (_currPCB == 1) {
+            if (_currPCB == 1) {
                 address += 256;
             }
             else if (_currPCB == 2) {
@@ -43,9 +43,9 @@ var TSOS;
         };
         MemManager.prototype.put = function (address, value) {
             if (address > 256) {
-                return;
+                address = 0;
             }
-            else if (_currPCB == 1) {
+            if (_currPCB == 1) {
                 address += 256;
             }
             else if (_currPCB == 2) {
