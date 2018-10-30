@@ -144,7 +144,7 @@ module TSOS {
         public static initMemDispl(): void {
           //remember functions table.insertRow();, row.insertCell, and remmeber to print an address
           var memoryDisplay = <HTMLTableElement> document.getElementById("taMemDisplay");
-          for(var i = 0; i < 32; i ++) {
+          for(var i = 0; i < 96; i ++) {
             memoryDisplay.insertRow(i); //insert a row
             console.log("InsertedRow");
             for(var x = 0; x < 9; x++) {
@@ -154,7 +154,7 @@ module TSOS {
           }
           //When assigning our address to the address cell in the table, we need to create the value
           //If there's 9 cells per row, 8 have values, then we just need to set the value to the hex version of j*8 (i think(now I know))
-          for(var j = 0; j < 32; j++) {
+          for(var j = 0; j < 96; j++) {
             var jHex = j * 8;
             var address: string = "0X";
             if(j < 32) {  // Make sure we add a leading 0 if J is less than 100x16
@@ -169,7 +169,7 @@ module TSOS {
         public static updateMemDisp(): void {
           var memoryDisplay = <HTMLTableElement> document.getElementById("taMemDisplay");
           var currMemLoc: number = 0;
-          for(var i = 0; i < 32; i++) {
+          for(var i = 0; i < 96; i++) {
             for(var j = 1; j < 9; j ++) {
               memoryDisplay.rows[i].cells[j].innerHTML = _Memory.Storage[currMemLoc];
               currMemLoc++;

@@ -121,7 +121,7 @@ var TSOS;
         Control.initMemDispl = function () {
             //remember functions table.insertRow();, row.insertCell, and remmeber to print an address
             var memoryDisplay = document.getElementById("taMemDisplay");
-            for (var i = 0; i < 32; i++) {
+            for (var i = 0; i < 96; i++) {
                 memoryDisplay.insertRow(i); //insert a row
                 console.log("InsertedRow");
                 for (var x = 0; x < 9; x++) {
@@ -131,7 +131,7 @@ var TSOS;
             }
             //When assigning our address to the address cell in the table, we need to create the value
             //If there's 9 cells per row, 8 have values, then we just need to set the value to the hex version of j*8 (i think(now I know))
-            for (var j = 0; j < 32; j++) {
+            for (var j = 0; j < 96; j++) {
                 var jHex = j * 8;
                 var address = "0X";
                 if (j < 32) { // Make sure we add a leading 0 if J is less than 100x16
@@ -144,7 +144,7 @@ var TSOS;
         Control.updateMemDisp = function () {
             var memoryDisplay = document.getElementById("taMemDisplay");
             var currMemLoc = 0;
-            for (var i = 0; i < 32; i++) {
+            for (var i = 0; i < 96; i++) {
                 for (var j = 1; j < 9; j++) {
                     memoryDisplay.rows[i].cells[j].innerHTML = _Memory.Storage[currMemLoc];
                     currMemLoc++;

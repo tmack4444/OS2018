@@ -6,7 +6,7 @@ var TSOS;
             this.Storage = ["00"];
         }
         CoreMem.prototype.init = function () {
-            for (var i = 0; i < 256; i++) {
+            for (var i = 0; i < 768; i++) {
                 this.Storage[i] = "00";
             }
         };

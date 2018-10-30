@@ -12,7 +12,7 @@ module TSOS {
         }
 
         public init(): void {
-          for(var i = 0; i < 256; i++) {
+          for(var i = 0; i < 768; i++) {
             this.Storage[i] = "00";
           }
         }
