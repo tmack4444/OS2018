@@ -17,14 +17,15 @@ var TSOS;
                 _StdOut.putText("Error! Code is larger than memory partition size (256 bytes)!");
                 return;
             }
+            console.log(_activePCB[_currPCB].part);
             if (_activePCB[_currPCB].part == 1) {
                 offset = 256;
             }
             else if (_activePCB[_currPCB].part == 2) {
                 offset = 512;
             }
-            for (var i = offset; i < elems.length / 2; i++) {
-                _Memory.Storage[i] = elems[k] + elems[k + 1];
+            for (var i = 0; i < elems.length / 2; i++) {
+                _Memory.Storage[i + offset] = elems[k] + elems[k + 1];
                 k += 2;
             }
             TSOS.Control.updateMemDisp();

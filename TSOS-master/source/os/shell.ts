@@ -458,6 +458,7 @@ module TSOS {
             var newPCB = new PCB(_PID, _lastPart);
             _activePCB[_lastPart] = newPCB;
             _activePCB[_lastPart].init();
+            _currPCB = _lastPart;
             _MemManager.store(input);
             _StdOut.putText("Process saved with Process ID (PID): " + _PID);
             _PID++;
