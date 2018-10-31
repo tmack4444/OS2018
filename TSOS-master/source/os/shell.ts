@@ -500,12 +500,15 @@ module TSOS {
             console.log(args);
             if(_activePCB[0].pid == args) {
               _currPCB = 0;
+              _activePCB[0].isActive = true;
               _CPU.isExecuting = true;
             } else if (_activePCB[1].pid == args) {
               _currPCB = 1;
+              _activePCB[1].isActive = true;
               _CPU.isExecuting = true;
             } else if (_activePCB[2].pid == args) {
               _currPCB = 2;
+              _activePCB[2].isActive = true;
               _CPU.isExecuting = true;
             } else {
               _StdOut.putText("Error, no process in memory with a PID of " + args);
