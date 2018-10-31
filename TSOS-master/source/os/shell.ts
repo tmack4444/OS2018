@@ -469,24 +469,24 @@ module TSOS {
         }
 
         public shellRun(args) {
-          if(args == null) {
-            _StdOut.putText("Please supply a PID");
-            return;
-          } else {
+          if(args.length > 0) {
             args = parseInt(args);
             console.log(args);
-          }
-          if(_activePCB[0].pid == args) {
-            _currPCB = 0;
-            _CPU.isExecuting = true;
-          } else if (_activePCB[1].pid == args) {
-            _currPCB = 1;
-            _CPU.isExecuting = true;
-          } else if (_activePCB[2].pid == args) {
-            _currPCB = 2;
-            _CPU.isExecuting = true;
+            if(_activePCB[0].pid == args) {
+              _currPCB = 0;
+              _CPU.isExecuting = true;
+            } else if (_activePCB[1].pid == args) {
+              _currPCB = 1;
+              _CPU.isExecuting = true;
+            } else if (_activePCB[2].pid == args) {
+              _currPCB = 2;
+              _CPU.isExecuting = true;
+            } else {
+              _StdOut.putText("Error, no process in memory with a PID of " + args);
+              return;
+            }
           } else {
-            _StdOut.putText("Error, no process in memory with a PID of " + args);
+            _StdOut.putText("Please enter a PID");
             return;
           }
         }
