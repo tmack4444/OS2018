@@ -122,6 +122,31 @@ module TSOS {
                                   "<pid> - Run the stored Program with the specified Process ID");
             this.commandList[this.commandList.length] = sc;
 
+            sc = new ShellCommand(this.shellClearmem,
+                                  "clearmem",
+                                  "- Clear memory of all stored programs");
+            this.commandList[this.commandList.length] = sc;
+
+            sc = new ShellCommand(this.shellRunall,
+                                  "runall",
+                                  "- Run all stored programs");
+            this.commandList[this.commandList.length] = sc;
+
+            sc = new ShellCommand(this.shellPs,
+                                  "ps",
+                                  "- Display all PIDs in use");
+            this.commandList[this.commandList.length] = sc;
+
+            sc = new ShellCommand(this.shellKill,
+                                  "kill",
+                                  "<pid> - Kill a currently running process");
+            this.commandList[this.commandList.length] = sc;
+
+            sc = new ShellCommand(this.shellQuantum,
+                                  "quantum",
+                                  "<int> - Specify a new quantum for the scheduler to use");
+            this.commandList[this.commandList.length] = sc;
+
             // ps  - list the running processes and their IDs
             // kill <id> - kills the specified process id.
 
@@ -491,5 +516,41 @@ module TSOS {
             return;
           }
         }
+
+        public shellClearmem(args) {
+          _Memory.init();
+          Control.updateMemDisp();
+        }
+
+        public shellRunall(args) {
+
+        }
+
+        public shellPs(args) {
+          var out: string = "";
+          if(_activePCB[0] != null) {
+            out += _activePCB[0].pid;
+          }
+
+          if(_activePCB[1] != null) {
+            out += _activePCB[1].pid;
+          }
+
+          if(_activePCB[2] != null) {
+            out += _activePCB[2].pid;
+          }
+
+          _StdOut.putText(out);
+        }
+
+        public shellKill(args) {
+
+        }
+
+        public shellQuantum(args) {
+
+        }
+
+
       }
     }
