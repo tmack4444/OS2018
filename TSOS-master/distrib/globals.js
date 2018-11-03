@@ -3,6 +3,8 @@
 ///<reference path="os/memManager.ts" />
 ///<reference path="host/coreMem.ts" />
 ///<reference path="os/PCB.ts" />
+///<reference path="os/queue.ts"/>
+///<reference path="os/scheduler.ts"/>
 /* ------------
    Globals.ts
 
@@ -45,6 +47,8 @@ var _PID = 0;
 var _activePCB = [];
 var _lastPart = 0;
 var _currPCB = 0;
+var _ReadyQueue;
+var _Scheduler;
 // Standard input and output
 var _StdIn; // Same "to null or not to null" issue as above.
 var _StdOut;

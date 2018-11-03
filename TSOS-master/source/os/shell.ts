@@ -3,7 +3,7 @@
 ///<reference path="shellCommand.ts" />
 ///<reference path="userCommand.ts" />
 ///<reference path="memManager.ts" />
-///<reference path="PCB.ts" />
+//<reference path="PCB.ts" />
 
 
 /* ------------
@@ -501,14 +501,17 @@ module TSOS {
             if(_activePCB[0].pid == args) {
               _currPCB = 0;
               _activePCB[0].isActive = true;
+              _ReadyQueue.enqueue(_activePCB[0]);
               _CPU.isExecuting = true;
             } else if (_activePCB[1].pid == args) {
               _currPCB = 1;
               _activePCB[1].isActive = true;
+              _ReadyQueue.enqueue(_activePCB[1]);
               _CPU.isExecuting = true;
             } else if (_activePCB[2].pid == args) {
               _currPCB = 2;
               _activePCB[2].isActive = true;
+              _ReadyQueue.enqueue(_activePCB[2]);
               _CPU.isExecuting = true;
             } else {
               _StdOut.putText("Error, no process in memory with a PID of " + args);
@@ -526,6 +529,15 @@ module TSOS {
         }
 
         public shellRunall(args) {
+          if(_activePCB[0].isActive) {
+            this.shellRun("0");
+          }
+          if(_activePCB[1].isActive) {
+            this.shellRun("1");
+          }
+          if(_activePCB[2].isActive) {
+            this.shellRun("2");
+          }
 
         }
 

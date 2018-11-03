@@ -3,6 +3,8 @@
 ///<reference path="os/memManager.ts" />
 ///<reference path="host/coreMem.ts" />
 ///<reference path="os/PCB.ts" />
+///<reference path="os/queue.ts"/>
+///<reference path="os/scheduler.ts"/>
 /* ------------
    Globals.ts
 
@@ -56,6 +58,8 @@ var _PID: number = 0;
 var _activePCB: TSOS.PCB[] = [];
 var _lastPart: number = 0;
 var _currPCB: number = 0;
+var _ReadyQueue: TSOS.Queue;
+var _Scheduler: TSOS.Scheduler;
 
 // Standard input and output
 var _StdIn;    // Same "to null or not to null" issue as above.
