@@ -529,14 +529,15 @@ module TSOS {
         }
 
         public shellRunall(args) {
+          var PCBtoReady = [];
           if(_activePCB[0].isActive) {
-            this.shellRun("0");
+            _OsShell.shellRun("0");
           }
           if(_activePCB[1].isActive) {
-            this.shellRun("1");
+            _OsShell.shellRun("1");
           }
           if(_activePCB[2].isActive) {
-            this.shellRun("2");
+            _OsShell.shellRun("2");
           }
 
         }
