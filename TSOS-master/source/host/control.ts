@@ -126,8 +126,18 @@ module TSOS {
         }
 
         public static hostBtnSingleStep_click(btn): void {
-          _CPU.singleStep = true;
-          _CPU.isExecuting = true;
+          if(_CPU.singleStep){
+            _CPU.singleStep = false;
+            (<HTMLButtonElement>document.getElementById("btnStepper")).disabled = true;
+          } else {
+            _CPU.singleStep = true;
+            (<HTMLButtonElement>document.getElementById("btnStepper")).disabled = false;
+          }
+        }
+
+        public static hostBtnStepper_click(btn): void {
+          console.log("Forward step");
+          _CPU.stepper = true;
         }
 
         public static updateCPUDisp(): void {

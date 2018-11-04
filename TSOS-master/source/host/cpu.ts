@@ -26,6 +26,7 @@ module TSOS {
       public isExecuting: boolean = false;
       public opCodes: string[];
       public singleStep: boolean = false;
+      public stepper: boolean = false; //keeps track of if the user pressed the arrow to move to the next step in single step execution
 
         constructor() {
 
@@ -53,87 +54,91 @@ module TSOS {
                             "EE", // INC
                             "FF"]; // SYS
             this.singleStep = false;
+            this.stepper = false;
+
         }
 
         public cycle(): void {
+          if(this.singleStep){
+            console.log(this.stepper);
+            if(this.stepper) {
+              this.stepper = false;
+            } else {
+              return;
+            }
+          }
           _Kernel.krnTrace('CPU cycle');
           // TODO: Accumulate CPU usage and profiling statistics here.
           // Do the real work here. Be sure to set this.isExecuting appropriately.
           _Scheduler.increment();
           Control.updateCPUDisp();
-            var currentInstruction = _MemManager.get(this.PC); //fetch
-            if(this.isExecuting) {
-              if(this.singleStep){
-                this.isExecuting = false;
-                this.singleStep = false;
-              }
-              if(this.PC > 255){
-                this.PC = this.PC - 256;
-              }
-              Control.updateCPUDisp();
-              switch(currentInstruction) {                   //decode
-                case "A9": this.LDAConst(_MemManager.get(this.PC+1));   //execute
-                  this.PC += 2;
-                  break;
-
-                case "AD": this.LDAMem(_MemManager.get(this.PC+2) + _MemManager.get(this.PC+1));
-                  this.PC += 3;
-                  break;
-
-                case "8D": this.STA(_MemManager.get(this.PC+2) + _MemManager.get(this.PC+1));
-                  this.PC += 3;
-                  break;
-
-                case "6D": this.ADC(_MemManager.get(this.PC+2) + _MemManager.get(this.PC+1));
-                  this.PC += 3;
-                  break;
-
-                case "A2": this.LDXConst(_MemManager.get(this.PC+1));
-                  this.PC += 2;
-                  break;
-
-                case "AE": this.LDXMem(_MemManager.get(this.PC+2) + _MemManager.get(this.PC+1));
-                  this.PC += 3;
-                  break;
-
-                case "A0": this.LDYConst(_MemManager.get(this.PC+1));
-                  this.PC += 2;
-                  break;
-
-                case "AC": this.LDYMem(_MemManager.get(this.PC+2) + _MemManager.get(this.PC+1));
-                  this.PC += 3;
-                  break;
-
-                case "EA": this.PC += 1;
-                  break;
-
-                case "00": this.isExecuting = false;
-                  _CPU.init();
-                  Control.updateCPUDisp();
-                  _activePCB[_currPCB].isActive = false;
-                  _ReadyQueue.dequeue();
-                  return;
-
-                case "EC": this.CDX(_MemManager.get(this.PC+2) + _MemManager.get(this.PC+1));
-                  this.PC += 3;
-                  break;
-
-                case "D0": this.BNE(_MemManager.get(this.PC+1));
-                  this.PC += 1;
-                  break;
-
-                case "EE": this.INC(_MemManager.get(this.PC+2) + _MemManager.get(this.PC+1));
-                  this.PC += 3;
-                  break;
-
-                case "FF": this.SYS();
-                  this.PC += 1;
-                  break;
-
-                default: currentInstruction = "00";
-                  break;
-                }
+          var currentInstruction = _MemManager.get(this.PC); //fetch
+            if(this.PC > 255){
+              this.PC = this.PC - 256;
             }
+            Control.updateCPUDisp();
+            switch(currentInstruction) {                   //decode
+              case "A9": this.LDAConst(_MemManager.get(this.PC+1));   //execute
+                this.PC += 2;
+                break;
+
+              case "AD": this.LDAMem(_MemManager.get(this.PC+2) + _MemManager.get(this.PC+1));
+                this.PC += 3;
+                break;
+
+              case "8D": this.STA(_MemManager.get(this.PC+2) + _MemManager.get(this.PC+1));
+                this.PC += 3;
+                break;
+
+              case "6D": this.ADC(_MemManager.get(this.PC+2) + _MemManager.get(this.PC+1));
+                this.PC += 3;
+                break;
+
+              case "A2": this.LDXConst(_MemManager.get(this.PC+1));
+                this.PC += 2;
+                break;
+
+              case "AE": this.LDXMem(_MemManager.get(this.PC+2) + _MemManager.get(this.PC+1));
+                this.PC += 3;
+                break;
+
+              case "A0": this.LDYConst(_MemManager.get(this.PC+1));
+                this.PC += 2;
+                break;
+
+              case "AC": this.LDYMem(_MemManager.get(this.PC+2) + _MemManager.get(this.PC+1));
+                this.PC += 3;
+                break;
+
+              case "EA": this.PC += 1;
+                break;
+
+              case "00": this.isExecuting = false;
+                _CPU.init();
+                Control.updateCPUDisp();
+                _activePCB[_currPCB].isActive = false;
+                _ReadyQueue.dequeue();
+                return;
+
+              case "EC": this.CDX(_MemManager.get(this.PC+2) + _MemManager.get(this.PC+1));
+                this.PC += 3;
+                break;
+
+              case "D0": this.BNE(_MemManager.get(this.PC+1));
+                this.PC += 1;
+                break;
+
+              case "EE": this.INC(_MemManager.get(this.PC+2) + _MemManager.get(this.PC+1));
+                this.PC += 3;
+                break;
+
+              case "FF": this.SYS();
+                this.PC += 1;
+                break;
+
+              default: currentInstruction = "00";
+                break;
+              }
         }
 
         public LDAConst(value): void{

@@ -17,7 +17,6 @@ var TSOS;
                 _StdOut.putText("Error! Code is larger than memory partition size (256 bytes)!");
                 return;
             }
-            console.log(_activePCB[_currPCB].part);
             if (_activePCB[_currPCB].part == 1) {
                 offset = 256;
             }
@@ -40,8 +39,6 @@ var TSOS;
             else if (_currPart == 2) {
                 address += 512;
             }
-            console.log("Get");
-            console.log(address);
             return _Memory.Storage[address];
         };
         MemManager.prototype.put = function (address, value) {
@@ -54,8 +51,6 @@ var TSOS;
             else if (_currPart == 2) {
                 address += 512;
             }
-            console.log("Put");
-            console.log(address);
             _Memory.Storage[address] = value;
             TSOS.Control.updateMemDisp();
         };
