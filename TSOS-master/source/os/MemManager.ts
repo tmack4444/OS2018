@@ -38,9 +38,9 @@ module TSOS {
       if(address > 256) {
         address -= 256;
       }
-      if (_activePCB[_currPCB].part == 1) {
+      if (_currPart == 1) {
         address += 256;
-      } else if (_activePCB[_currPCB].part == 2) {
+      } else if (_currPart == 2) {
         address += 512;
       }
         console.log("Get");
@@ -52,9 +52,9 @@ module TSOS {
         if(address > 256) {
           address -= 256;
         }
-        if (_activePCB[_currPCB].part == 1) {
+        if (_currPart == 1) {
           address += 256;
-        } else if (_activePCB[_currPCB].part == 2) {
+        } else if (_currPart == 2) {
           address += 512;
         }
         console.log("Put");

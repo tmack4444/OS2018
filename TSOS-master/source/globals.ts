@@ -57,6 +57,7 @@ var _KernelBuffers: any[] = null;   // when clearly 'any' is not what we want. T
 var _PID: number = 0;
 var _activePCB: TSOS.PCB[] = [];
 var _lastPart: number = 0;
+var _currPart: number = 0;
 var _currPCB: number = 0;
 var _ReadyQueue: TSOS.Queue;
 var _Scheduler: TSOS.Scheduler;

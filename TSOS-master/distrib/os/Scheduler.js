@@ -27,6 +27,7 @@ var TSOS;
                 _CPU.Xreg = switchto.Xreg;
                 _CPU.Yreg = switchto.Yreg;
                 _CPU.Zflag = switchto.Zflag;
+                _currPart = switchto.part;
             }
         };
         return Scheduler;

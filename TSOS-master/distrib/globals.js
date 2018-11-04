@@ -46,6 +46,7 @@ var _KernelBuffers = null; // when clearly 'any' is not what we want. There is l
 var _PID = 0;
 var _activePCB = [];
 var _lastPart = 0;
+var _currPart = 0;
 var _currPCB = 0;
 var _ReadyQueue;
 var _Scheduler;
