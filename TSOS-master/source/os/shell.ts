@@ -525,6 +525,7 @@ module TSOS {
 
         public shellClearmem(args) {
           _Memory.init();
+          _lastPart = 0;
           Control.updateMemDisp();
         }
 
@@ -570,7 +571,11 @@ module TSOS {
         }
 
         public shellQuantum(args) {
-
+          if(args.length > 0) {
+            _Scheduler.quantum = args;
+          } else {
+            _StdOut.putText("Please supply a value");
+          }
         }
 
 

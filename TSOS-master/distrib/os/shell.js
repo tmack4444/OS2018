@@ -421,6 +421,7 @@ var TSOS;
         };
         Shell.prototype.shellClearmem = function (args) {
             _Memory.init();
+            _lastPart = 0;
             TSOS.Control.updateMemDisp();
         };
         Shell.prototype.shellRunall = function (args) {
@@ -458,6 +459,12 @@ var TSOS;
         Shell.prototype.shellKill = function (args) {
         };
         Shell.prototype.shellQuantum = function (args) {
+            if (args.length > 0) {
+                _Scheduler.quantum = args;
+            }
+            else {
+                _StdOut.putText("Please supply a value");
+            }
         };
         return Shell;
     }());
