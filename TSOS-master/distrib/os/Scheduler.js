@@ -10,14 +10,20 @@ var TSOS;
         };
         Scheduler.prototype.increment = function () {
             if (this.numCycle >= this.quantum) {
-                this.contextSwitch();
+                this.switchero();
             }
             else {
                 this.numCycle++;
             }
         };
-        Scheduler.prototype.contextSwitch = function () {
-            _ReadyQueue.enqueue(_ReadyQueue.dequeue);
+        Scheduler.prototype.switchero = function () {
+            var switchto = _ReadyQueue.dequeue();
+            _ReadyQueue.enqueue(switchto);
+            _CPU.PC = switchto.PC;
+            _CPU.Acc = switchto.ACC;
+            _CPU.Xreg = switchto.Xreg;
+            _CPU.Yreg = switchto.Yreg;
+            _CPU.Zflag = switchto.Zflag;
         };
         return Scheduler;
     }());
