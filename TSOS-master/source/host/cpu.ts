@@ -111,6 +111,7 @@ module TSOS {
                   _CPU.init();
                   Control.updateCPUDisp();
                   _activePCB[_currPCB].isActive = false;
+                  _ReadyQueue.dequeue();
                   return;
 
                 case "EC": this.CDX(_MemManager.get(this.PC+2) + _MemManager.get(this.PC+1));

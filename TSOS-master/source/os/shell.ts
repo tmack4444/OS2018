@@ -531,15 +531,21 @@ module TSOS {
         public shellRunall(args) {
           var PCBtoReady = [];
           if(_activePCB[0].isActive) {
-            _OsShell.shellRun("0");
+            _currPCB = 0;
+            _activePCB[0].isActive = true;
+            _ReadyQueue.enqueue(_activePCB[0]);
           }
           if(_activePCB[1].isActive) {
-            _OsShell.shellRun("1");
+            _currPCB = 1;
+            _activePCB[1].isActive = true;
+            _ReadyQueue.enqueue(_activePCB[1]);
           }
           if(_activePCB[2].isActive) {
-            _OsShell.shellRun("2");
+            _currPCB = 2;
+            _activePCB[2].isActive = true;
+            _ReadyQueue.enqueue(_activePCB[2]);
           }
-
+        _CPU.isExecuting = true;
         }
 
         public shellPs(args) {

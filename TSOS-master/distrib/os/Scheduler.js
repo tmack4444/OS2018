@@ -9,21 +9,25 @@ var TSOS;
             this.numCycle = 0;
         };
         Scheduler.prototype.increment = function () {
+            console.log(_ReadyQueue.getSize());
             if (this.numCycle >= this.quantum) {
                 this.switchero();
+                this.numCycle = 0;
             }
             else {
                 this.numCycle++;
             }
         };
         Scheduler.prototype.switchero = function () {
-            var switchto = _ReadyQueue.dequeue();
-            _ReadyQueue.enqueue(switchto);
-            _CPU.PC = switchto.PC;
-            _CPU.Acc = switchto.ACC;
-            _CPU.Xreg = switchto.Xreg;
-            _CPU.Yreg = switchto.Yreg;
-            _CPU.Zflag = switchto.Zflag;
+            if (_ReadyQueue.getSize() > 1) {
+                var switchto = _ReadyQueue.dequeue();
+                _ReadyQueue.enqueue(switchto);
+                _CPU.PC = switchto.PC;
+                _CPU.Acc = switchto.ACC;
+                _CPU.Xreg = switchto.Xreg;
+                _CPU.Yreg = switchto.Yreg;
+                _CPU.Zflag = switchto.Zflag;
+            }
         };
         return Scheduler;
     }());
