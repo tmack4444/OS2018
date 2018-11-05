@@ -64,6 +64,7 @@ module TSOS {
             if(this.stepper) {
               this.stepper = false;
             } else {
+              this.isExecuting = false;
               return;
             }
           }
@@ -71,7 +72,6 @@ module TSOS {
           // TODO: Accumulate CPU usage and profiling statistics here.
           // Do the real work here. Be sure to set this.isExecuting appropriately.
           _Scheduler.increment();
-          Control.updateCPUDisp();
           var currentInstruction = _MemManager.get(this.PC); //fetch
             if(this.PC > 255){
               this.PC = this.PC - 256;
@@ -113,11 +113,13 @@ module TSOS {
               case "EA": this.PC += 1;
                 break;
 
-              case "00": this.isExecuting = false;
-                _CPU.init();
+              case "00": _CPU.init();
                 Control.updateCPUDisp();
                 _activePCB[_currPCB].isActive = false;
                 _ReadyQueue.dequeue();
+                if(_ReadyQueue.isEmpty()) {
+                  this.isExecuting = false;
+                }
                 return;
 
               case "EC": this.CDX(_MemManager.get(this.PC+2) + _MemManager.get(this.PC+1));

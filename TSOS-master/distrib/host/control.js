@@ -117,6 +117,7 @@ var TSOS;
         Control.hostBtnStepper_click = function (btn) {
             console.log("Forward step");
             _CPU.stepper = true;
+            _CPU.isExecuting = true;
         };
         Control.updateCPUDisp = function () {
             var cpuStatus = "PC: " + _CPU.PC.toString(16).toUpperCase()

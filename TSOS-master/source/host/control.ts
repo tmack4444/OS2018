@@ -138,6 +138,7 @@ module TSOS {
         public static hostBtnStepper_click(btn): void {
           console.log("Forward step");
           _CPU.stepper = true;
+          _CPU.isExecuting = true;
         }
 
         public static updateCPUDisp(): void {
