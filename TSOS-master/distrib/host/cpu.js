@@ -52,7 +52,6 @@ var TSOS;
         };
         Cpu.prototype.cycle = function () {
             if (this.singleStep) {
-                console.log(this.stepper);
                 if (this.stepper) {
                     this.stepper = false;
                 }
@@ -107,14 +106,14 @@ var TSOS;
                     this.PC += 1;
                     break;
                 case "00":
-                    _CPU.init();
-                    TSOS.Control.updateCPUDisp();
-                    _activePCB[_currPCB].isActive = false;
-                    _ReadyQueue.dequeue();
-                    if (_ReadyQueue.isEmpty()) {
-                        this.isExecuting = false;
+                    var contExe = _Scheduler.procesFin();
+                    console.log("STOP EXECUTION? " + contExe);
+                    if (contExe) {
+                        break;
                     }
-                    return;
+                    else {
+                        return;
+                    }
                 case "EC":
                     this.CDX(_MemManager.get(this.PC + 2) + _MemManager.get(this.PC + 1));
                     this.PC += 3;
@@ -183,19 +182,14 @@ var TSOS;
         };
         Cpu.prototype.SYS = function () {
             if (this.Xreg == 1) {
-                console.log("Xreg 1");
                 _StdOut.putText(this.Yreg.toString());
             }
             else if (this.Xreg == 2) {
-                console.log("Xreg 2");
                 var tempYreg = this.Yreg;
                 var outStr = "";
                 while (_MemManager.get(tempYreg) != "00") {
                     TSOS.Control.updateCPUDisp();
                     outStr += String.fromCharCode(parseInt(_MemManager.get(tempYreg), 16));
-                    console.log(outStr);
-                    console.log(tempYreg);
-                    console.log(_MemManager.get(tempYreg));
                     tempYreg++;
                 }
                 _StdOut.putText(outStr);

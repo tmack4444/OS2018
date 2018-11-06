@@ -497,7 +497,6 @@ module TSOS {
         public shellRun(args) {
           if(args.length > 0) {
             args = parseInt(args);
-            console.log(args);
             if(_activePCB[0].pid == args) {
               _currPCB = 0;
               _activePCB[0].isActive = true;
@@ -546,6 +545,16 @@ module TSOS {
             _activePCB[2].isActive = true;
             _ReadyQueue.enqueue(_activePCB[2]);
           }
+        _Scheduler.numCycle = 0;
+        var runPCB = _ReadyQueue.dequeue();
+
+        _CPU.PC = runPCB.PC;
+        _CPU.Acc = runPCB.Acc;
+        _CPU.Xreg = runPCB.Xreg;
+        _CPU.Yreg = runPCB.Yreg;
+        _CPU.Zflag = runPCB.Zflag;
+        _currPart = runPCB.part;
+
         _CPU.isExecuting = true;
         }
 
@@ -567,7 +576,12 @@ module TSOS {
         }
 
         public shellKill(args) {
-
+          if(args.length == 0) {
+            _StdOut.putText("Please supply a PID to murder");
+          } else if(_activePCB[parseInt(args)].isActive) {
+            var victim = _activePCB[parseInt(args)];
+            victim.isActive = false;
+          }
         }
 
         public shellQuantum(args) {

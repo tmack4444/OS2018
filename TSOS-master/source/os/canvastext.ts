@@ -161,7 +161,7 @@ module TSOS {
                 if (!c) {
                     continue;
                 }
-                
+
                 if(x + c.width > _Canvas.width-4){
                   _Console.advanceLine();
                   y = _Console.currentYPosition;

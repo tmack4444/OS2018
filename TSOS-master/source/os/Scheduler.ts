@@ -15,24 +15,27 @@ module TSOS {
 
         public increment(): void {
           if(this.numCycle >= this.quantum) {
-            this.switchero();
+            this.switcheroo();
             this.numCycle = 0;
+            this.numCycle++;
           } else {
             this.numCycle++;
           }
         }
 
-        public switchero(): void {    // I was going to call this context switch, but switchero is just so much more fun
-          if(_ReadyQueue.getSize() > 1) {
+        public switcheroo(): void {    // I was going to call this context switch, but switcheroo is just so much more fun
+          if(!_ReadyQueue.isEmpty()) {
             var switchto = _ReadyQueue.dequeue();
-            console.log(switchto.PC);
-            console.log(switchto.Acc);
-            console.log(switchto.Xreg);
-            console.log(switchto.Yreg);
-            console.log(switchto.Zflag);
-            console.log(switchto.part);
+            var currPCB: TSOS.PCB = new TSOS.PCB();
 
-            _ReadyQueue.enqueue(switchto);
+            currPCB.PC = _CPU.PC;
+            currPCB.Acc = _CPU.Acc;
+            currPCB.Xreg = _CPU.Xreg;
+            currPCB.Yreg = _CPU.Yreg;
+            currPCB.Zflag = _CPU.Zflag;
+            currPCB.part = _currPart;
+
+            _ReadyQueue.enqueue(currPCB);
             _CPU.PC = switchto.PC;
             _CPU.Acc = switchto.Acc;
             _CPU.Xreg = switchto.Xreg;
@@ -40,8 +43,32 @@ module TSOS {
             _CPU.Zflag = switchto.Zflag;
             _currPart = switchto.part;
           }
+        }
 
-
+        public procesFin(): boolean{
+          var cont = false;
+          _ReadyQueue.dequeue();
+          if(_ReadyQueue.isEmpty()) {
+            (<HTMLButtonElement>document.getElementById("btnStepper")).disabled = true;
+            _CPU.isExecuting = false;
+            return cont;
+          } else {
+            cont = true;
+            //we want to remove the previously entered item from the readyQueue, which means
+            //loop through, remove all items, store all except the last item, then put the other items in REVERSE ORDER
+            //(Remember, we want to have them come out of the queue correctly)
+            var storeQueue = [""];
+            for(var i = 0; i <= _ReadyQueue.getSize(); i++) {
+              storeQueue[i] = _ReadyQueue.dequeue();
+              console.log(storeQueue[i]);
+            }
+            storeQueue.pop();
+            for(var i = storeQueue.length-1; i > 0; i--) {
+             _ReadyQueue.enqueue(storeQueue[i]);
+             console.log(storeQueue[i]);
+            }
+            _Scheduler.switcheroo();
+            return cont;
         }
 
 

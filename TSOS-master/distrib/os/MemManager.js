@@ -39,6 +39,7 @@ var TSOS;
             else if (_currPart == 2) {
                 address += 512;
             }
+            console.log("GET: " + address);
             return _Memory.Storage[address];
         };
         MemManager.prototype.put = function (address, value) {
@@ -51,6 +52,7 @@ var TSOS;
             else if (_currPart == 2) {
                 address += 512;
             }
+            console.log("PUT: " + address);
             _Memory.Storage[address] = value;
             TSOS.Control.updateMemDisp();
         };

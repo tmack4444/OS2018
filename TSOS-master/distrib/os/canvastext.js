@@ -55,7 +55,7 @@ var TSOS;
                 if (!c) {
                     continue;
                 }
-                if (x + c.width > _Canvas.width - 4) {
+                if (x + c.width > _Canvas.width - 1) {
                     _Console.advanceLine();
                     y = _Console.currentYPosition;
                     x = _Console.currentXPosition;
