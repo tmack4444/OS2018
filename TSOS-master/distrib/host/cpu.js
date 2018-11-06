@@ -64,11 +64,11 @@ var TSOS;
             // TODO: Accumulate CPU usage and profiling statistics here.
             // Do the real work here. Be sure to set this.isExecuting appropriately.
             _Scheduler.increment();
-            var currentInstruction = _MemManager.get(this.PC); //fetch
             if (this.PC > 255) {
                 this.PC = this.PC - 256;
             }
-            TSOS.Control.updateCPUDisp();
+            var currentInstruction = _MemManager.get(this.PC); //fetch
+            console.log(currentInstruction);
             switch (currentInstruction) { //decode
                 case "A9":
                     this.LDAConst(_MemManager.get(this.PC + 1)); //execute
@@ -107,7 +107,7 @@ var TSOS;
                     break;
                 case "00":
                     var contExe = _Scheduler.procesFin();
-                    console.log("STOP EXECUTION? " + contExe);
+                    console.log("CONTINUE EXECUTION? " + contExe);
                     if (contExe) {
                         break;
                     }
@@ -134,6 +134,7 @@ var TSOS;
                     currentInstruction = "00";
                     break;
             }
+            TSOS.Control.updateCPUDisp();
         };
         Cpu.prototype.LDAConst = function (value) {
             this.Acc = parseInt(value, 16);
@@ -181,6 +182,7 @@ var TSOS;
             _MemManager.put(parseInt(address, 16), value.toString(16));
         };
         Cpu.prototype.SYS = function () {
+            console.log(this.Xreg);
             if (this.Xreg == 1) {
                 _StdOut.putText(this.Yreg.toString());
             }

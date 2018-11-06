@@ -394,18 +394,21 @@ var TSOS;
                     _currPCB = 0;
                     _activePCB[0].isActive = true;
                     _ReadyQueue.enqueue(_activePCB[0]);
+                    TSOS.Control.updateCPUDisp();
                     _CPU.isExecuting = true;
                 }
                 else if (_activePCB[1].pid == args) {
                     _currPCB = 1;
                     _activePCB[1].isActive = true;
                     _ReadyQueue.enqueue(_activePCB[1]);
+                    TSOS.Control.updateCPUDisp();
                     _CPU.isExecuting = true;
                 }
                 else if (_activePCB[2].pid == args) {
                     _currPCB = 2;
                     _activePCB[2].isActive = true;
                     _ReadyQueue.enqueue(_activePCB[2]);
+                    TSOS.Control.updateCPUDisp();
                     _CPU.isExecuting = true;
                 }
                 else {

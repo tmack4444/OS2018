@@ -30,7 +30,7 @@ var TSOS;
             TSOS.Control.updateMemDisp();
         };
         MemManager.prototype.get = function (address) {
-            if (address > 256) {
+            if (address > 255) {
                 address -= 256;
             }
             if (_currPart == 1) {

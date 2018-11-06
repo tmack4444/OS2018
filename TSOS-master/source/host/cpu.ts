@@ -71,11 +71,11 @@ module TSOS {
           // TODO: Accumulate CPU usage and profiling statistics here.
           // Do the real work here. Be sure to set this.isExecuting appropriately.
           _Scheduler.increment();
-          var currentInstruction = _MemManager.get(this.PC); //fetch
             if(this.PC > 255){
               this.PC = this.PC - 256;
             }
-            Control.updateCPUDisp();
+            var currentInstruction = _MemManager.get(this.PC); //fetch
+            console.log(currentInstruction);
             switch(currentInstruction) {                   //decode
               case "A9": this.LDAConst(_MemManager.get(this.PC+1));   //execute
                 this.PC += 2;
@@ -139,6 +139,7 @@ module TSOS {
               default: currentInstruction = "00";
                 break;
               }
+              Control.updateCPUDisp();
         }
 
         public LDAConst(value): void{
@@ -197,6 +198,7 @@ module TSOS {
         }
 
         public SYS(): void {
+          console.log(this.Xreg);
           if(this.Xreg == 1){
             _StdOut.putText(this.Yreg.toString());
           } else if(this.Xreg == 2) {

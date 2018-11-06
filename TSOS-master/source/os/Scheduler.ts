@@ -24,7 +24,7 @@ module TSOS {
         }
 
         public switcheroo(): void {    // I was going to call this context switch, but switcheroo is just so much more fun
-          if(!_ReadyQueue.isEmpty()) {
+          if(_ReadyQueue.getSize() > 1) {
             var switchto = _ReadyQueue.dequeue();
             var currPCB: TSOS.PCB = new TSOS.PCB();
 
@@ -47,31 +47,31 @@ module TSOS {
 
         public procesFin(): boolean{
           var cont = false;
-          if(_ReadyQueue.isEmpty()) {
-            (<HTMLButtonElement>document.getElementById("btnStepper")).disabled = true;
-            _CPU.isExecuting = false;
-            return cont;
-          } else {
+          if(_ReadyQueue.getSize() > 1) {
             cont = true;
             //we want to remove the previously entered item from the readyQueue, which means
             //loop through, remove all items, store all except the last item, then put the other items in REVERSE ORDER
             //(Remember, we want to have them come out of the queue correctly)
-            var storeQueue = [""];
+            var storeQueue = [];
             console.log(_ReadyQueue.getSize());
-            for(var i = 0; i <= _ReadyQueue.getSize(); i++) {
+            for(var i = 0; i < _ReadyQueue.getSize(); i++) {
               storeQueue[i] = _ReadyQueue.dequeue();
               console.log(storeQueue[i]);
+              console.log(i);
             }
-            storeQueue.pop();
-            for(var i = storeQueue.length-1; i >= 0; i--) {
-             _ReadyQueue.enqueue(storeQueue[i]);
-             console.log(storeQueue[i]);
+            storeQueue.pop()
+            for(var i = storeQueue.length-1; i >= 0; i) {
+               _ReadyQueue.enqueue(storeQueue[i]);
+               console.log(storeQueue[i]);
+               console.log(i);
+              _Scheduler.switcheroo();
+              return cont;
             }
-            _Scheduler.switcheroo();
-            return cont;
-        }
-
-
-
-    }
+          } else {
+           (<HTMLButtonElement>document.getElementById("btnStepper")).disabled = true;
+           _CPU.isExecuting = false;
+           return cont;
+         }
+  }
+}
 }
