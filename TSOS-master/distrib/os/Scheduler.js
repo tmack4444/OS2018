@@ -39,26 +39,32 @@ var TSOS;
         };
         Scheduler.prototype.procesFin = function () {
             var cont = false;
-            if (_ReadyQueue.getSize() > 1) {
-                cont = true;
-                //we want to remove the previously entered item from the readyQueue, which means
-                //loop through, remove all items, store all except the last item, then put the other items in REVERSE ORDER
-                //(Remember, we want to have them come out of the queue correctly)
+            if (!_ReadyQueue.isEmpty()) {
+                cont = true; //there's more programs in the readyQueue, we need to keep going.
+                //The way im going to do this is de queue the next element(s) in the readyQueue
+                //(So _ReadyQueue.getSize()-1), store them in an array, then dequeue and don't save the last item in the _ReadyQueue
+                //Then, we simply enqueue the items that we dequeued and saved.
                 var storeQueue = [];
-                console.log(_ReadyQueue.getSize());
-                for (var i = 0; i < _ReadyQueue.getSize(); i++) {
+                for (var i = 0; i <= _ReadyQueue.getSize(); i++) {
                     storeQueue[i] = _ReadyQueue.dequeue();
                     console.log(storeQueue[i]);
-                    console.log(i);
                 }
-                storeQueue.pop();
-                for (var i = storeQueue.length - 1; i >= 0; i) {
+                console.log(_ReadyQueue.getSize());
+                _ReadyQueue.dequeue();
+                for (var i = 0; i < storeQueue.length; i++) {
                     _ReadyQueue.enqueue(storeQueue[i]);
                     console.log(storeQueue[i]);
-                    console.log(i);
-                    _Scheduler.switcheroo();
-                    return cont;
                 }
+                var switchto = _ReadyQueue.dequeue();
+                _CPU.PC = switchto.PC;
+                _CPU.Acc = switchto.Acc;
+                _CPU.Xreg = switchto.Xreg;
+                _CPU.Yreg = switchto.Yreg;
+                _CPU.Zflag = switchto.Zflag;
+                _currPart = switchto.part;
+                _ReadyQueue.enqueue(switchto);
+                this.numCycle = 0;
+                return cont;
             }
             else {
                 document.getElementById("btnStepper").disabled = true;

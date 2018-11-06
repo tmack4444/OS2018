@@ -42,7 +42,7 @@ module TSOS {
       } else if (_currPart == 2) {
         address += 512;
       }
-        console.log("GET: " + address);
+        //console.log("GET: " + address);
         return _Memory.Storage[address];
       }
 
@@ -55,7 +55,7 @@ module TSOS {
         } else if (_currPart == 2) {
           address += 512;
         }
-        console.log("PUT: " + address);
+        //console.log("PUT: " + address);
         _Memory.Storage[address] = value;
         Control.updateMemDisp();
       }
