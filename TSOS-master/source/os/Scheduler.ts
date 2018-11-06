@@ -24,9 +24,12 @@ module TSOS {
         }
 
         public switcheroo(): void {    // I was going to call this context switch, but switcheroo is just so much more fun
-          if(_ReadyQueue.getSize() > 1) {
+          console.log("Switcheroo");
+          console.log(_ReadyQueue.getSize());
+          if(!_ReadyQueue.isEmpty()) {
             var switchto = _ReadyQueue.dequeue();
             var currPCB: TSOS.PCB = new TSOS.PCB();
+            console.log(switchto.pid);
 
             currPCB.PC = _CPU.PC;
             currPCB.Acc = _CPU.Acc;
@@ -34,6 +37,7 @@ module TSOS {
             currPCB.Yreg = _CPU.Yreg;
             currPCB.Zflag = _CPU.Zflag;
             currPCB.part = _currPart;
+            currPCB.pid = _PID;
 
             _ReadyQueue.enqueue(currPCB);
             _CPU.PC = switchto.PC;
@@ -42,6 +46,7 @@ module TSOS {
             _CPU.Yreg = switchto.Yreg;
             _CPU.Zflag = switchto.Zflag;
             _currPart = switchto.part;
+            _PID = switchto.pid;
           }
         }
 
@@ -53,16 +58,16 @@ module TSOS {
             //(So _ReadyQueue.getSize()-1), store them in an array, then dequeue and don't save the last item in the _ReadyQueue
             //Then, we simply enqueue the items that we dequeued and saved.
             var storeQueue = [];
-            for(var i = 0; i <= _ReadyQueue.getSize(); i++) {
-              storeQueue[i] = _ReadyQueue.dequeue();
-              console.log(storeQueue[i]);
+            var currInd = 0;
+            while(!_ReadyQueue.isEmpty()){
+              storeQueue[currInd] = _ReadyQueue.dequeue();
+              currInd++;
             }
-            console.log(_ReadyQueue.getSize());
-            _ReadyQueue.dequeue();
             for(var i = 0; i < storeQueue.length; i++) {
               _ReadyQueue.enqueue(storeQueue[i]);
               console.log(storeQueue[i]);
             }
+            //this is a slightly smaller version of switcheroo. We dont want to save what was on the CPU, as that is no longer relevant
             var switchto = _ReadyQueue.dequeue();
             _CPU.PC = switchto.PC;
             _CPU.Acc = switchto.Acc;
@@ -70,14 +75,14 @@ module TSOS {
             _CPU.Yreg = switchto.Yreg;
             _CPU.Zflag = switchto.Zflag;
             _currPart = switchto.part;
-            _ReadyQueue.enqueue(switchto);
+            _PID = switchto.pid;
             this.numCycle = 0;
             return cont;
-            } else {
-             (<HTMLButtonElement>document.getElementById("btnStepper")).disabled = true;
-             _CPU.isExecuting = false;
-             return cont;
-           }
+          } else {
+           (<HTMLButtonElement>document.getElementById("btnStepper")).disabled = true;
+           _CPU.isExecuting = false;
+           return cont;
+         }
         }
     }
 }
