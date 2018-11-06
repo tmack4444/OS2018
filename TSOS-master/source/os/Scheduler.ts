@@ -47,7 +47,6 @@ module TSOS {
 
         public procesFin(): boolean{
           var cont = false;
-          _ReadyQueue.dequeue();
           if(_ReadyQueue.isEmpty()) {
             (<HTMLButtonElement>document.getElementById("btnStepper")).disabled = true;
             _CPU.isExecuting = false;
@@ -58,12 +57,13 @@ module TSOS {
             //loop through, remove all items, store all except the last item, then put the other items in REVERSE ORDER
             //(Remember, we want to have them come out of the queue correctly)
             var storeQueue = [""];
+            console.log(_ReadyQueue.getSize());
             for(var i = 0; i <= _ReadyQueue.getSize(); i++) {
               storeQueue[i] = _ReadyQueue.dequeue();
               console.log(storeQueue[i]);
             }
             storeQueue.pop();
-            for(var i = storeQueue.length-1; i > 0; i--) {
+            for(var i = storeQueue.length-1; i >= 0; i--) {
              _ReadyQueue.enqueue(storeQueue[i]);
              console.log(storeQueue[i]);
             }

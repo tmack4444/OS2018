@@ -113,7 +113,7 @@ module TSOS {
                 break;
 
               case "00": var contExe = _Scheduler.procesFin();
-                console.log("STOP EXECUTION? " + contExe);
+                console.log("CONTINUE EXECUTION? " + contExe);
                 if(contExe) {
                   break;
                 } else {
