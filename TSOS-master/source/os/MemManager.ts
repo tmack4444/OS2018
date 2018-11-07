@@ -47,7 +47,7 @@ module TSOS {
       }
 
       public put(address, value): void {
-        if(address > 256) {
+        if(address > 255) {
           address -= 256;
         }
         if (_currPart == 1) {
