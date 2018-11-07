@@ -21,6 +21,7 @@ module TSOS {
           } else {
             this.numCycle++;
           }
+          Control.updatePCBDisp();
         }
 
         public switcheroo(): void {    // I was going to call this context switch, but switcheroo is just so much more fun

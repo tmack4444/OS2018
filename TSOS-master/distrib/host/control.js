@@ -129,6 +129,20 @@ var TSOS;
             var cpuMonitor = document.getElementById("taCPUStatus");
             cpuMonitor.value = cpuStatus;
         };
+        Control.updatePCBDisp = function () {
+            var PCBStatus = "";
+            for (var i = 0; i < _activePCB.length; i++) {
+                PCBStatus += "\n" + "PID: " + _activePCB[i].pid
+                    + " PC: " + _activePCB[i].PC.toString(16).toUpperCase()
+                    + " IR: " + _MemManager.get(_activePCB[i].PC)
+                    + " ACC: " + _activePCB[i].Acc
+                    + " X: " + _activePCB[i].Xreg.toString(16)
+                    + " Y: " + _activePCB[i].Yreg.toString(16)
+                    + " Z: " + _activePCB[i].Zflag;
+                var PCBMonitor = document.getElementById("taPCBStatus");
+                PCBMonitor.value = PCBStatus;
+            }
+        };
         Control.initMemDispl = function () {
             //remember functions table.insertRow();, row.insertCell, and remmeber to print an address
             var memoryDisplay = document.getElementById("taMemDisplay");

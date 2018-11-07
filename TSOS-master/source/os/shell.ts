@@ -483,9 +483,11 @@ module TSOS {
             var newPCB = new PCB(_PID, _lastPart);
             _activePCB[_lastPart] = newPCB;
             _activePCB[_lastPart].init();
+            _activePCB[_lastPart].isActive = true;
             _currPCB = _lastPart;
             _MemManager.store(input);
             _StdOut.putText("Process saved with Process ID (PID): " + _PID);
+            Control.updatePCBDisp();
             _PID++;
             _lastPart++;
 
@@ -537,28 +539,32 @@ module TSOS {
             _currPCB = 0;
             _activePCB[0].isActive = true;
             _ReadyQueue.enqueue(_activePCB[0]);
+            console.log(_activePCB[0]);
           }
           if(_activePCB[1].isActive) {
             _currPCB = 1;
             _activePCB[1].isActive = true;
             _ReadyQueue.enqueue(_activePCB[1]);
+            console.log(_activePCB[0]);
           }
           if(_activePCB[2].isActive) {
             _currPCB = 2;
             _activePCB[2].isActive = true;
             _ReadyQueue.enqueue(_activePCB[2]);
+            console.log(_activePCB[0]);
           }
         _Scheduler.numCycle = 0;
-        var runPCB = _ReadyQueue.dequeue();
-
-        _CPU.PC = runPCB.PC;
-        _CPU.Acc = runPCB.Acc;
-        _CPU.Xreg = runPCB.Xreg;
-        _CPU.Yreg = runPCB.Yreg;
-        _CPU.Zflag = runPCB.Zflag;
-        _currPart = runPCB.part;
-
-        _CPU.isExecuting = true;
+        if(!_ReadyQueue.isEmpty()){
+          var runPCB = _ReadyQueue.dequeue();
+          console.log(runPCB);
+          _CPU.PC = runPCB.PC;
+          _CPU.Acc = runPCB.Acc;
+          _CPU.Xreg = runPCB.Xreg;
+          _CPU.Yreg = runPCB.Yreg;
+          _CPU.Zflag = runPCB.Zflag;
+          _currPart = runPCB.part;
+          _CPU.isExecuting = true;
+          }
         }
 
         public shellPs(args) {

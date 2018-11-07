@@ -17,6 +17,7 @@ var TSOS;
             else {
                 this.numCycle++;
             }
+            TSOS.Control.updatePCBDisp();
         };
         Scheduler.prototype.switcheroo = function () {
             console.log("Switcheroo");

@@ -22,19 +22,6 @@ module TSOS {
             this.Yreg = 0;
             this.Zflag = 0;
             this.isActive = false;
-            this.updateStatus();
-
-        }
-
-        public updateStatus(): void {
-          var PCBStatus: string = "PC: " + this.PC.toString(16).toUpperCase()
-            + " IR: " + _MemManager.get(this.PC)
-            + " ACC: " + this.Acc
-            + " X: " + this.Xreg.toString(16)
-            + " Y: " + this.Yreg.toString(16)
-            + " Z: " + this.Zflag;
-          var PCBMonitor = <HTMLInputElement> document.getElementById("taPCBStatus");
-          PCBMonitor.value = PCBStatus;
         }
 
         public inactive(): void {
