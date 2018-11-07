@@ -44,6 +44,7 @@ var _KernelInterruptQueue; // Initializing this to null (which I would normally 
 var _KernelInputQueue = null; // Is this better? I don't like uninitialized variables. But I also don't like using the type specifier 'any'
 var _KernelBuffers = null; // when clearly 'any' is not what we want. There is likely a better way, but what is it?
 var _PID = 0;
+var _lastPID = 0;
 var _activePCB = [];
 var _lastPart = 0;
 var _currPart = 0;

@@ -376,15 +376,15 @@ var TSOS;
                 if (_lastPart == 3) {
                     _lastPart = 0;
                 }
-                var newPCB = new TSOS.PCB(_PID, _lastPart);
+                var newPCB = new TSOS.PCB(_lastPID, _lastPart);
                 _activePCB[_lastPart] = newPCB;
                 _activePCB[_lastPart].init();
                 _activePCB[_lastPart].isActive = true;
                 _currPCB = _lastPart;
                 _MemManager.store(input);
-                _StdOut.putText("Process saved with Process ID (PID): " + _PID);
+                _StdOut.putText("Process saved with Process ID (PID): " + _lastPID);
                 TSOS.Control.updatePCBDisp();
-                _PID++;
+                _lastPID++;
                 _lastPart++;
             }
             return;
@@ -430,19 +430,19 @@ var TSOS;
         };
         Shell.prototype.shellRunall = function (args) {
             var PCBtoReady = [];
-            if (_activePCB[0].isActive) {
+            if (_activePCB[0] != undefined && _activePCB[0].isActive) {
                 _currPCB = 0;
                 _activePCB[0].isActive = true;
                 _ReadyQueue.enqueue(_activePCB[0]);
                 console.log(_activePCB[0]);
             }
-            if (_activePCB[1].isActive) {
+            if (typeof _activePCB[1] != undefined && _activePCB[1].isActive) {
                 _currPCB = 1;
                 _activePCB[1].isActive = true;
                 _ReadyQueue.enqueue(_activePCB[1]);
                 console.log(_activePCB[0]);
             }
-            if (_activePCB[2].isActive) {
+            if (typeof _activePCB[2] != undefined && _activePCB[2].isActive) {
                 _currPCB = 2;
                 _activePCB[2].isActive = true;
                 _ReadyQueue.enqueue(_activePCB[2]);
@@ -478,9 +478,22 @@ var TSOS;
             if (args.length == 0) {
                 _StdOut.putText("Please supply a PID to murder");
             }
-            else if (_activePCB[parseInt(args)].isActive) {
-                var victim = _activePCB[parseInt(args)];
-                victim.isActive = false;
+            else {
+                //first find out if the PID is in use
+                var victim = parseInt(args);
+                for (var i = 0; i < _ReadyQueue.getSize(); i++) {
+                    var suspect = _ReadyQueue.dequeue();
+                    console.log(victim);
+                    console.log(suspect.pid);
+                    if (victim == suspect.pid) {
+                        //if it is in use, commit murder
+                        _StdOut.putText("Process " + victim + " has been murdered");
+                        return;
+                    }
+                    else {
+                        _ReadyQueue.enqueue(suspect);
+                    }
+                }
             }
         };
         Shell.prototype.shellQuantum = function (args) {

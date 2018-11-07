@@ -55,6 +55,7 @@ var _KernelInputQueue: any = null;  // Is this better? I don't like uninitialize
 var _KernelBuffers: any[] = null;   // when clearly 'any' is not what we want. There is likely a better way, but what is it?
 
 var _PID: number = 0;
+var _lastPID: number = 0;
 var _activePCB: TSOS.PCB[] = [];
 var _lastPart: number = 0;
 var _currPart: number = 0;
