@@ -43,12 +43,17 @@ var _Kernel;
 var _KernelInterruptQueue; // Initializing this to null (which I would normally do) would then require us to specify the 'any' type, as below.
 var _KernelInputQueue = null; // Is this better? I don't like uninitialized variables. But I also don't like using the type specifier 'any'
 var _KernelBuffers = null; // when clearly 'any' is not what we want. There is likely a better way, but what is it?
-var _PID = 0;
-var _lastPID = 0;
-var _activePCB = [];
-var _lastPart = 0;
-var _currPart = 0;
-var _currPCB = 0;
+//TODO - Neaten this up.
+//Im sure there's a lot of redundant values here, Im sure with a few simple changes I could remove some of these Variables
+//Would make my life a lot easier, but that comes after the project is due
+//If I hadn't waited so long, I would've been able to make these neater at the last minute, but make it work first, make it efficent later I guess
+var _PID = 0; //keeps track of the pid currently running
+var _lastPID = 0; //keeps track of the last assigned PID
+var _activePCB = []; //keeps track of all PCBs in memory
+var _lastPart = 0; //keeps track of the last partition assigned
+var _currPart = 0; //keeps track of the current partition a running program is looking at
+var _currPCB = 0; //keeps track of the current PCB being used
+var _currInd = 0; //keeps of track of the index in activePCB that is currently being used (allows me to grab some info from the PCB without having to search through the queue). This is super helpful during context switches
 var _ReadyQueue;
 var _Scheduler;
 // Standard input and output

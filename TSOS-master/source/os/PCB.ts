@@ -1,5 +1,7 @@
 module TSOS {
 
+//TODO - Remove some of these redundant variables. Im sure there are better ways of keeping track of this stuff. I just have to implement them
+
     export class PCB {
       public PC: number;
       public Acc: number;
@@ -12,6 +14,7 @@ module TSOS {
       public waitTime: number;
       public turnTime: number;
       public index: number;
+      public isRunning: boolean;
 
         constructor(public processid: number, public partition: number, public add: number) {
           this.pid = processid;
@@ -28,6 +31,7 @@ module TSOS {
             this.isActive = false;
             this.waitTime = 0;
             this.turnTime = 0;
+            this.isRunning = false;
         }
 
         public inactive(): void {

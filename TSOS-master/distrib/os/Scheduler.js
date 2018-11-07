@@ -38,6 +38,7 @@ var TSOS;
                 _activePCB[_currInd].isRunning = false;
                 _activePCB[_currInd].waitTime = _activePCB[_currInd].waitTime;
                 _activePCB[_currInd].turnTime = _activePCB[_currInd].turnTime;
+                _Kernel.krnTrace("Context switch from PID " + _PID + " to PID " + switchto.pid);
                 _ReadyQueue.enqueue(_activePCB[_currInd]);
                 _CPU.PC = switchto.PC;
                 _CPU.Acc = switchto.Acc;

@@ -54,12 +54,18 @@ var _KernelInterruptQueue;          // Initializing this to null (which I would 
 var _KernelInputQueue: any = null;  // Is this better? I don't like uninitialized variables. But I also don't like using the type specifier 'any'
 var _KernelBuffers: any[] = null;   // when clearly 'any' is not what we want. There is likely a better way, but what is it?
 
-var _PID: number = 0;
-var _lastPID: number = 0;
-var _activePCB: TSOS.PCB[] = [];
-var _lastPart: number = 0;
-var _currPart: number = 0;
-var _currPCB: number = 0;
+
+//TODO - Neaten this up.
+//Im sure there's a lot of redundant values here, Im sure with a few simple changes I could remove some of these Variables
+//Would make my life a lot easier, but that comes after the project is due
+//If I hadn't waited so long, I would've been able to make these neater at the last minute, but make it work first, make it efficent later I guess
+var _PID: number = 0;   //keeps track of the pid currently running
+var _lastPID: number = 0; //keeps track of the last assigned PID
+var _activePCB: TSOS.PCB[] = []; //keeps track of all PCBs in memory
+var _lastPart: number = 0; //keeps track of the last partition assigned
+var _currPart: number = 0; //keeps track of the current partition a running program is looking at
+var _currPCB: number = 0; //keeps track of the current PCB being used
+var _currInd: number = 0; //keeps of track of the index in activePCB that is currently being used (allows me to grab some info from the PCB without having to search through the queue). This is super helpful during context switches
 var _ReadyQueue: TSOS.Queue;
 var _Scheduler: TSOS.Scheduler;
 
