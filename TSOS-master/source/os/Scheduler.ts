@@ -18,8 +18,10 @@ module TSOS {
             this.switcheroo();
             this.numCycle = 0;
             this.numCycle++;
+            this.timerInc();
           } else {
             this.numCycle++;
+            this.timerInc();
           }
           Control.updatePCBDisp();
         }
@@ -39,6 +41,9 @@ module TSOS {
             currPCB.Zflag = _CPU.Zflag;
             currPCB.part = _currPart;
             currPCB.pid = _PID;
+            currPCB.index = _currInd;
+            currPCB.waitTime = _activePCB[_currInd].waitTime;
+            currPCB.turnTime = _activePCB[_currInd].turnTime;
 
             _ReadyQueue.enqueue(currPCB);
             _CPU.PC = switchto.PC;
@@ -48,6 +53,9 @@ module TSOS {
             _CPU.Zflag = switchto.Zflag;
             _currPart = switchto.part;
             _PID = switchto.pid;
+            _currInd = switchto.index;
+            _activePCB[_currInd].turnTime = switchto.turnTime;
+            _activePCB[_currInd].waitTime = switchto.waitTime;
           }
         }
 
@@ -70,6 +78,16 @@ module TSOS {
             }
             //this is a slightly smaller version of switcheroo. We dont want to save what was on the CPU, as that is no longer relevant
             var switchto = _ReadyQueue.dequeue();
+
+            _Console.advanceLine();
+            _StdOut.putText("Process Completed with ID " + _PID + "cycles");
+            _Console.advanceLine();
+            _StdOut.putText("Turnaround time " + _activePCB[_currInd].turnTime + "cycles");
+            _Console.advanceLine();
+            _StdOut.putText("Wait time " + _activePCB[_currInd].waitTime + "cycles");
+            _Console.advanceLine();
+            _OsShell.putPrompt();
+
             _CPU.PC = switchto.PC;
             _CPU.Acc = switchto.Acc;
             _CPU.Xreg = switchto.Xreg;
@@ -77,13 +95,35 @@ module TSOS {
             _CPU.Zflag = switchto.Zflag;
             _currPart = switchto.part;
             _PID = switchto.pid;
+            _currInd = switchto.index;
             this.numCycle = 0;
             return cont;
           } else {
+
+            _Console.advanceLine();
+            _StdOut.putText("Process Completed with ID " + _PID + "cycles");
+            _Console.advanceLine();
+            _StdOut.putText("Turnaround time " + _activePCB[_currInd].turnTime + "cycles");
+            _Console.advanceLine();
+            _StdOut.putText("Wait time " + _activePCB[_currInd].waitTime + "cycles");
+            _Console.advanceLine();
+            _OsShell.putPrompt();
+
            (<HTMLButtonElement>document.getElementById("btnStepper")).disabled = true;
            _CPU.isExecuting = false;
            return cont;
          }
+        }
+
+        public timerInc(): void {
+          for(var i = 0; i < _ReadyQueue.getSize(); i++) {
+            var incrementer = _ReadyQueue.dequeue();
+            incrementer.waitTime++;
+            incrementer.turnTime++;
+            _ReadyQueue.enqueue(incrementer);
+          }
+          _activePCB[_currInd].turnTime++;
+
         }
     }
 }

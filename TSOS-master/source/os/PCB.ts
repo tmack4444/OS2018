@@ -9,10 +9,14 @@ module TSOS {
       public pid: number;
       public isActive: boolean;
       public part: number;
+      public waitTime: number;
+      public turnTime: number;
+      public index: number;
 
-        constructor(public processid: number, public partition: number) {
+        constructor(public processid: number, public partition: number, public add: number) {
           this.pid = processid;
           this.part = partition;
+          this.index = add;
         }
 
         public init(): void {
@@ -22,6 +26,8 @@ module TSOS {
             this.Yreg = 0;
             this.Zflag = 0;
             this.isActive = false;
+            this.waitTime = 0;
+            this.turnTime = 0;
         }
 
         public inactive(): void {

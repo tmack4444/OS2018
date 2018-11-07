@@ -480,7 +480,7 @@ module TSOS {
             if(_lastPart == 3) {
               _lastPart = 0;
             }
-            var newPCB = new PCB(_lastPID, _lastPart);
+            var newPCB = new PCB(_lastPID, _lastPart, _lastPart);
             _activePCB[_lastPart] = newPCB;
             _activePCB[_lastPart].init();
             _activePCB[_lastPart].isActive = true;
