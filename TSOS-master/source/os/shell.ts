@@ -590,6 +590,12 @@ module TSOS {
           } else {
             //first find out if the PID is in use
             var victim = parseInt(args);
+            if(_PID == victim) {
+              //if the victim is currently being run, then tell the CPU to end it (That sounded a lot darker than I intended)
+              _StdOut.putText("Process " + victim + " has been murdered");
+              _Scheduler.procesFin();
+              return
+            }
             for(var i = 0; i < _ReadyQueue.getSize(); i++) {
               var suspect = _ReadyQueue.dequeue();
               console.log(victim);
