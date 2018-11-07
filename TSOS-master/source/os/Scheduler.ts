@@ -31,21 +31,23 @@ module TSOS {
           console.log(_ReadyQueue.getSize());
           if(!_ReadyQueue.isEmpty()) {
             var switchto = _ReadyQueue.dequeue();
-            var currPCB: TSOS.PCB = new TSOS.PCB();
             console.log(switchto.pid);
 
-            currPCB.PC = _CPU.PC;
-            currPCB.Acc = _CPU.Acc;
-            currPCB.Xreg = _CPU.Xreg;
-            currPCB.Yreg = _CPU.Yreg;
-            currPCB.Zflag = _CPU.Zflag;
-            currPCB.part = _currPart;
-            currPCB.pid = _PID;
-            currPCB.index = _currInd;
-            currPCB.waitTime = _activePCB[_currInd].waitTime;
-            currPCB.turnTime = _activePCB[_currInd].turnTime;
+            _activePCB[_currInd].PC = _CPU.PC;
+            _activePCB[_currInd].Acc = _CPU.Acc;
+            _activePCB[_currInd].Xreg = _CPU.Xreg;
+            _activePCB[_currInd].Yreg = _CPU.Yreg;
+            _activePCB[_currInd].Zflag = _CPU.Zflag;
+            _activePCB[_currInd].part = _currPart;
+            _activePCB[_currInd].pid = _PID;
+            _activePCB[_currInd].index = _currInd;
+            _activePCB[_currInd].isRunning = false;
+            _activePCB[_currInd].waitTime = _activePCB[_currInd].waitTime;
+            _activePCB[_currInd].turnTime = _activePCB[_currInd].turnTime;
 
-            _ReadyQueue.enqueue(currPCB);
+
+
+            _ReadyQueue.enqueue(_activePCB[_currInd]);
             _CPU.PC = switchto.PC;
             _CPU.Acc = switchto.Acc;
             _CPU.Xreg = switchto.Xreg;
@@ -54,14 +56,17 @@ module TSOS {
             _currPart = switchto.part;
             _PID = switchto.pid;
             _currInd = switchto.index;
+            _activePCB[_currInd].isRunning = true;
             _activePCB[_currInd].turnTime = switchto.turnTime;
             _activePCB[_currInd].waitTime = switchto.waitTime;
+
           }
         }
 
         public procesFin(): boolean{
           var cont = false;
           if(!_ReadyQueue.isEmpty()) {
+            _activePCB[_currInd].isActive = false;
             cont = true;  //there's more programs in the readyQueue, we need to keep going.
             //The way im going to do this is de queue the next element(s) in the readyQueue
             //(So _ReadyQueue.getSize()-1), store them in an array, then dequeue and don't save the last item in the _ReadyQueue

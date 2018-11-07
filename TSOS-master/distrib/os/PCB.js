@@ -1,5 +1,6 @@
 var TSOS;
 (function (TSOS) {
+    //TODO - Remove some of these redundant variables. Im sure there are better ways of keeping track of this stuff. I just have to implement them
     var PCB = /** @class */ (function () {
         function PCB(processid, partition, add) {
             this.processid = processid;
@@ -18,6 +19,7 @@ var TSOS;
             this.isActive = false;
             this.waitTime = 0;
             this.turnTime = 0;
+            this.isRunning = false;
         };
         PCB.prototype.inactive = function () {
             this.isActive = false;

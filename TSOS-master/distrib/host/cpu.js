@@ -135,6 +135,7 @@ var TSOS;
                     break;
             }
             TSOS.Control.updateCPUDisp();
+            TSOS.Control.updatePCBDisp();
         };
         Cpu.prototype.LDAConst = function (value) {
             this.Acc = parseInt(value, 16);

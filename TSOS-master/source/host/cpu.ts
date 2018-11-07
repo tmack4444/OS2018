@@ -140,6 +140,7 @@ module TSOS {
                 break;
               }
               Control.updateCPUDisp();
+              Control.updatePCBDisp();
         }
 
         public LDAConst(value): void{
