@@ -30,7 +30,7 @@ var TSOS;
             TSOS.Control.updateMemDisp();
         };
         MemManager.prototype.get = function (address) {
-            if (address > 255) {
+            while (address > 255) {
                 address -= 256;
             }
             if (_currPart == 1) {
@@ -43,7 +43,7 @@ var TSOS;
             return _Memory.Storage[address];
         };
         MemManager.prototype.put = function (address, value) {
-            if (address > 255) {
+            while (address > 255) {
                 address -= 256;
             }
             if (_currPart == 1) {

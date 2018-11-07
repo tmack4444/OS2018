@@ -34,7 +34,7 @@ module TSOS {
       }
 
       public get(address): string{
-      if(address > 255) {
+      while(address > 255) {
         address -= 256;
       }
       if (_currPart == 1) {
@@ -47,7 +47,7 @@ module TSOS {
       }
 
       public put(address, value): void {
-        if(address > 255) {
+        while(address > 255) {
           address -= 256;
         }
         if (_currPart == 1) {
