@@ -7,7 +7,8 @@
    <title>
       TSOS - a powerful browser-based virtual Operating System in TypeScript
    </title>
-
+   <!--Adding Bootstrap here to help attempt make things look a little bit less ugly-->
+   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
    <!-- Globals CONSTANTS and _Variables. Must included be first. -->
    <script type="text/javascript" src="distrib/globals.js"></script>
 
@@ -38,10 +39,23 @@
 
 </head>
 
+<style>
+html *
+{
+   font-size: 15px !important;
+   color: #000 !important;
+   font-family: Helvetica !important;
+}
+
+#divMain, #divConsole {
+margin-left:0;
+}
+</style>
+
+
 <body onload="onDocumentLoad()">
 
-<div id="divMain" style="width:100%;">
-
+<div id="divMain" style="width:100%;" class="container">
    <div id="divButtonBar" style="margin:4px;">
       <input type="button"
              id = "btnStartOS"
@@ -96,94 +110,91 @@
       </canvas>
    </div>
 
-   <div id="statusOut" style="margin-left:520px;">
-      <label>
-         M*Y*O*S Status Bar
-         <br>
-         <textarea name="taStatusOut"
-                   id  ="taStatusOut"
-                   rows="2"
-                   cols="24"
-        readonly ></textarea>
-      </label>
+<div class = "container">
+  <div class = "row">
+    <div id = "divOSMainStatus" class="col-md-4">
+          <label>
+             M*Y*O*S Status Bar
+             <br>
+             <textarea name="taStatusOut"
+                       id  ="taStatusOut"
+                       rows="2"
+                       cols="24"
+            readonly ></textarea>
+          </label>
 
-      <label>
-        <textarea name="taTime"
-                  id  ="taTime"
-                  rows="2"
-                  cols="36"
-        readonly ></textarea>
-     </label>
+          <label>
+            <textarea name="taTime"
+                      id  ="taTime"
+                      rows="2"
+                      cols="36"
+            readonly ></textarea>
+         </label>
 
-     <label>
-        <br>CPU Status
-        <br>
-        <textarea name="taCPUStatus"
-                  id  ="taCPUStatus"
-                  rows="4"
-                  cols="36"
-        readonly></textarea>
-     </label>
-     <label>
-        <br>Ready Queue Status
-        <br>
-        <textarea name="taPCBStatus"
-                  id  ="taPCBStatus"
-                  rows="5"
-                  cols="60"
-        readonly></textarea>
-    </label>
-   </div>
-   <div id="divLog" style="margin-left:520px;">
-      <label>
-         Host Log
-         <br>
-         <textarea name="taHostLog"
-                   id  ="taHostLog"
-                   rows="26"
-                   cols="48"
-         readonly></textarea>
-      </label>
-   </div>
+         <label>
+            <br>CPU Status
+            <br>
+            <textarea name="taCPUStatus"
+                      id  ="taCPUStatus"
+                      rows="4"
+                      cols="36"
+            readonly></textarea>
+         </label>
+         <label>
+            <br>Ready Queue Status
+            <br>
+            <textarea name="taPCBStatus"
+                      id  ="taPCBStatus"
+                      rows="5"
+                      cols="48"
+            readonly></textarea>
+        </label>
+          <label>
+             Host Log
+             <br>
+             <textarea name="taHostLog"
+                       id  ="taHostLog"
+                       rows="26"
+                       cols="48"
+             readonly></textarea>
+          </label>
+    </div>
 
-   <div id="divUserProgramInput" style="margin-left:520px;">
-      <label>
-         User Program Input
-         <br>
-         <textarea name="taProgramInput"
-                   id  ="taProgramInput"
-                   rows="8"
-                   cols="48"
-         ></textarea>
-      </label>
-   </div>
+    <div id="divProgramAndMemStatus" class="col-md-4" style="margin-left:445px; top:0; position:absolute" float="top">
+          <label>
+             User Program Input
+             <br>
+             <textarea name="taProgramInput"
+                       id  ="taProgramInput"
+                       rows="8"
+                       cols="48"
+             ></textarea>
+          </label>
+       <style>
+         table {
+          border:1px solid black;
+          background-color: white;
+          overflow-y: auto;
+         }
 
-
-   <style>
-     table {
-      border:1px solid black;
-      background-color: white;
-      overflow-y: auto;
-     }
-
-     th, td {
-       border-bottom: 1px solid black;
-       text-align: left;
-     }
-
-   </style>
-
-   <div id="divMemDisplay" style="margin-left:520px;">
-      <label>
-         Memory Display
-         <br>
-         <table name="taMemDisplay"
-                id  ="taMemDisplay"
-          readonly>
-         </table>
-      </label>
-   </div>
-
+         th, td {
+           border-bottom: 1px solid black;
+           text-align: left;
+         }
+       </style>
+          <label>
+             Memory Display
+             <br>
+             <table name="taMemDisplay"
+                    id  ="taMemDisplay"
+                    style ="display: block;
+                            height: 450px;
+                            overflow-y: scroll;"
+                readonly>
+             </table>
+          </label>
+    </div>
+  </div>
 </div>
 
 <p class="footerText" style="clear:both;">
@@ -194,5 +205,10 @@
    Ted Codd, Stevie Ray Vaughan, and Ian Fleming.
 </p>
 
+
+<!--Some Bootstrap JS and stuff that they said put at the end. Again, should help me make things look less terrible-->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 </body>
 </html>
