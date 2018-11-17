@@ -155,26 +155,27 @@ module TSOS {
         public static updatePCBDisp(): void {
           var PCBStatus: string = "";
           for(var i = 0; i < _activePCB.length; i++) {
-            var run = "";
-            if(_activePCB[i].isRunning) {
-              run = "Running"
-            } else {
-              run = "Waiting"
-            }
+            console.log(_activePCB[i].isActive);
             if(_activePCB[i].isActive) {
-              PCBStatus += "\n" + "PID: " + _activePCB[i].pid
-              + " Status: " + run
-              + " PC: " + _activePCB[i].PC.toString(16).toUpperCase()
-              + " IR: " + _MemManager.get(_activePCB[i].PC)
-              + " ACC: " + _activePCB[i].Acc
-              + " X: " + _activePCB[i].Xreg.toString(16)
-              + " Y: " + _activePCB[i].Yreg.toString(16)
-              + " Z: " + _activePCB[i].Zflag;
-              var PCBMonitor = <HTMLInputElement> document.getElementById("taPCBStatus");
-              PCBMonitor.value = PCBStatus;
-          }
+              var run = "";
+              if(_activePCB[i].isRunning) {
+                run = "Running"
+              } else {
+                run = "Waiting"
+              }
+                PCBStatus += "\n" + "PID: " + _activePCB[i].pid
+                + " Status: " + run
+                + " PC: " + _activePCB[i].PC.toString(16).toUpperCase()
+                + " IR: " + _MemManager.get(_activePCB[i].PC)
+                + " ACC: " + _activePCB[i].Acc
+                + " X: " + _activePCB[i].Xreg.toString(16)
+                + " Y: " + _activePCB[i].Yreg.toString(16)
+                + " Z: " + _activePCB[i].Zflag;
+              }
+            }
+          var PCBMonitor = <HTMLInputElement> document.getElementById("taPCBStatus");
+          PCBMonitor.value = PCBStatus;
         }
-      }
 
       public static updateReadyDisp(): void {
         var PCBStatus: string = "";

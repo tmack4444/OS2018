@@ -132,14 +132,15 @@ var TSOS;
         Control.updatePCBDisp = function () {
             var PCBStatus = "";
             for (var i = 0; i < _activePCB.length; i++) {
-                var run = "";
-                if (_activePCB[i].isRunning) {
-                    run = "Running";
-                }
-                else {
-                    run = "Waiting";
-                }
+                console.log(_activePCB[i].isActive);
                 if (_activePCB[i].isActive) {
+                    var run = "";
+                    if (_activePCB[i].isRunning) {
+                        run = "Running";
+                    }
+                    else {
+                        run = "Waiting";
+                    }
                     PCBStatus += "\n" + "PID: " + _activePCB[i].pid
                         + " Status: " + run
                         + " PC: " + _activePCB[i].PC.toString(16).toUpperCase()
@@ -148,10 +149,10 @@ var TSOS;
                         + " X: " + _activePCB[i].Xreg.toString(16)
                         + " Y: " + _activePCB[i].Yreg.toString(16)
                         + " Z: " + _activePCB[i].Zflag;
-                    var PCBMonitor = document.getElementById("taPCBStatus");
-                    PCBMonitor.value = PCBStatus;
                 }
             }
+            var PCBMonitor = document.getElementById("taPCBStatus");
+            PCBMonitor.value = PCBStatus;
         };
         Control.updateReadyDisp = function () {
             var PCBStatus = "";
