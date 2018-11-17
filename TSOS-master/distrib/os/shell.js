@@ -394,24 +394,27 @@ var TSOS;
                 args = parseInt(args);
                 if (_activePCB[0].pid == args) {
                     _currPCB = 0;
+                    _PID = args;
                     _activePCB[0].isActive = true;
                     _CPU.PC = _activePCB[0].PC;
                     _ReadyQueue.enqueue(_activePCB[0]);
-                    _currInd = 2;
+                    _currInd = 0;
                     TSOS.Control.updateCPUDisp();
                     _CPU.isExecuting = true;
                 }
                 else if (_activePCB[1].pid == args) {
                     _currPCB = 1;
+                    _PID = args;
                     _activePCB[1].isActive = true;
                     _CPU.PC = _activePCB[1].PC;
                     _ReadyQueue.enqueue(_activePCB[1]);
-                    _currInd = 2;
+                    _currInd = 1;
                     TSOS.Control.updateCPUDisp();
                     _CPU.isExecuting = true;
                 }
                 else if (_activePCB[2].pid == args) {
                     _currPCB = 2;
+                    _PID = args;
                     _activePCB[2].isActive = true;
                     _CPU.PC = _activePCB[2].PC;
                     _currInd = 2;
@@ -461,6 +464,7 @@ var TSOS;
                 _CPU.Zflag = runPCB.Zflag;
                 _currPart = runPCB.part;
                 _currInd = runPCB.index;
+                _PID = runPCB.pid;
                 _CPU.isExecuting = true;
             }
         };
