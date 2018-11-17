@@ -129,6 +129,7 @@ var TSOS;
                     this.PC += 1;
                     break;
                 default:
+                    _StdOut.putText("ERROR! INVALID OPCODE. OPCODE WAS " + currentInstruction + " FROM MEM LOCATION " + this.PC);
                     currentInstruction = "00";
                     break;
             }

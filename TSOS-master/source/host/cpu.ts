@@ -134,7 +134,8 @@ module TSOS {
                 this.PC += 1;
                 break;
 
-              default: currentInstruction = "00";
+              default: _StdOut.putText("ERROR! INVALID OPCODE. OPCODE WAS " + currentInstruction + " FROM MEM LOCATION " + this.PC);
+                currentInstruction = "00";
                 break;
               }
               Control.updateCPUDisp();
@@ -196,7 +197,7 @@ module TSOS {
           _MemManager.put(parseInt(address, 16), value.toString(16));
         }
 
-        public SYS(): void {  
+        public SYS(): void {
           if(this.Xreg == 1){
             _StdOut.putText(this.Yreg.toString());
           } else if(this.Xreg == 2) {
