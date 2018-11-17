@@ -22,11 +22,9 @@ var TSOS;
             TSOS.Control.updatePCBDisp();
         };
         Scheduler.prototype.switcheroo = function () {
-            console.log("Switcheroo");
-            console.log(_ReadyQueue.getSize());
             if (!_ReadyQueue.isEmpty()) {
                 var switchto = _ReadyQueue.dequeue();
-                console.log(switchto.pid);
+                console.log(switchto);
                 _activePCB[_currInd].PC = _CPU.PC;
                 _activePCB[_currInd].Acc = _CPU.Acc;
                 _activePCB[_currInd].Xreg = _CPU.Xreg;
@@ -69,16 +67,16 @@ var TSOS;
                 }
                 for (var i = 0; i < storeQueue.length; i++) {
                     _ReadyQueue.enqueue(storeQueue[i]);
-                    console.log(storeQueue[i]);
                 }
                 //this is a slightly smaller version of switcheroo. We dont want to save what was on the CPU, as that is no longer relevant
                 var switchto = _ReadyQueue.dequeue();
+                console.log(_currInd);
                 _Console.advanceLine();
-                _StdOut.putText("Process Completed with ID " + _PID + "cycles");
+                _StdOut.putText("Process Completed with ID " + _PID);
                 _Console.advanceLine();
-                _StdOut.putText("Turnaround time " + _activePCB[_currInd].turnTime + "cycles");
+                _StdOut.putText("Turnaround time " + _activePCB[_currInd].turnTime + " cycles");
                 _Console.advanceLine();
-                _StdOut.putText("Wait time " + _activePCB[_currInd].waitTime + "cycles");
+                _StdOut.putText("Wait time " + _activePCB[_currInd].waitTime + " cycles");
                 _Console.advanceLine();
                 _OsShell.putPrompt();
                 _CPU.PC = switchto.PC;
@@ -93,16 +91,20 @@ var TSOS;
                 return cont;
             }
             else {
+                _activePCB[_currInd].isActive = false;
+                console.log(_currInd);
                 _Console.advanceLine();
-                _StdOut.putText("Process Completed with ID " + _PID + "cycles");
+                _StdOut.putText("Process Completed with ID " + _PID);
                 _Console.advanceLine();
-                _StdOut.putText("Turnaround time " + _activePCB[_currInd].turnTime + "cycles");
+                _StdOut.putText("Turnaround time " + _activePCB[_currInd].turnTime + " cycles");
                 _Console.advanceLine();
-                _StdOut.putText("Wait time " + _activePCB[_currInd].waitTime + "cycles");
+                _StdOut.putText("Wait time " + _activePCB[_currInd].waitTime + " cycles");
                 _Console.advanceLine();
                 _OsShell.putPrompt();
+                _activePCB.splice(_currInd, 1);
                 document.getElementById("btnStepper").disabled = true;
                 _CPU.isExecuting = false;
+                TSOS.Control.updatePCBDisp();
                 return cont;
             }
         };

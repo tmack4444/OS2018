@@ -502,18 +502,24 @@ module TSOS {
             if(_activePCB[0].pid == args) {
               _currPCB = 0;
               _activePCB[0].isActive = true;
+              _CPU.PC = _activePCB[0].PC;
               _ReadyQueue.enqueue(_activePCB[0]);
+              _currInd = 2;
               Control.updateCPUDisp();
               _CPU.isExecuting = true;
             } else if (_activePCB[1].pid == args) {
               _currPCB = 1;
               _activePCB[1].isActive = true;
+              _CPU.PC = _activePCB[1].PC;
               _ReadyQueue.enqueue(_activePCB[1]);
+              _currInd = 2;
               Control.updateCPUDisp();
               _CPU.isExecuting = true;
             } else if (_activePCB[2].pid == args) {
               _currPCB = 2;
               _activePCB[2].isActive = true;
+              _CPU.PC = _activePCB[2].PC;
+              _currInd = 2;
               _ReadyQueue.enqueue(_activePCB[2]);
               Control.updateCPUDisp();
               _CPU.isExecuting = true;
@@ -539,30 +545,27 @@ module TSOS {
             _currPCB = 0;
             _activePCB[0].isActive = true;
             _ReadyQueue.enqueue(_activePCB[0]);
-            console.log(_activePCB[0]);
           }
           if(typeof _activePCB[1] != undefined && _activePCB[1].isActive) {
             _currPCB = 1;
             _activePCB[1].isActive = true;
             _ReadyQueue.enqueue(_activePCB[1]);
-            console.log(_activePCB[0]);
           }
           if(typeof _activePCB[2] != undefined && _activePCB[2].isActive) {
             _currPCB = 2;
             _activePCB[2].isActive = true;
             _ReadyQueue.enqueue(_activePCB[2]);
-            console.log(_activePCB[0]);
           }
         _Scheduler.numCycle = 0;
         if(!_ReadyQueue.isEmpty()){
           var runPCB = _ReadyQueue.dequeue();
-          console.log(runPCB);
           _CPU.PC = runPCB.PC;
           _CPU.Acc = runPCB.Acc;
           _CPU.Xreg = runPCB.Xreg;
           _CPU.Yreg = runPCB.Yreg;
           _CPU.Zflag = runPCB.Zflag;
           _currPart = runPCB.part;
+          _currInd = runPCB.index;
           _CPU.isExecuting = true;
           }
         }

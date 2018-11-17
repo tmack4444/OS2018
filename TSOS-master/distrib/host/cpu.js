@@ -68,7 +68,6 @@ var TSOS;
                 this.PC = this.PC - 256;
             }
             var currentInstruction = _MemManager.get(this.PC); //fetch
-            console.log(currentInstruction);
             switch (currentInstruction) { //decode
                 case "A9":
                     this.LDAConst(_MemManager.get(this.PC + 1)); //execute
@@ -107,7 +106,6 @@ var TSOS;
                     break;
                 case "00":
                     var contExe = _Scheduler.procesFin();
-                    console.log("CONTINUE EXECUTION? " + contExe);
                     if (contExe) {
                         break;
                     }
@@ -183,7 +181,6 @@ var TSOS;
             _MemManager.put(parseInt(address, 16), value.toString(16));
         };
         Cpu.prototype.SYS = function () {
-            console.log(this.Xreg);
             if (this.Xreg == 1) {
                 _StdOut.putText(this.Yreg.toString());
             }
