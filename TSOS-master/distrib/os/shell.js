@@ -80,6 +80,8 @@ var TSOS;
             this.commandList[this.commandList.length] = sc;
             sc = new TSOS.ShellCommand(this.shellQuantum, "quantum", "<int> - Specify a new quantum for the scheduler to use");
             this.commandList[this.commandList.length] = sc;
+            sc = new TSOS.ShellCommand(this.shellGetSchedule, "getSchedule", "- Return the scheduling method currently in use");
+            this.commandList[this.commandList.length] = sc;
             // ps  - list the running processes and their IDs
             // kill <id> - kills the specified process id.
             //
@@ -516,6 +518,9 @@ var TSOS;
             else {
                 _StdOut.putText("Please supply a value");
             }
+        };
+        Shell.prototype.shellGetSchedule = function () {
+            _StdOut.putText(_Scheduler.getSchedule());
         };
         return Shell;
     }());

@@ -147,6 +147,11 @@ module TSOS {
                                   "<int> - Specify a new quantum for the scheduler to use");
             this.commandList[this.commandList.length] = sc;
 
+            sc = new ShellCommand(this.shellGetSchedule,
+                                  "getSchedule",
+                                  "- Return the scheduling method currently in use");
+            this.commandList[this.commandList.length] = sc;
+
             // ps  - list the running processes and their IDs
             // kill <id> - kills the specified process id.
 
@@ -624,6 +629,10 @@ module TSOS {
           } else {
             _StdOut.putText("Please supply a value");
           }
+        }
+
+        public shellGetSchedule(args) {
+          _StdOut.putText(_Scheduler.getSchedule());
         }
 
 

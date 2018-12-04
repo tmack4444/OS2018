@@ -3,10 +3,17 @@ var TSOS;
 (function (TSOS) {
     var Scheduler = /** @class */ (function () {
         function Scheduler() {
+            this.method = "Round Robin";
         }
         Scheduler.prototype.init = function () {
             this.quantum = 6;
             this.numCycle = 0;
+        };
+        Scheduler.prototype.methodChange = function (newMethod) {
+            this.method = newMethod;
+        };
+        Scheduler.prototype.getSchedule = function () {
+            return this.method;
         };
         Scheduler.prototype.increment = function () {
             if (this.numCycle >= this.quantum) {
@@ -101,7 +108,6 @@ var TSOS;
                 _StdOut.putText("Wait time " + _activePCB[_currInd].waitTime + " cycles");
                 _Console.advanceLine();
                 _OsShell.putPrompt();
-                _activePCB.splice(_currInd, 1);
                 document.getElementById("btnStepper").disabled = true;
                 _CPU.isExecuting = false;
                 TSOS.Control.updatePCBDisp();

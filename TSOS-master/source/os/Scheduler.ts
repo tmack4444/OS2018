@@ -4,6 +4,7 @@ module TSOS {
     export class Scheduler {
       public quantum: number;
       public numCycle: number; //number of cycles since last contextSwitch
+      public method: string = "Round Robin";
 
         constructor() {
         }
@@ -11,6 +12,14 @@ module TSOS {
         public init(): void {
           this.quantum = 6;
           this.numCycle = 0;
+        }
+
+        public methodChange(newMethod): void{
+          this.method = newMethod;
+        }
+
+        public getSchedule(): string{
+          return this.method;
         }
 
         public increment(): void {
