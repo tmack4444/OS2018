@@ -82,6 +82,8 @@ var TSOS;
             this.commandList[this.commandList.length] = sc;
             sc = new TSOS.ShellCommand(this.shellGetSchedule, "getschedule", "- Return the scheduling method currently in use");
             this.commandList[this.commandList.length] = sc;
+            sc = new TSOS.ShellCommand(this.shellChangeSchedule, "changeschedule", "- <['rr', 'fcfs', 'priority'] - Change the current scheduling algorithm");
+            this.commandList[this.commandList.length] = sc;
             //
             // Display the initial prompt.
             this.putPrompt();
@@ -91,7 +93,6 @@ var TSOS;
         };
         Shell.prototype.handleInput = function (buffer) {
             _Kernel.krnTrace("Shell Command~" + buffer);
-            console.log(buffer);
             //
             // Parse the input...
             //
@@ -134,7 +135,6 @@ var TSOS;
         };
         // Note: args is an option parameter, ergo the ? which allows TypeScript to understand that.
         Shell.prototype.execute = function (fn, args) {
-            console.log(fn);
             // We just got a command, so advance the line...
             _StdOut.advanceLine();
             // ... call the command function passing in the args with some über-cool functional programming ...
@@ -154,14 +154,12 @@ var TSOS;
             buffer = buffer.toLowerCase();
             // 3. Separate on spaces so we can determine the command and command-line args, if any.
             var tempList = buffer.split(" ");
-            console.log(tempList);
             // 4. Take the first (zeroth) element and use that as the command.
             var cmd = tempList.shift(); // Yes, you can do that to an array in JavaScript.  See the Queue class.
             // 4.1 Remove any left-over spaces.
             cmd = TSOS.Utils.trim(cmd);
             // 4.2 Record it in the return value.
             retVal.command = cmd;
-            console.log(cmd);
             // 5. Now create the args array from what's left.
             for (var i in tempList) {
                 var arg = TSOS.Utils.trim(tempList[i]);
@@ -520,8 +518,22 @@ var TSOS;
             }
         };
         Shell.prototype.shellGetSchedule = function (args) {
-            console.log("GET SCHEDULE");
             _StdOut.putText(_Scheduler.getSchedule());
+        };
+        Shell.prototype.shellChangeSchedule = function (args) {
+            if (args == "fcfs") {
+                _Scheduler.method = "First Come First Served";
+                _Scheduler.quantum = 2147483645; //This is almost MAX INT. For some reason the keywords MAX_INT or MAX_SAFE_INTEGER weren't working so im going with the "Magic" number. sorry
+            }
+            else if (args == "rr") {
+                _Scheduler.method = "Round Robin";
+                _Scheduler.quantum = 6;
+            }
+            else if (args == "priority") {
+                _Scheduler.method = "Priority";
+                //TODO Implement priority scheduling
+            }
+            _StdOut.putText("Now scheduling with " + _Scheduler.getSchedule());
         };
         return Shell;
     }());

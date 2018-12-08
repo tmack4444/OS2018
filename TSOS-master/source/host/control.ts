@@ -136,7 +136,6 @@ module TSOS {
         }
 
         public static hostBtnStepper_click(btn): void {
-          console.log("Forward step");
           _CPU.stepper = true;
           _CPU.isExecuting = true;
         }
@@ -155,7 +154,6 @@ module TSOS {
         public static updatePCBDisp(): void {
           var PCBStatus: string = "";
           for(var i = 0; i < _activePCB.length; i++) {
-            console.log(_activePCB[i].isActive);
             if(_activePCB[i].isActive) {
               var run = "";
               if(_activePCB[i].isRunning) {
@@ -198,10 +196,8 @@ module TSOS {
           var memoryDisplay = <HTMLTableElement> document.getElementById("taMemDisplay");
           for(var i = 0; i < 96; i ++) {
             memoryDisplay.insertRow(i); //insert a row
-            console.log("InsertedRow");
             for(var x = 0; x < 9; x++) {
               memoryDisplay.rows[i].insertCell(x); //now insert 9 cells to each row
-              console.log("InsertedCell");
             }
           }
           //When assigning our address to the address cell in the table, we need to create the value
