@@ -148,12 +148,10 @@ module TSOS {
             this.commandList[this.commandList.length] = sc;
 
             sc = new ShellCommand(this.shellGetSchedule,
-                                  "getSchedule",
+                                  "getschedule",
                                   "- Return the scheduling method currently in use");
             this.commandList[this.commandList.length] = sc;
 
-            // ps  - list the running processes and their IDs
-            // kill <id> - kills the specified process id.
 
             //
             // Display the initial prompt.
@@ -167,6 +165,7 @@ module TSOS {
 
         public handleInput(buffer) {
             _Kernel.krnTrace("Shell Command~" + buffer);
+            console.log(buffer);
             //
             // Parse the input...
             //
@@ -206,6 +205,7 @@ module TSOS {
 
         // Note: args is an option parameter, ergo the ? which allows TypeScript to understand that.
         public execute(fn, args?) {
+          console.log(fn);
             // We just got a command, so advance the line...
             _StdOut.advanceLine();
             // ... call the command function passing in the args with some über-cool functional programming ...
@@ -229,13 +229,14 @@ module TSOS {
 
             // 3. Separate on spaces so we can determine the command and command-line args, if any.
             var tempList = buffer.split(" ");
-
+            console.log(tempList);
             // 4. Take the first (zeroth) element and use that as the command.
             var cmd = tempList.shift();  // Yes, you can do that to an array in JavaScript.  See the Queue class.
             // 4.1 Remove any left-over spaces.
             cmd = Utils.trim(cmd);
             // 4.2 Record it in the return value.
             retVal.command = cmd;
+            console.log(cmd);
 
             // 5. Now create the args array from what's left.
             for (var i in tempList) {
@@ -610,8 +611,6 @@ module TSOS {
             }
             for(var i = 0; i < _ReadyQueue.getSize(); i++) {
               var suspect = _ReadyQueue.dequeue();
-              console.log(victim);
-              console.log(suspect.pid);
               if(victim == suspect.pid) {
                 //if it is in use, commit murder
                 _StdOut.putText("Process " + victim + " has been murdered");
@@ -632,6 +631,7 @@ module TSOS {
         }
 
         public shellGetSchedule(args) {
+          console.log("GET SCHEDULE");
           _StdOut.putText(_Scheduler.getSchedule());
         }
 
