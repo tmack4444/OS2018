@@ -404,39 +404,24 @@ var TSOS;
             return;
         };
         Shell.prototype.shellRun = function (args) {
+            var foundOne = false;
             if (args.length > 0) {
                 args = parseInt(args);
-                if (_activePCB[0].pid == args) {
-                    _currPCB = 0;
-                    _PID = args;
-                    _activePCB[0].isActive = true;
-                    _CPU.PC = _activePCB[0].PC;
-                    _ReadyQueue.enqueue(_activePCB[0]);
-                    _currInd = 0;
-                    TSOS.Control.updateCPUDisp();
-                    _CPU.isExecuting = true;
+                for (var i = 0; i < _activePCB.length; i++) {
+                    if (_activePCB[i].pid == args) {
+                        _currPCB = i;
+                        _PID = args;
+                        _activePCB[i].isActive = true;
+                        _CPU.PC = _activePCB[i].PC;
+                        _ReadyQueue.enqueue(_activePCB[i]);
+                        _currInd = i;
+                        TSOS.Control.updateCPUDisp();
+                        _CPU.isExecuting = true;
+                        foundOne = true;
+                        break;
+                    }
                 }
-                else if (_activePCB[1].pid == args) {
-                    _currPCB = 1;
-                    _PID = args;
-                    _activePCB[1].isActive = true;
-                    _CPU.PC = _activePCB[1].PC;
-                    _ReadyQueue.enqueue(_activePCB[1]);
-                    _currInd = 1;
-                    TSOS.Control.updateCPUDisp();
-                    _CPU.isExecuting = true;
-                }
-                else if (_activePCB[2].pid == args) {
-                    _currPCB = 2;
-                    _PID = args;
-                    _activePCB[2].isActive = true;
-                    _CPU.PC = _activePCB[2].PC;
-                    _currInd = 2;
-                    _ReadyQueue.enqueue(_activePCB[2]);
-                    TSOS.Control.updateCPUDisp();
-                    _CPU.isExecuting = true;
-                }
-                else {
+                if (!foundOne) {
                     _StdOut.putText("Error, no process in memory with a PID of " + args);
                     return;
                 }
@@ -453,20 +438,12 @@ var TSOS;
         };
         Shell.prototype.shellRunall = function (args) {
             var PCBtoReady = [];
-            if (_activePCB[0] != undefined && _activePCB[0].isActive) {
-                _currPCB = 0;
-                _activePCB[0].isActive = true;
-                _ReadyQueue.enqueue(_activePCB[0]);
-            }
-            if (typeof _activePCB[1] != undefined && _activePCB[1].isActive) {
-                _currPCB = 1;
-                _activePCB[1].isActive = true;
-                _ReadyQueue.enqueue(_activePCB[1]);
-            }
-            if (typeof _activePCB[2] != undefined && _activePCB[2].isActive) {
-                _currPCB = 2;
-                _activePCB[2].isActive = true;
-                _ReadyQueue.enqueue(_activePCB[2]);
+            for (var i = 0; i < _activePCB.length; i++) {
+                if (_activePCB[i].pid == args) {
+                    _currPCB = i;
+                    _activePCB[i].isActive = true;
+                    _ReadyQueue.enqueue(_activePCB[i]);
+                }
             }
             _Scheduler.numCycle = 0;
             if (!_ReadyQueue.isEmpty()) {
@@ -484,14 +461,10 @@ var TSOS;
         };
         Shell.prototype.shellPs = function (args) {
             var out = "";
-            if (_activePCB[0] != null) {
-                out += _activePCB[0].pid;
-            }
-            if (_activePCB[1] != null) {
-                out += _activePCB[1].pid;
-            }
-            if (_activePCB[2] != null) {
-                out += _activePCB[2].pid;
+            for (var i = 0; i < _activePCB.length; i++) {
+                if (_activePCB[i] != null) {
+                    out += _activePCB[i].pid;
+                }
             }
             _StdOut.putText(out);
         };

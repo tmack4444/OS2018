@@ -44,6 +44,9 @@ var TSOS;
                 _activePCB[_currInd].waitTime = _activePCB[_currInd].waitTime;
                 _activePCB[_currInd].turnTime = _activePCB[_currInd].turnTime;
                 _Kernel.krnTrace("Context switch from PID " + _PID + " to PID " + switchto.pid);
+                if (switchto.part > 2) { //if the new PCB is in memory, we need to swap it with something. We'll just use the last thing run since that should be efficent with round robin and first come first served
+                    this.swapper(switchto, _activePCB[_currInd]);
+                }
                 _ReadyQueue.enqueue(_activePCB[_currInd]);
                 _CPU.PC = switchto.PC;
                 _CPU.Acc = switchto.Acc;
@@ -86,6 +89,9 @@ var TSOS;
                 _StdOut.putText("Wait time " + _activePCB[_currInd].waitTime + " cycles");
                 _Console.advanceLine();
                 _OsShell.putPrompt();
+                if (switchto.part > 2) {
+                    this.swapper(switchto, _activePCB[currInd]);
+                }
                 _CPU.PC = switchto.PC;
                 _CPU.Acc = switchto.Acc;
                 _CPU.Xreg = switchto.Xreg;
@@ -124,6 +130,20 @@ var TSOS;
                 _ReadyQueue.enqueue(incrementer);
             }
             _activePCB[_currInd].turnTime++;
+        };
+        Scheduler.prototype.swapper = function (newPCB, memPCB) {
+            var currStorage = localStorage.getItem(newPCB.part);
+            currStorage = JSON.parse(currStorage); //get the program out of storage as a string
+            var tempSave;
+            _currPart = memPCB.part; //set what partition we're replacing in memory so the memory manager gets the right program out
+            for (var i = 0; i < 256; i++) {
+                tempSave[i] = _MemManager.get(i); //get the entire program from memory as an array
+            }
+            currStorage.replace(/(.{2})/, " "); //format the string from disk into a string with a space every 2 characters ...
+            currStorage.split(" "); //so we can turn it into an array where every element is 2 characters from the string. Cause an opcode is 2 characters
+            memPCB.part = newPCB.part; //now change the PCB's part numbers to their new partitions
+            newPCB.part = _currPart;
+            //and now they should be swapped correctly.
         };
         return Scheduler;
     }());
