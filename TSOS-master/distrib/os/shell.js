@@ -84,6 +84,8 @@ var TSOS;
             this.commandList[this.commandList.length] = sc;
             sc = new TSOS.ShellCommand(this.shellChangeSchedule, "changeschedule", "- <['rr', 'fcfs', 'priority'] - Change the current scheduling algorithm");
             this.commandList[this.commandList.length] = sc;
+            sc = new TSOS.ShellCommand(this.shellCreate, "create", "<filename> - Create a file with the filename <filename> in the next avalible part of the disk");
+            this.commandList[this.commandList.length] = sc;
             //
             // Display the initial prompt.
             this.putPrompt();
@@ -385,7 +387,7 @@ var TSOS;
                     }
                 }
                 _lastPart = nextPart;
-                var newPCB = new TSOS.PCB(_lastPID, _lastPart, _lastPart);
+                var newPCB = new TSOS.PCB(_lastPID, _lastPart, nextPart);
                 _activePCB[_lastPart] = newPCB;
                 _activePCB[_lastPart].init();
                 _activePCB[_lastPart].isActive = true;
@@ -520,6 +522,26 @@ var TSOS;
                 //TODO Implement priority scheduling
             }
             _StdOut.putText("Now scheduling with " + _Scheduler.getSchedule());
+        };
+        Shell.prototype.shellCreate = function (args) {
+            var input = document.getElementById("taProgramInput").value.toUpperCase();
+            if (args.length > 0) {
+                var nextPart = 3; //start our search for the next partitition at 3, since we want to save this file to the disk.
+                for (var i = 0; i < _assignedParts.length; i++) {
+                    if (_assignedParts[i] == nextPart) {
+                        nextPart++;
+                        i = 0; //we reset i to 0 since this array probably isn't sorted. While this will add some time to searching, it's probably better than running a sorting algorithm.
+                    }
+                }
+                if (nextPart <= 20) { // my current storage display only lets us see 20 partitions of memory, so I'm limiting the number of files you can store to 20
+                    _StdOut.putText("File " + args + " created and is stored at disk partition " + nextPart);
+                    _assignedParts.push(nextPart); //mark that partition as in use
+                    return;
+                }
+                else {
+                    _StdOut.putText("Error! Not enough disk space avalible");
+                }
+            }
         };
         return Shell;
     }());
