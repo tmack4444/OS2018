@@ -502,15 +502,17 @@ module TSOS {
             _activePCB[_lastPart].init();
             _activePCB[_lastPart].isActive = true;
             _currPCB = _lastPart;
+            _assignedParts.push(_lastPart);
             if(_lastPart >= 0 && _lastPart <= 2) { //if the partition is 0 1 or 2, we want to store this in memory
               _MemManager.store(input);
             } else {  // if it's not, then we want to store it in storage, and give it the partition number to use as the key for session storage
-              _StorageManager.store(_lastPart, input);
+              _StorageManager.store(input, _lastPart);
+              console.log("Adding something to storage");
             }
             _StdOut.putText("Process saved with Process ID (PID): " + _lastPID);
             Control.updatePCBDisp();
             _lastPID++;
-            _assignedParts.push(_lastPart);
+
           }
           return;
         }

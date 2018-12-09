@@ -163,7 +163,7 @@ module TSOS {
               }
                 PCBStatus += "\n" + "PID: " + _activePCB[i].pid
                 + " Status: " + run
-                + " Partition " + _activePCB[i].part
+                + " Part " + _activePCB[i].part
                 + " PC: " + _activePCB[i].PC.toString(16).toUpperCase()
                 + " IR: " + _MemManager.get(_activePCB[i].PC)
                 + " ACC: " + _activePCB[i].Acc
@@ -217,37 +217,42 @@ module TSOS {
      public static initStorageDispl(): void {
        //remember functions table.insertRow();, row.insertCell, and remmeber to print an address
        var storageDisplay = <HTMLTableElement> document.getElementById("taStorageDisplay");
-       for(var i = 0; i < 96; i ++) {
+       for(var i = 0; i < 20; i ++) {
          storageDisplay.insertRow(i); //insert a row
-         for(var x = 0; x < 9; x++) {
-           storageDisplay.rows[i].insertCell(x); //now insert 9 cells to each row
+         for(var x = 0; x < 2; x++) {
+           storageDisplay.rows[i].insertCell(x); //now insert 2 cells to each row
          }
        }
-       //When assigning our address to the address cell in the table, we need to create the value
-       //If there's 9 cells per row, 8 have values, then we just need to set the value to the hex version of j*8 (i think(now I know))
-       for(var j = 0; j < 96; j++) {
-         var jHex = j * 8;
-         var address: string = "0X";
-         if(j < 32) {  // Make sure we add a leading 0 if J is less than 100x16
-           address += "0";
-         }
-         address += jHex.toString(16)
-         storageDisplay.rows[j].cells[0].innerHTML = address;
+       //So addressses for the storage table. Since the key is the partition number, instead of putting in a whole addressing scheme, each row will just be given its partition number for an address
+       //The data will default to a bunch of 0s. Even if the part of the disk isn't in use this should be fine.
+       //Also, i'm only making 20 rows. This is because I feel like this is a safely large enough amount for disk storage to max out at.
+       for(var j = 0; j < 20; j++) {
+         storageDisplay.rows[j].cells[0].innerHTML = (j+3).toString();
+         storageDisplay.rows[j].cells[1].innerHTML = "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000";
        }
      }
 
      public static updateStorageDisp(): void {
-       var storageDisplay = <HTMLTableElement> document.getElementById("taStorageDisplay");
-       var currMemLoc: number = 0;
-       for(var i = 0; i < 96; i++) {
-         for(var j = 1; j < 9; j ++) {
-           storageDisplay.rows[i].cells[j].innerHTML = _Memory.Storage[currMemLoc];
-           currMemLoc++;
+       console.log("updating storage display");
+       var diskParts: number[] = [];
+       var j = 0;
+       for(var i = 0; i <= _assignedParts.length; i++) {
+         console.log(_assignedParts[i]);
+         if(_assignedParts[i] > 2) {
+           console.log(_assignedParts[i]);
+           diskParts[j] = _assignedParts[i];
+           j++;
          }
        }
-     }
-
-
+       var storageDisplay = <HTMLTableElement> document.getElementById("taStorageDisplay");
+       var currDiskChunk;
+       j--;
+       for(var k = j; k >= 0; k--){
+         console.log(diskParts[k]);
+         currDiskChunk = sessionStorage.getItem(diskParts[k].toString());
+         storageDisplay.rows[k].cells[1].innerHTML = currDiskChunk;
+         }
+       }
 
         public static updateMemDisp(): void {
           var memoryDisplay = <HTMLTableElement> document.getElementById("taMemDisplay");
