@@ -163,6 +163,7 @@ module TSOS {
               }
                 PCBStatus += "\n" + "PID: " + _activePCB[i].pid
                 + " Status: " + run
+                + " Partition " + _activePCB[i].part
                 + " PC: " + _activePCB[i].PC.toString(16).toUpperCase()
                 + " IR: " + _MemManager.get(_activePCB[i].PC)
                 + " ACC: " + _activePCB[i].Acc

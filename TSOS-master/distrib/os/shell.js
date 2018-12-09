@@ -133,6 +133,8 @@ var TSOS;
                 }
             }
         };
+        Shell.prototype.searchParts = function () {
+        };
         // Note: args is an option parameter, ergo the ? which allows TypeScript to understand that.
         Shell.prototype.execute = function (fn, args) {
             // We just got a command, so advance the line...
@@ -375,7 +377,14 @@ var TSOS;
             else {
                 //else the input is correct, we have to load it into memory
                 input = input.replace(/\s/g, ""); //time to format our input before we load it. Start by removing whitespace
-                _lastPart = this.searchParts();
+                var nextPart = 0;
+                for (var i = 0; i < _assignedParts.length; i++) {
+                    if (_assignedParts[i] == nextPart) {
+                        nextPart++;
+                        i = 0; //we reset i to 0 since this array probably isn't sorted. While this will add some time to searching, it's probably better than running a sorting algorithm.
+                    }
+                }
+                _lastPart = nextPart;
                 var newPCB = new TSOS.PCB(_lastPID, _lastPart, _lastPart);
                 _activePCB[_lastPart] = newPCB;
                 _activePCB[_lastPart].init();
@@ -393,16 +402,6 @@ var TSOS;
                 _assignedParts.push(_lastPart);
             }
             return;
-        };
-        Shell.prototype.searchParts = function () {
-            var nextPart = 0;
-            for (var i = 0; i < _assignedParts.length; i++) {
-                if (_assignedParts[i] == nextPart) {
-                    nextPart++;
-                    i = 0; //we reset i to 0 since this array probably isn't sorted. While this will add some time to searching, it's probably better than running a sorting algorithm.
-                }
-            }
-            return nextPart;
         };
         Shell.prototype.shellRun = function (args) {
             if (args.length > 0) {
