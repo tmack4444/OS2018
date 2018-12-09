@@ -95,6 +95,8 @@ var TSOS;
                 _PID = switchto.pid;
                 _currInd = switchto.index;
                 this.numCycle = 0;
+                var index = _assignedParts.indexOf(_currPart);
+                _assignedParts.splice(index, 1); //remove that partition from the array of assigned partitions
                 return cont;
             }
             else {

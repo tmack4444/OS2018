@@ -55,6 +55,7 @@ var _lastPart = 0; //keeps track of the last partition assigned
 var _currPart = 0; //keeps track of the current partition a running program is looking at
 var _currPCB = 0; //keeps track of the current PCB being used
 var _currInd = 0; //keeps of track of the index in activePCB that is currently being used (allows me to grab some info from the PCB without having to search through the queue). This is super helpful during context switches
+var _assignedParts = []; //keeps track of which partitions are already in use. Partitions 0 1 and 2 are in main memory, but anything over 2 will be on disk. Now I can check for the next free partition from this list, and ensure that new PCBs are stored on disk or in memory
 var _ReadyQueue;
 var _Scheduler;
 // Standard input and output

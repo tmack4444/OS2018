@@ -375,21 +375,34 @@ var TSOS;
             else {
                 //else the input is correct, we have to load it into memory
                 input = input.replace(/\s/g, ""); //time to format our input before we load it. Start by removing whitespace
-                if (_lastPart == 3) {
-                    _lastPart = 0;
-                }
+                _lastPart = this.searchParts();
                 var newPCB = new TSOS.PCB(_lastPID, _lastPart, _lastPart);
                 _activePCB[_lastPart] = newPCB;
                 _activePCB[_lastPart].init();
                 _activePCB[_lastPart].isActive = true;
                 _currPCB = _lastPart;
-                _MemManager.store(input);
+                if (_lastPart >= 0 && _lastPart <= 2) { //if the partition is 0 1 or 2, we want to store this in memory
+                    _MemManager.store(input);
+                }
+                else { // if it's not, then we want to store it in storage, and give it the partition number to use as the key for session storage
+                    _StorageManager.store(_lastPart, input);
+                }
                 _StdOut.putText("Process saved with Process ID (PID): " + _lastPID);
                 TSOS.Control.updatePCBDisp();
                 _lastPID++;
-                _lastPart++;
+                _assignedParts.push(_lastPart);
             }
             return;
+        };
+        Shell.prototype.searchParts = function () {
+            var nextPart = 0;
+            for (var i = 0; i < _assignedParts.length; i++) {
+                if (_assignedParts[i] == nextPart) {
+                    nextPart++;
+                    i = 0; //we reset i to 0 since this array probably isn't sorted. While this will add some time to searching, it's probably better than running a sorting algorithm.
+                }
+            }
+            return nextPart;
         };
         Shell.prototype.shellRun = function (args) {
             if (args.length > 0) {
