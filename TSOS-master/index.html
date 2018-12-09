@@ -17,6 +17,7 @@
    <script type="text/javascript" src="distrib/host/devices.js"></script>
    <script type="text/javascript" src="distrib/host/cpu.js"></script>
    <script type="text/javascript" src="distrib/host/coreMem.js"></script>
+   <script type="text/javascript" src="distrib/host/storage.js"></script>
 
    <!-- Virtual OS Routines: Make sure Kernel code is last, since it needs those above it. -->
    <script type="text/javascript" src="distrib/os/interrupt.js"></script>
@@ -32,10 +33,11 @@
    <script type="text/javascript" src="distrib/os/PCB.js"></script>
    <script type="text/javascript" src="distrib/os/memManager.js"></script>
    <script type="text/javascript" src="distrib/os/Scheduler.js"></script>
+   <script type="text/javascript" src="distrib/os/StorageManager.js"></script>
    <!-- Other Routines -->
    <script type="text/javascript" src="distrib/utils.js"></script>
    <!-- Uncomment the line below to enable GLaDOS testing. -->
-   <script type="text/javascript" src="http://alanclasses.github.io/TSOS/test/glados-ip3.js"></script>
+   <!--script type="text/javascript" src="http://alanclasses.github.io/TSOS/test/glados-ip3.js"></script-->
 
 </head>
 
@@ -193,6 +195,15 @@ margin-left:0;
                 readonly>
              </table>
           </label>
+          <label>
+            Storage Display
+            <table name="taStorageDisplay"
+                   id  ="taStorageDisplay"
+                   style ="display: block;
+                           height: 450px;
+                           overflow-y: scroll;"
+               readonly>
+            </table>
     </div>
   </div>
 </div>

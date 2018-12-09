@@ -44,6 +44,10 @@ module TSOS {
             _MemManager = new MemManager();
             _MemManager.init();
 
+            _StorageManager = new StorageManager();
+            _StorageManager.init();
+
+
             // Initialize standard input and output to the _Console.
             _StdIn  = _Console;
             _StdOut = _Console;

@@ -40,6 +40,8 @@ var TSOS;
             // Initialize the memory manager, so we can manage memory. and stuff
             _MemManager = new TSOS.MemManager();
             _MemManager.init();
+            _StorageManager = new TSOS.StorageManager();
+            _StorageManager.init();
             // Initialize standard input and output to the _Console.
             _StdIn = _Console;
             _StdOut = _Console;
