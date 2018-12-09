@@ -53,6 +53,10 @@ module TSOS {
 
             _Kernel.krnTrace("Context switch from PID " + _PID + " to PID " + switchto.pid);
 
+            if(switchto.part > 2) { //if the new PCB is in memory, we need to swap it with something. We'll just use the last thing run since that should be efficent with round robin and first come first served
+              this.swapper(switchto, _activePCB[_currInd])
+            }
+
             _ReadyQueue.enqueue(_activePCB[_currInd]);
             _CPU.PC = switchto.PC;
             _CPU.Acc = switchto.Acc;
@@ -99,6 +103,10 @@ module TSOS {
             _Console.advanceLine();
             _OsShell.putPrompt();
 
+            if(switchto.part > 2) {
+              this.swapper(switchto, _activePCB[currInd]);
+            }
+
             _CPU.PC = switchto.PC;
             _CPU.Acc = switchto.Acc;
             _CPU.Xreg = switchto.Xreg;
@@ -108,6 +116,10 @@ module TSOS {
             _PID = switchto.pid;
             _currInd = switchto.index;
             this.numCycle = 0;
+
+            var index = _assignedParts.indexOf(_currPart);
+            _assignedParts.splice(index, 1); //remove that partition from the array of assigned partitions
+
             return cont;
           } else {
             _activePCB[_currInd].isActive = false;
@@ -136,7 +148,22 @@ module TSOS {
             _ReadyQueue.enqueue(incrementer);
           }
           _activePCB[_currInd].turnTime++;
-
         }
+
+        public swapper(newPCB, memPCB): void { //when something that's currently on disk is scheduled to be run next, we need to swap it for
+          var currStorage = localStorage.getItem(newPCB.part);
+          currStorage = JSON.parse(currStorage); //get the program out of storage as a string
+          var tempSave;
+          _currPart = memPCB.part; //set what partition we're replacing in memory so the memory manager gets the right program out
+          for(var i = 0; i < 256; i++) {
+            tempSave[i] = _MemManager.get(i);  //get the entire program from memory as an array
+          }
+          currStorage.replace(/(.{2})/, " "); //format the string from disk into a string with a space every 2 characters ...
+          currStorage.split(" "); //so we can turn it into an array where every element is 2 characters from the string. Cause an opcode is 2 characters
+          memPCB.part = newPCB.part; //now change the PCB's part numbers to their new partitions
+          newPCB.part = _currPart;
+
+          //and now they should be swapped correctly.
+          }
     }
 }
