@@ -669,15 +669,27 @@ var TSOS;
                 quickForm = false;
             }
             for (var i = 3; i < _DiskParts + 3; i++) {
-                if (quickForm) {
-                    sessionStorage.setItem(i.toString(), "0000");
+                var currStoreItem = sessionStorage.getItem(i.toString());
+                if (currStoreItem != null) {
+                    if (quickForm) {
+                        currStoreItem = "0000" + currStoreItem.substr(4);
+                        sessionStorage.setItem(i.toString(), currStoreItem);
+                    }
+                    else {
+                        currStoreItem = "00000000000000000000000000000000000000000000000000000000000000000000" + currStoreItem.substr(68);
+                        sessionStorage.setItem(i.toString(), "00000000000000000000000000000000000000000000000000000000000000000000");
+                    }
                 }
                 else {
-                    sessionStorage.setItem(i.toString(), "00000000000000000000000000000000000000000000000000000000000000000000");
+                    if (quickForm) {
+                        sessionStorage.setItem(i.toString(), "0000");
+                    }
+                    else {
+                        sessionStorage.setItem(i.toString(), "00000000000000000000000000000000000000000000000000000000000000000000");
+                    }
                 }
             }
             TSOS.Control.updateStorageDisp();
-            console.log("format");
         };
         return Shell;
     }());
