@@ -105,7 +105,7 @@ module TSOS {
                   default: break; //Just in CASE there is an invalid key press
                 }
             } else if  (((keyCode >= 187) && (keyCode <= 191)) ||  //other valid keys on the keyboard
-                       ((keyCode >= 219) && (keyCode <= 221)) ){
+                       ((keyCode >= 219) && (keyCode <= 222)) ){
 
                 //Figure out which key was pressed, then if shift was pressed, then print it.
                 //Like with number special characters, there is no real pattern to figure out
@@ -201,6 +201,16 @@ module TSOS {
                                _KernelInputQueue.enqueue(chr);    // ]
                                break;
                           }
+
+                    case 222: if(isShifted) {
+                                chr = String.fromCharCode(34);
+                                _KernelInputQueue.enqueue(chr);    // "
+                                 break;
+                            } else {
+                                chr = String.fromCharCode(39);
+                                _KernelInputQueue.enqueue(chr);    // '
+                                break;
+                           }
 
 
                   default: break; //Once again, just in CASE of an invalid keypress
