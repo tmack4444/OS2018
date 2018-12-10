@@ -30,7 +30,29 @@ var TSOS;
         };
         Scheduler.prototype.switcheroo = function () {
             if (!_ReadyQueue.isEmpty()) {
-                var switchto = _ReadyQueue.dequeue();
+                if (this.method == "Round Robin" || "First Come First Served") {
+                    var switchto = _ReadyQueue.dequeue();
+                }
+                else if (this.method == "Priority") {
+                    var largestInd = 0;
+                    var mostImportant = 11;
+                    for (var i = 0; i <= _ReadyQueue.getSize(); i++) {
+                        var currElem = _ReadyQueue.dequeue();
+                        if (currElem.priority < mostImportant) {
+                            largestInd = i;
+                            mostImportant = currElem.priority;
+                        }
+                        _ReadyQueue.enqueue(currElem);
+                    }
+                    for (var i = 0; i <= largestInd; i++) {
+                        if (i == largestInd) {
+                            var switchto = _ReadyQueue.dequeue();
+                        }
+                        else {
+                            _ReadyQueue.enqueue(_ReadyQueue.dequeue());
+                        }
+                    }
+                }
                 console.log(switchto);
                 _activePCB[_currInd].PC = _CPU.PC;
                 _activePCB[_currInd].Acc = _CPU.Acc;

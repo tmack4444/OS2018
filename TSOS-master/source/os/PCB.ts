@@ -15,6 +15,7 @@ module TSOS {
       public turnTime: number;
       public index: number;
       public isRunning: boolean;
+      public priority: number;
 
         constructor(public processid: number, public partition: number, public add: number) {
           this.pid = processid;
@@ -32,6 +33,7 @@ module TSOS {
             this.waitTime = 0;
             this.turnTime = 0;
             this.isRunning = false;
+            this.priority = 5;
         }
 
         public inactive(): void {

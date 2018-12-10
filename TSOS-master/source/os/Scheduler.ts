@@ -37,38 +37,61 @@ module TSOS {
 
         public switcheroo(): void {    // I was going to call this context switch, but switcheroo is just so much more fun
           if(!_ReadyQueue.isEmpty()) {
-            var switchto = _ReadyQueue.dequeue();
-            console.log(switchto);
-            _activePCB[_currInd].PC = _CPU.PC;
-            _activePCB[_currInd].Acc = _CPU.Acc;
-            _activePCB[_currInd].Xreg = _CPU.Xreg;
-            _activePCB[_currInd].Yreg = _CPU.Yreg;
-            _activePCB[_currInd].Zflag = _CPU.Zflag;
-            _activePCB[_currInd].part = _currPart;
-            _activePCB[_currInd].pid = _PID;
-            _activePCB[_currInd].index = _currInd;
-            _activePCB[_currInd].isRunning = false;
-            _activePCB[_currInd].waitTime = _activePCB[_currInd].waitTime;
-            _activePCB[_currInd].turnTime = _activePCB[_currInd].turnTime;
+            if(this.method == "Round Robin" || "First Come First Served") {
+              var switchto = _ReadyQueue.dequeue();
+            }else if (this.method == "Priority") {
+              var largestInd = 0;
+              var mostImportant = 11;
+              for(var i = 0; i <= _ReadyQueue.getSize(); i++) {
+                var currElem = _ReadyQueue.dequeue();
+                if(currElem.priority < mostImportant) {
+                  largestInd = i;
+                  mostImportant = currElem.priority;
+                }
+                _ReadyQueue.enqueue(currElem);
+              }
+              for(var i = 0; i <= largestInd; i++) {
+                if(i==largestInd) {
+                  var switchto = _ReadyQueue.dequeue();
+                } else {
+                  _ReadyQueue.enqueue(_ReadyQueue.dequeue());
+                }
+              }
 
-            _Kernel.krnTrace("Context switch from PID " + _PID + " to PID " + switchto.pid);
-
-            if(switchto.part > 2) { //if the new PCB is in memory, we need to swap it with something. We'll just use the last thing run since that should be efficent with round robin and first come first served
-              this.swapper(switchto, _activePCB[_currInd])
             }
 
-            _ReadyQueue.enqueue(_activePCB[_currInd]);
-            _CPU.PC = switchto.PC;
-            _CPU.Acc = switchto.Acc;
-            _CPU.Xreg = switchto.Xreg;
-            _CPU.Yreg = switchto.Yreg;
-            _CPU.Zflag = switchto.Zflag;
-            _currPart = switchto.part;
-            _PID = switchto.pid;
-            _currInd = switchto.index;
-            _activePCB[_currInd].isRunning = true;
-            _activePCB[_currInd].turnTime = switchto.turnTime;
-            _activePCB[_currInd].waitTime = switchto.waitTime;
+              console.log(switchto);
+              _activePCB[_currInd].PC = _CPU.PC;
+              _activePCB[_currInd].Acc = _CPU.Acc;
+              _activePCB[_currInd].Xreg = _CPU.Xreg;
+              _activePCB[_currInd].Yreg = _CPU.Yreg;
+              _activePCB[_currInd].Zflag = _CPU.Zflag;
+              _activePCB[_currInd].part = _currPart;
+              _activePCB[_currInd].pid = _PID;
+              _activePCB[_currInd].index = _currInd;
+              _activePCB[_currInd].isRunning = false;
+              _activePCB[_currInd].waitTime = _activePCB[_currInd].waitTime;
+              _activePCB[_currInd].turnTime = _activePCB[_currInd].turnTime;
+
+              _Kernel.krnTrace("Context switch from PID " + _PID + " to PID " + switchto.pid);
+
+              if(switchto.part > 2) { //if the new PCB is in memory, we need to swap it with something. We'll just use the last thing run since that should be efficent with round robin and first come first served
+                this.swapper(switchto, _activePCB[_currInd])
+              }
+
+              _ReadyQueue.enqueue(_activePCB[_currInd]);
+              _CPU.PC = switchto.PC;
+              _CPU.Acc = switchto.Acc;
+              _CPU.Xreg = switchto.Xreg;
+              _CPU.Yreg = switchto.Yreg;
+              _CPU.Zflag = switchto.Zflag;
+              _currPart = switchto.part;
+              _PID = switchto.pid;
+              _currInd = switchto.index;
+              _activePCB[_currInd].isRunning = true;
+              _activePCB[_currInd].turnTime = switchto.turnTime;
+              _activePCB[_currInd].waitTime = switchto.waitTime;
+
 
           }
         }

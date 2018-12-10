@@ -538,9 +538,14 @@ module TSOS {
             }
 
             if(args.length > 0) {
+              if(args.parseInt < 1) { //the user can enter whatever they want. No one said I had to listen
+                args = 1;
+              } else if (args.parseInt > 10) {
+                args = 10;
+              }
               newPCB.priority = args[0];
             }
-            
+
             _StdOut.putText("Process saved with Process ID (PID): " + _lastPID);
             Control.updatePCBDisp();
             _lastPID++;
