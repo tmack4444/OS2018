@@ -592,7 +592,7 @@ module TSOS {
         public shellRunall(args) {
           var PCBtoReady = [];
           for(var i = 0; i < _activePCB.length; i++) {
-            if(_activePCB[i].pid == args) {
+            if(_activePCB[i].pid != undefined && _activePCB[i].isActive) {
               _currPCB = i;
               _activePCB[i].isActive = true;
               _ReadyQueue.enqueue(_activePCB[i]);
