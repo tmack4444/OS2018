@@ -92,9 +92,9 @@ var TSOS;
             this.commandList[this.commandList.length] = sc;
             sc = new TSOS.ShellCommand(this.shellDelete, "delete", "<filename> - Delete a file with the filename <filename>");
             this.commandList[this.commandList.length] = sc;
-            sc = new TSOS.ShellCommand(this.shellFormat, "format", "<filename> - Delete a file with the filename <filename>");
+            sc = new TSOS.ShellCommand(this.shellFormat, "format", "<['full', 'quick'] - Format the hard drive with the quick or full methods");
             this.commandList[this.commandList.length] = sc;
-            sc = new TSOS.ShellCommand(this.shellLs, "ls", "<filename> - Delete a file with the filename <filename>");
+            sc = new TSOS.ShellCommand(this.shellLs, "ls", "- List all files saved on the disk");
             this.commandList[this.commandList.length] = sc;
             //
             // Display the initial prompt.
@@ -663,7 +663,20 @@ var TSOS;
             }
             _StdOut.putText(listFiles);
         };
-        Shell.prototype.shellFormat = function () {
+        Shell.prototype.shellFormat = function (args) {
+            var quickForm = true;
+            if (args[0] == "full") {
+                quickForm = false;
+            }
+            for (var i = 3; i < _DiskParts + 3; i++) {
+                if (quickForm) {
+                    sessionStorage.setItem(i.toString(), "0000");
+                }
+                else {
+                    sessionStorage.setItem(i.toString(), "00000000000000000000000000000000000000000000000000000000000000000000");
+                }
+            }
+            TSOS.Control.updateStorageDisp();
             console.log("format");
         };
         return Shell;

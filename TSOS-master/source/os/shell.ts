@@ -179,12 +179,12 @@ module TSOS {
 
             sc = new ShellCommand(this.shellFormat,
                                   "format",
-                                  "<filename> - Delete a file with the filename <filename>");
+                                  "<['full', 'quick'] - Format the hard drive with the quick or full methods");
             this.commandList[this.commandList.length] = sc;
 
             sc = new ShellCommand(this.shellLs,
                                   "ls",
-                                  "<filename> - Delete a file with the filename <filename>");
+                                  "- List all files saved on the disk");
             this.commandList[this.commandList.length] = sc;
 
 
@@ -797,7 +797,21 @@ module TSOS {
         _StdOut.putText(listFiles);
       }
 
-      public shellFormat() {
+      public shellFormat(args?) {
+        var quickForm = true;
+        if(args[0] == "full") {
+          quickForm = false;
+        }
+        for(var i = 3; i < _DiskParts+3; i++) {
+          var currStoreItem = sessionStorage.getItem(i.toString());
+          if(quickForm) {
+            currStoreItem.splice(0,4,"0000");
+            sessionStorage.setItem(i.toString(), "0000")
+          } else {
+            sessionStorage.setItem(i.toString(), "00000000000000000000000000000000000000000000000000000000000000000000")
+          }
+        }
+        Control.updateStorageDisp();
         console.log("format");
       }
     }
