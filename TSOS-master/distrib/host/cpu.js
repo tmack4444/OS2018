@@ -131,7 +131,6 @@ var TSOS;
                 default:
                     _StdOut.putText("ERROR! INVALID OPCODE. OPCODE WAS " + currentInstruction + " FROM MEM LOCATION " + this.PC);
                     currentInstruction = "00";
-                    break;
             }
             TSOS.Control.updateCPUDisp();
             TSOS.Control.updatePCBDisp();
@@ -143,11 +142,11 @@ var TSOS;
             this.Acc = parseInt(_MemManager.get(parseInt(address, 16)), 16);
         };
         Cpu.prototype.STA = function (address) {
-            var storeValue = this.Acc.toString(16);
-            if (parseInt(storeValue, 16) < 10) {
-                storeValue = "0" + storeValue;
+            var store = this.Acc.toString(16);
+            if (this.Acc < 16) {
+                store = "0" + store;
             }
-            _MemManager.put(parseInt(address, 16), storeValue);
+            _MemManager.put(parseInt(address, 16), store);
         };
         Cpu.prototype.ADC = function (address) {
             this.Acc += parseInt(_MemManager.get(parseInt(address, 16)), 16);
@@ -183,7 +182,11 @@ var TSOS;
         Cpu.prototype.INC = function (address) {
             var value = parseInt(_MemManager.get(parseInt(address, 16)), 16);
             value++;
-            _MemManager.put(parseInt(address, 16), value.toString(16));
+            var store = value.toString();
+            if (value < 16) {
+                store = "0" + store;
+            }
+            _MemManager.put(parseInt(address, 16), store);
         };
         Cpu.prototype.SYS = function () {
             if (this.Xreg == 1) {

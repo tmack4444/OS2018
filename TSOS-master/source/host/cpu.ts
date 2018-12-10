@@ -136,7 +136,6 @@ module TSOS {
 
               default: _StdOut.putText("ERROR! INVALID OPCODE. OPCODE WAS " + currentInstruction + " FROM MEM LOCATION " + this.PC);
                 currentInstruction = "00";
-                break;
               }
               Control.updateCPUDisp();
               Control.updatePCBDisp();
@@ -151,11 +150,11 @@ module TSOS {
         }
 
         public STA(address): void{
-          var storeValue = this.Acc.toString(16);
-          if(parseInt(storeValue, 16) < 10 ) {
-            storeValue = "0" + storeValue;
+          var store =  this.Acc.toString(16);
+          if(this.Acc < 16) {
+            store = "0" + store;
           }
-          _MemManager.put(parseInt(address, 16), storeValue);
+          _MemManager.put(parseInt(address, 16), store);
         }
 
         public ADC(address): void{
@@ -198,7 +197,11 @@ module TSOS {
         public INC(address):void {
           var value: number = parseInt(_MemManager.get(parseInt(address,16)), 16);
           value++;
-          _MemManager.put(parseInt(address, 16), value.toString(16));
+          var store = value.toString();
+          if(value < 16) {
+            store = "0" + store;
+          }
+          _MemManager.put(parseInt(address, 16), store);
         }
 
         public SYS(): void {
