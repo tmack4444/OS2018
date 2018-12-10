@@ -109,7 +109,7 @@ module TSOS {
 
             sc = new ShellCommand(this.shellLoad,
                                   "load",
-                                   "- Validate input from the input box.");
+                                   "- <Optional 1-10 Priority> Validate input from the input box.");
             this.commandList[this.commandList.length] = sc;
 
             sc = new ShellCommand(this.shellBSOD,
@@ -491,7 +491,7 @@ module TSOS {
           _Kernel.krnTrapError("");
         }
 
-        public shellLoad() {
+        public shellLoad(args?) {
           //Found this bit of code on https://stackoverflow.com/questions/12989741/the-property-value-does-not-exist-on-value-of-type-htmlelement
           //Basically, typescript doesn't allow you to grab a value from an HTML element, unless you typecast it as an HTMLInputElement
 
@@ -525,6 +525,10 @@ module TSOS {
             }
             _lastPart = nextPart;
             var newPCB = new PCB(_lastPID, _lastPart, nextPart);
+            console.log(args);
+            if(args) {
+              newPCB.priority = args;
+            }
             _activePCB[_lastPart] = newPCB;
             _activePCB[_lastPart].init();
             _activePCB[_lastPart].isActive = true;

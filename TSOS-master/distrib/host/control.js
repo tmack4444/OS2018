@@ -143,6 +143,7 @@ var TSOS;
                         PCBStatus += "\n" + "PID: " + _activePCB[i].pid
                             + " Status: " + run
                             + " Part " + _activePCB[i].part
+                            + " Prio " + _activePCB[i].priority
                             + " PC: " + _activePCB[i].PC.toString(16).toUpperCase()
                             + " IR: " + _MemManager.get(_activePCB[i].PC)
                             + " ACC: " + _activePCB[i].Acc

@@ -64,7 +64,7 @@ var TSOS;
             //shellStatus
             sc = new TSOS.ShellCommand(this.shellStatus, "status", "- updates the status message.");
             this.commandList[this.commandList.length] = sc;
-            sc = new TSOS.ShellCommand(this.shellLoad, "load", "- Validate input from the input box.");
+            sc = new TSOS.ShellCommand(this.shellLoad, "load", "- <Optional 1-10 Priority> Validate input from the input box.");
             this.commandList[this.commandList.length] = sc;
             sc = new TSOS.ShellCommand(this.shellBSOD, "bsod", "- Break the OS.");
             this.commandList[this.commandList.length] = sc;
@@ -364,7 +364,7 @@ var TSOS;
         Shell.prototype.shellBSOD = function () {
             _Kernel.krnTrapError("");
         };
-        Shell.prototype.shellLoad = function () {
+        Shell.prototype.shellLoad = function (args) {
             //Found this bit of code on https://stackoverflow.com/questions/12989741/the-property-value-does-not-exist-on-value-of-type-htmlelement
             //Basically, typescript doesn't allow you to grab a value from an HTML element, unless you typecast it as an HTMLInputElement
             var input = document.getElementById("taProgramInput").value.toUpperCase();
@@ -396,6 +396,10 @@ var TSOS;
                 }
                 _lastPart = nextPart;
                 var newPCB = new TSOS.PCB(_lastPID, _lastPart, nextPart);
+                console.log(args);
+                if (args) {
+                    newPCB.priority = args;
+                }
                 _activePCB[_lastPart] = newPCB;
                 _activePCB[_lastPart].init();
                 _activePCB[_lastPart].isActive = true;

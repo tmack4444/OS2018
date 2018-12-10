@@ -20,9 +20,14 @@ var TSOS;
             this.waitTime = 0;
             this.turnTime = 0;
             this.isRunning = false;
+            this.priority = 5;
         };
         PCB.prototype.inactive = function () {
             this.isActive = false;
+        };
+        PCB.prototype.setPriority = function (prio) {
+            this.priority = prio;
+            console.log(this.priority);
         };
         return PCB;
     }());
