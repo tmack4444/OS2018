@@ -6,6 +6,7 @@
 ///<reference path="os/queue.ts"/>
 ///<reference path="os/scheduler.ts"/>
 ///<reference path="os/file.ts"/>
+///<reference path="os/StorageManager.ts"/>
 /* ------------
    Globals.ts
 

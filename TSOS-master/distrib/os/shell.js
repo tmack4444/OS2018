@@ -141,8 +141,6 @@ var TSOS;
                 }
             }
         };
-        Shell.prototype.searchParts = function () {
-        };
         // Note: args is an option parameter, ergo the ? which allows TypeScript to understand that.
         Shell.prototype.execute = function (fn, args) {
             // We just got a command, so advance the line...
@@ -530,7 +528,6 @@ var TSOS;
             _StdOut.putText("Now scheduling with " + _Scheduler.getSchedule());
         };
         Shell.prototype.shellCreate = function (args) {
-            var input = document.getElementById("taProgramInput").value.toUpperCase();
             if (args.length > 0) {
                 var nextPart = 3; //start our search for the next partitition at 3, since we want to save this file to the disk.
                 for (var i = 0; i < _assignedParts.length; i++) {
@@ -547,7 +544,6 @@ var TSOS;
                         }
                     }
                     _Files[nextFile] = new TSOS.File(nextPart, args);
-                    sessionStorage.setItem(nextPart.toString(), args);
                     _StdOut.putText("File " + args + " created and is stored at disk partition " + nextPart);
                     _assignedParts.push(nextPart); //mark that partition as in use
                     return;
@@ -560,23 +556,44 @@ var TSOS;
         Shell.prototype.shellRead = function (args) {
             var found = false;
             for (var i = 0; i < _Files.length; i++) {
-                console.log(_Files[i].fileName.toString());
-                console.log(args.toString());
-                console.log(_Files[i].fileName.toString() == args.toString());
                 if (_Files[i].fileName.toString() == args.toString()) {
                     found = true;
-                    var fileLoc = _Files[i].partition;
+                    var file = _Files[i];
                     break;
                 }
             }
-            if (found) {
-                _StdOut.putText(sessionStorage.getItem(fileLoc.toString()));
+            if (!found) {
+                _StdOut.putText("Error! File " + args + " not found!");
             }
             else {
-                _StdOut.putText("Error! File " + args + " not found!");
+                _StdOut.putText(file.read());
             }
         };
         Shell.prototype.shellWrite = function (args) {
+            console.log("args[0] " + args[0]);
+            console.log("args[1] " + args[1]);
+            var found = false;
+            var write;
+            for (var i = 0; i < _Files.length; i++) {
+                if (_Files[i].fileName.toString() == args[0].toString()) {
+                    found = true;
+                    var file = _Files[i];
+                    break;
+                }
+            }
+            if (!found) {
+                _StdOut.putText("Error! File " + args[0] + " not found!");
+            }
+            else {
+                var name = args.shift();
+                write = file.write(args);
+                if (write) {
+                    _StdOut.putText("Success! " + name + " was written to successfuly!");
+                }
+                else {
+                    _StdOut.putText("Error! Input not formatted correctly! Please ensure your data is between two \" \"! ");
+                }
+            }
         };
         Shell.prototype.shellDelete = function (args) {
         };

@@ -228,10 +228,6 @@ module TSOS {
             }
         }
 
-        public searchParts(): number{
-
-        }
-
         // Note: args is an option parameter, ergo the ? which allows TypeScript to understand that.
         public execute(fn, args?) {
             // We just got a command, so advance the line...
@@ -659,7 +655,6 @@ module TSOS {
         }
 
         public shellCreate(args) {
-          var input = (<HTMLInputElement>document.getElementById("taProgramInput")).value.toUpperCase();
           if(args.length > 0) {
            var nextPart = 3; //start our search for the next partitition at 3, since we want to save this file to the disk.
           for(var i = 0; i < _assignedParts.length; i++) {
@@ -676,7 +671,6 @@ module TSOS {
               }
             }
             _Files[nextFile] = new TSOS.File(nextPart, args);
-            sessionStorage.setItem(nextPart.toString(), args);
             _StdOut.putText("File " + args + " created and is stored at disk partition " + nextPart);
             _assignedParts.push(nextPart); //mark that partition as in use
             return;
@@ -689,29 +683,46 @@ module TSOS {
       public shellRead(args){
         var found = false;
         for(var i=0; i < _Files.length; i++) {
-          console.log(_Files[i].fileName.toString());
-          console.log(args.toString());
-          console.log(_Files[i].fileName.toString() == args.toString());
           if(_Files[i].fileName.toString() == args.toString()) {
             found = true;
-            var fileLoc = _Files[i].partition;
+            var file = _Files[i];
             break;
           }
         }
-        if(found) {
-          _StdOut.putText(sessionStorage.getItem(fileLoc.toString()));
-        } else {
+        if(!found) {
           _StdOut.putText("Error! File " + args + " not found!");
+        } else {
+          _StdOut.putText(file.read());
         }
-
       }
 
       public shellWrite(args){
+        console.log("args[0] " + args[0]);
+        console.log("args[1] " + args[1]);
+        var found = false;
+        var write: boolean;
+        for(var i=0; i < _Files.length; i++) {
+          if(_Files[i].fileName.toString() == args[0].toString()) {
+            found = true;
+            var file = _Files[i];
+            break;
+          }
+        }
+        if(!found) {
+          _StdOut.putText("Error! File " + args[0] + " not found!");
+        } else {
+          var name = args.shift();
+          write = file.write(args);
+          if(write) {
+            _StdOut.putText("Success! " + name + " was written to successfuly!");
+          } else {
+            _StdOut.putText("Error! Input not formatted correctly! Please ensure your data is between two \" \"! ");
+          }
+        }
       }
 
       public shellDelete(args){
 
       }
-
       }
     }
