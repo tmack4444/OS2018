@@ -53,7 +53,6 @@ var TSOS;
                         }
                     }
                 }
-                console.log(switchto);
                 _activePCB[_currInd].PC = _CPU.PC;
                 _activePCB[_currInd].Acc = _CPU.Acc;
                 _activePCB[_currInd].Xreg = _CPU.Xreg;
@@ -85,9 +84,8 @@ var TSOS;
         };
         Scheduler.prototype.procesFin = function () {
             var cont = false;
-            console.log(_ReadyQueue.isEmpty());
-            _ReadyQueue.dequeue();
-            if (!_ReadyQueue.isEmpty()) {
+            console.log(_ReadyQueue.getSize());
+            if (_ReadyQueue.getSize() > 0) { //if there's only one element left, then we're done. but if there's more than one, then we're not done
                 _activePCB[_currInd].isActive = false;
                 cont = true; //there's more programs in the readyQueue, we need to keep going.
                 //The way im going to do this is de queue the next element(s) in the readyQueue
@@ -99,12 +97,13 @@ var TSOS;
                     storeQueue[currInd] = _ReadyQueue.dequeue();
                     currInd++;
                 }
+                console.log(storeQueue.length);
                 for (var i = 0; i < storeQueue.length; i++) {
                     _ReadyQueue.enqueue(storeQueue[i]);
+                    console.log(i);
                 }
                 //this is a slightly smaller version of switcheroo. We dont want to save what was on the CPU, as that is no longer relevant
                 var switchto = _ReadyQueue.dequeue();
-                console.log(_currInd);
                 _Console.advanceLine();
                 _StdOut.putText("Process Completed with ID " + _PID);
                 _Console.advanceLine();
@@ -130,8 +129,10 @@ var TSOS;
                 return cont;
             }
             else {
+                var index = _assignedParts.indexOf(_currPart);
+                _assignedParts.splice(index, 1); //remove that partition from the array of assigned partitions
+                _ReadyQueue.dequeue();
                 _activePCB[_currInd].isActive = false;
-                console.log(_currInd);
                 _Console.advanceLine();
                 _StdOut.putText("Process Completed with ID " + _PID);
                 _Console.advanceLine();
@@ -156,17 +157,24 @@ var TSOS;
             _activePCB[_currInd].turnTime++;
         };
         Scheduler.prototype.swapper = function (newPCB, memPCB) {
-            var currStorage = localStorage.getItem(newPCB.part);
-            currStorage = JSON.parse(currStorage); //get the program out of storage as a string
-            var tempSave;
+            var currStorage = sessionStorage.getItem(newPCB.part.toString()); //get the function we're swapping in that's currently in storage
+            var tempSave = []; //much like a bubble sort swap, make a copy of the program in memory for us to spit back into memory
             _currPart = memPCB.part; //set what partition we're replacing in memory so the memory manager gets the right program out
             for (var i = 0; i < 256; i++) {
                 tempSave[i] = _MemManager.get(i); //get the entire program from memory as an array
             }
-            currStorage.replace(/(.{2})/, " "); //format the string from disk into a string with a space every 2 characters ...
-            currStorage.split(" "); //so we can turn it into an array where every element is 2 characters from the string. Cause an opcode is 2 characters
+            /*
+            console.log("Before any changes are made \n" + currStorage)
+            currStorage = currStorage.replace(/(.{2})/, " "); //format the string from disk into a string with a space every 2 characters ...
+            console.log("after replace \n" + currStorage);
+            var fromStorage = currStorage.split(" "); //so we can turn it into an array where every element is 2 characters from the string. Cause an opcode is 2 characters
+            console.log("after split \n" + fromStorage);
+            */
+            sessionStorage.setItem(newPCB.part.toString(), tempSave.join(" "));
             memPCB.part = newPCB.part; //now change the PCB's part numbers to their new partitions
             newPCB.part = _currPart;
+            _currPCB = _activePCB.indexOf(newPCB);
+            _MemManager.store(currStorage);
             //and now they should be swapped correctly.
         };
         return Scheduler;

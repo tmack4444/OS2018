@@ -616,7 +616,7 @@ module TSOS {
         public shellPs(args) {
           var out: string = "";
           for(var i = 0; i < _activePCB.length; i++) {
-            if(_activePCB[i] != null) {
+            if(_activePCB[i] != null && _activePCB[i].isActive) {
               out += _activePCB[i].pid;
             }
           }
