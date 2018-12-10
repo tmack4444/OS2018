@@ -95,6 +95,34 @@ module TSOS {
           }
         }
 
+                public swapper(newPCB, memPCB): void { //when something that's currently on disk is scheduled to be run next, we need to swap it for
+                  var currStorage = sessionStorage.getItem(newPCB.part.toString()); //get the function we're swapping in that's currently in storage
+                  var tempSave = [];  //much like a bubble sort swap, make a copy of the program in memory for us to spit back into memory
+                  _currPart = memPCB.part; //set what partition we're replacing in memory so the memory manager gets the right program out
+                  for(var i = 0; i < 256; i++) {
+                    tempSave[i] = _MemManager.get(i);  //get the entire program from memory as an array
+                  }
+                  /*
+                  console.log("Before any changes are made \n" + currStorage)
+                  currStorage = currStorage.replace(/(.{2})/, " "); //format the string from disk into a string with a space every 2 characters ...
+                  console.log("after replace \n" + currStorage);
+                  var fromStorage = currStorage.split(" "); //so we can turn it into an array where every element is 2 characters from the string. Cause an opcode is 2 characters
+                  console.log("after split \n" + fromStorage);
+                  */
+                  console.log("Being swapped OUT of memory \n" + tempSave.join(""));
+                  console.log("Being swapped INTO memory \n" + currStorage);
+
+                  sessionStorage.setItem(newPCB.part.toString(), tempSave.join(""));//now put what was in memory into storage...
+                  _MemManager.store(currStorage);//and what was in storage into memory
+
+                  memPCB.part = newPCB.part; //now change the PCB's part numbers to their new partitions
+                  newPCB.part = _currPart;
+
+                  _currPCB = _activePCB.indexOf(newPCB);//and set the currPCB to the "new" PCB's index
+
+                  //and now they should be swapped correctly.
+                  }
+
         public procesFin(): boolean{
           var cont = false;
           console.log(_ReadyQueue.getSize());
@@ -176,27 +204,5 @@ module TSOS {
           _activePCB[_currInd].turnTime++;
         }
 
-        public swapper(newPCB, memPCB): void { //when something that's currently on disk is scheduled to be run next, we need to swap it for
-          var currStorage = sessionStorage.getItem(newPCB.part.toString()); //get the function we're swapping in that's currently in storage
-          var tempSave = [];  //much like a bubble sort swap, make a copy of the program in memory for us to spit back into memory
-          _currPart = memPCB.part; //set what partition we're replacing in memory so the memory manager gets the right program out
-          for(var i = 0; i < 256; i++) {
-            tempSave[i] = _MemManager.get(i);  //get the entire program from memory as an array
-          }
-          /*
-          console.log("Before any changes are made \n" + currStorage)
-          currStorage = currStorage.replace(/(.{2})/, " "); //format the string from disk into a string with a space every 2 characters ...
-          console.log("after replace \n" + currStorage);
-          var fromStorage = currStorage.split(" "); //so we can turn it into an array where every element is 2 characters from the string. Cause an opcode is 2 characters
-          console.log("after split \n" + fromStorage);
-          */
-          sessionStorage.setItem(newPCB.part.toString(), tempSave.join(" "));
-          memPCB.part = newPCB.part; //now change the PCB's part numbers to their new partitions
-          newPCB.part = _currPart;
-          _currPCB = _activePCB.indexOf(newPCB);
-          _MemManager.store(currStorage);
-
-          //and now they should be swapped correctly.
-          }
     }
 }
