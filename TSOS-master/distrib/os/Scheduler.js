@@ -145,6 +145,7 @@ var TSOS;
                 _PID = switchto.pid;
                 _currInd = switchto.index;
                 this.numCycle = 0;
+                _activePCB[_activePCB.indexOf(switchto)].isRunning = true;
                 return cont;
             }
             else {

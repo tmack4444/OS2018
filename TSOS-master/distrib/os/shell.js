@@ -409,11 +409,11 @@ var TSOS;
                     console.log("Adding something to storage");
                 }
                 if (args.length > 0) {
-                    if (args.parseInt < 1) { //the user can enter whatever they want. No one said I had to listen
-                        args = 1;
+                    if (parseInt(args[0]) < 1) { //the user can enter whatever they want. No one said I had to listen
+                        args[0] = 1;
                     }
-                    else if (args.parseInt > 10) {
-                        args = 10;
+                    else if (parseInt(args[0]) > 10) {
+                        args[0] = 10;
                     }
                     newPCB.priority = args[0];
                 }
@@ -458,16 +458,42 @@ var TSOS;
         };
         Shell.prototype.shellRunall = function (args) {
             var PCBtoReady = [];
-            for (var i = 0; i < _activePCB.length; i++) {
-                if (_activePCB[i].pid != undefined && _activePCB[i].isActive) {
-                    _currInd = i;
-                    _activePCB[i].isActive = true;
-                    _ReadyQueue.enqueue(_activePCB[i]);
+            if (_Scheduler.method != "Priority") {
+                for (var i = 0; i < _activePCB.length; i++) {
+                    if (_activePCB[i].pid != undefined && _activePCB[i].isActive) {
+                        _currInd = i;
+                        _activePCB[i].isActive = true;
+                        _ReadyQueue.enqueue(_activePCB[i]);
+                    }
+                }
+            }
+            else {
+                console.log("Priority scheduling");
+                var prioritySortedArr = [];
+                for (var i = 0; i < _activePCB.length; i++) {
+                    prioritySortedArr[i] = _activePCB[i];
+                    for (var k = 0; k < prioritySortedArr.length; k++) {
+                        if (_activePCB[i].pid != undefined && _activePCB[i].isActive) {
+                            if (prioritySortedArr[k] != undefined) {
+                                if (parseInt(prioritySortedArr[k].priority) > _activePCB[i].priority) {
+                                    _activePCB[i].isActive = true;
+                                    var tempSwap = prioritySortedArr[i];
+                                    prioritySortedArr[i] = prioritySortedArr[k];
+                                    prioritySortedArr[k] = tempSwap;
+                                    console.log(prioritySortedArr);
+                                }
+                            }
+                        }
+                    }
+                }
+                for (var q = 0; q < prioritySortedArr.length; q++) {
+                    _ReadyQueue.enqueue(prioritySortedArr[q]);
                 }
             }
             _Scheduler.numCycle = 0;
             if (!_ReadyQueue.isEmpty()) {
                 var runPCB = _ReadyQueue.dequeue();
+                _activePCB[_activePCB.indexOf(runPCB)].isRunning = true;
                 _CPU.PC = runPCB.PC;
                 _CPU.Acc = runPCB.Acc;
                 _CPU.Xreg = runPCB.Xreg;
@@ -536,6 +562,7 @@ var TSOS;
             }
             else if (args == "priority") {
                 _Scheduler.method = "Priority";
+                _Scheduler.quantum = 2147483645;
                 //TODO Implement priority scheduling
             }
             _StdOut.putText("Now scheduling with " + _Scheduler.getSchedule());
