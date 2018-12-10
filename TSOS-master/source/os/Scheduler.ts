@@ -144,8 +144,17 @@ module TSOS {
             _OsShell.putPrompt();
 
             if(switchto.part > 2) {
-              this.swapper(switchto, _activePCB[currInd]);
+              var currStorage = sessionStorage.getItem(switchto.part.toString());
+              _MemManager.store(currStorage);
+              //so instead of swapping everything out of memory and disk and around, we just need to replace what was in memory with what's in Storage
+              //So we basically just replace the old process with the new one, and swap their partitions too so we can reap the one in storage.
+              switchto.part = _currPart
+              _currPart = _activePCB[_currInd].part;
             }
+
+            var index = _assignedParts.indexOf(_currPart);
+            _assignedParts.splice(index, 1); //remove that partition from the array of assigned partitions
+            //We remove it here, so we don't accidentaly reap what we swap into (That's what I did before and it worked for running 12done 4 times, but not for this)
 
             _CPU.PC = switchto.PC;
             _CPU.Acc = switchto.Acc;
@@ -156,21 +165,6 @@ module TSOS {
             _PID = switchto.pid;
             _currInd = switchto.index;
             this.numCycle = 0;
-
-            _CPU.PC = switchto.PC;
-            _CPU.Acc = switchto.Acc;
-            _CPU.Xreg = switchto.Xreg;
-            _CPU.Yreg = switchto.Yreg;
-            _CPU.Zflag = switchto.Zflag;
-            _currPart = switchto.part;
-            _PID = switchto.pid;
-            _currInd = switchto.index;
-            _activePCB[_currInd].isRunning = true;
-            _activePCB[_currInd].turnTime = switchto.turnTime;
-            _activePCB[_currInd].waitTime = switchto.waitTime;
-
-            var index = _assignedParts.indexOf(_currPart);
-            _assignedParts.splice(index, 1); //remove that partition from the array of assigned partitions
 
             return cont;
           } else {
