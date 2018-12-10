@@ -162,6 +162,22 @@ module TSOS {
                                   "<filename> - Create a file with the filename <filename> in the next avalible part of the disk");
             this.commandList[this.commandList.length] = sc;
 
+            sc = new ShellCommand(this.shellRead,
+                                  "read",
+                                  "<filename> - Read a file with the filename <filename>");
+            this.commandList[this.commandList.length] = sc;
+
+            sc = new ShellCommand(this.shellWrite,
+                                  "write",
+                                  "<filename> - Write to a file with the filename <filename>");
+            this.commandList[this.commandList.length] = sc;
+
+            sc = new ShellCommand(this.shellDelete,
+                                  "delete",
+                                  "<filename> - Delete a file with the filename <filename>");
+            this.commandList[this.commandList.length] = sc;
+
+
 
             //
             // Display the initial prompt.
@@ -653,6 +669,14 @@ module TSOS {
             }
           }
           if(nextPart <= 20) { // my current storage display only lets us see 20 partitions of memory, so I'm limiting the number of files you can store to 20
+            for(var i = 0; i <= _Files.length; i++) {
+              if(_Files[i] == undefined) {
+                var nextFile = i;
+                break;
+              }
+            }
+            _Files[nextFile] = new TSOS.File(nextPart, args);
+            sessionStorage.setItem(nextPart.toString(), args);
             _StdOut.putText("File " + args + " created and is stored at disk partition " + nextPart);
             _assignedParts.push(nextPart); //mark that partition as in use
             return;
@@ -662,7 +686,32 @@ module TSOS {
         }
       }
 
-    }
+      public shellRead(args){
+        var found = false;
+        for(var i=0; i < _Files.length; i++) {
+          console.log(_Files[i].fileName.toString());
+          console.log(args.toString());
+          console.log(_Files[i].fileName.toString() == args.toString());
+          if(_Files[i].fileName.toString() == args.toString()) {
+            found = true;
+            var fileLoc = _Files[i].partition;
+            break;
+          }
+        }
+        if(found) {
+          _StdOut.putText(sessionStorage.getItem(fileLoc.toString()));
+        } else {
+          _StdOut.putText("Error! File " + args + " not found!");
+        }
+
+      }
+
+      public shellWrite(args){
+      }
+
+      public shellDelete(args){
+
+      }
 
       }
     }

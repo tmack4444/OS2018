@@ -5,6 +5,7 @@
 ///<reference path="os/PCB.ts" />
 ///<reference path="os/queue.ts"/>
 ///<reference path="os/scheduler.ts"/>
+///<reference path="os/file.ts"/>
 /* ------------
    Globals.ts
 
@@ -58,6 +59,7 @@ var _currInd = 0; //keeps of track of the index in activePCB that is currently b
 var _assignedParts = []; //keeps track of which partitions are already in use. Partitions 0 1 and 2 are in main memory, but anything over 2 will be on disk. Now I can check for the next free partition from this list, and ensure that new PCBs are stored on disk or in memory
 var _ReadyQueue;
 var _Scheduler;
+var _Files = [];
 // Standard input and output
 var _StdIn; // Same "to null or not to null" issue as above.
 var _StdOut;
