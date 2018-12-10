@@ -396,10 +396,6 @@ var TSOS;
                 }
                 _lastPart = nextPart;
                 var newPCB = new TSOS.PCB(_lastPID, _lastPart, nextPart);
-                console.log(args);
-                if (args) {
-                    newPCB.priority = args;
-                }
                 _activePCB[_lastPart] = newPCB;
                 _activePCB[_lastPart].init();
                 _activePCB[_lastPart].isActive = true;
@@ -411,6 +407,10 @@ var TSOS;
                 else { // if it's not, then we want to store it in storage, and give it the partition number to use as the key for session storage
                     _StorageManager.store(input, _lastPart);
                     console.log("Adding something to storage");
+                }
+                console.log(args);
+                if (args.length > 0) {
+                    newPCB.priority = args[0];
                 }
                 _StdOut.putText("Process saved with Process ID (PID): " + _lastPID);
                 TSOS.Control.updatePCBDisp();
