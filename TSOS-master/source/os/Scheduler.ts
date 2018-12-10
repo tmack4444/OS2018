@@ -102,13 +102,6 @@ module TSOS {
                   for(var i = 0; i < 256; i++) {
                     tempSave[i] = _MemManager.get(i);  //get the entire program from memory as an array
                   }
-                  /*
-                  console.log("Before any changes are made \n" + currStorage)
-                  currStorage = currStorage.replace(/(.{2})/, " "); //format the string from disk into a string with a space every 2 characters ...
-                  console.log("after replace \n" + currStorage);
-                  var fromStorage = currStorage.split(" "); //so we can turn it into an array where every element is 2 characters from the string. Cause an opcode is 2 characters
-                  console.log("after split \n" + fromStorage);
-                  */
                   console.log("Being swapped OUT of memory \n" + tempSave.join(""));
                   console.log("Being swapped INTO memory \n" + currStorage);
 
@@ -136,10 +129,8 @@ module TSOS {
               storeQueue[currInd] = _ReadyQueue.dequeue();
               currInd++;
             }
-            console.log(storeQueue.length);
             for(var i = 0; i < storeQueue.length; i++) {
               _ReadyQueue.enqueue(storeQueue[i]);
-              console.log(i);
             }
             //this is a slightly smaller version of switcheroo. We dont want to save what was on the CPU, as that is no longer relevant
             var switchto = _ReadyQueue.dequeue();
@@ -165,6 +156,18 @@ module TSOS {
             _PID = switchto.pid;
             _currInd = switchto.index;
             this.numCycle = 0;
+
+            _CPU.PC = switchto.PC;
+            _CPU.Acc = switchto.Acc;
+            _CPU.Xreg = switchto.Xreg;
+            _CPU.Yreg = switchto.Yreg;
+            _CPU.Zflag = switchto.Zflag;
+            _currPart = switchto.part;
+            _PID = switchto.pid;
+            _currInd = switchto.index;
+            _activePCB[_currInd].isRunning = true;
+            _activePCB[_currInd].turnTime = switchto.turnTime;
+            _activePCB[_currInd].waitTime = switchto.waitTime;
 
             var index = _assignedParts.indexOf(_currPart);
             _assignedParts.splice(index, 1); //remove that partition from the array of assigned partitions

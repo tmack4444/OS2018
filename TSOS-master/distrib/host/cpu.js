@@ -143,7 +143,7 @@ var TSOS;
         };
         Cpu.prototype.STA = function (address) {
             var store = this.Acc.toString(16);
-            if (this.Acc < 10) {
+            if (this.Acc < 16) {
                 store = "0" + store;
             }
             _MemManager.put(parseInt(address, 16), store);
@@ -182,8 +182,8 @@ var TSOS;
         Cpu.prototype.INC = function (address) {
             var value = parseInt(_MemManager.get(parseInt(address, 16)), 16);
             value++;
-            var store = value.toString(16);
-            if (value < 10) {
+            var store = value.toString();
+            if (value < 16) {
                 store = "0" + store;
             }
             _MemManager.put(parseInt(address, 16), store);
