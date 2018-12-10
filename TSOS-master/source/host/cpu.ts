@@ -74,18 +74,6 @@ module TSOS {
             if(this.PC > 255){
               this.PC = this.PC - 256;
             }
-
-            console.log("PID " + _activePCB[_currInd].pid);
-            console.log("Partition " + _activePCB[_currInd].part);
-            console.log("Program Counter " + this.PC);
-            console.log("Acc " + this.Acc);
-            console.log("Xreg " + this.Xreg);
-            console.log("Yreg " + this.Yreg);
-            console.log("Zflag " + this.Zflag);
-            console.log("\n");
-            console.log("\n");
-
-
             var currentInstruction = _MemManager.get(this.PC); //fetch
             switch(currentInstruction) {                   //decode
               case "A9": this.LDAConst(_MemManager.get(this.PC+1));   //execute
@@ -148,7 +136,6 @@ module TSOS {
 
               default: _StdOut.putText("ERROR! INVALID OPCODE. OPCODE WAS " + currentInstruction + " FROM MEM LOCATION " + this.PC);
                 currentInstruction = "00";
-                break;
               }
               Control.updateCPUDisp();
               Control.updatePCBDisp();
@@ -163,8 +150,9 @@ module TSOS {
         }
 
         public STA(address): void{
+          var store =  this.Acc.toString(16);
           if(this.Acc < 10) {
-            var store = "0" + this.Acc.toString(16);
+            store = "0" + store;
           }
           _MemManager.put(parseInt(address, 16), store);
         }
@@ -209,11 +197,10 @@ module TSOS {
         public INC(address):void {
           var value: number = parseInt(_MemManager.get(parseInt(address,16)), 16);
           value++;
+          var store = value.toString(16);
           if(value < 10) {
-            var store = "0" + value.toString(16);
+            store = "0" + store;
           }
-            console.log("Store accumulator" + value);
-            console.log("Edited Accumulator value" + store);
           _MemManager.put(parseInt(address, 16), store);
         }
 
