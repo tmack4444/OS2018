@@ -177,6 +177,16 @@ module TSOS {
                                   "<filename> - Delete a file with the filename <filename>");
             this.commandList[this.commandList.length] = sc;
 
+            sc = new ShellCommand(this.shellFormat,
+                                  "format",
+                                  "<filename> - Delete a file with the filename <filename>");
+            this.commandList[this.commandList.length] = sc;
+
+            sc = new ShellCommand(this.shellLs,
+                                  "ls",
+                                  "<filename> - Delete a file with the filename <filename>");
+            this.commandList[this.commandList.length] = sc;
+
 
 
             //
@@ -722,7 +732,30 @@ module TSOS {
       }
 
       public shellDelete(args){
-
+        var found = false;
+        for(var i=0; i < _Files.length; i++) {
+          if(_Files[i].fileName.toString() == args[0].toString()) {
+            found = true;
+            var file = _Files[i];
+            break;
+          }
+        }
+        //if we find what we want to delete, we simply remove the reference to that file, and let the OS know that the partition is free
+        if(found) {
+          _assignedParts.splice(_assignedParts.indexOf(_Files[i].part), 1);
+          _Files.splice(i, 1);
+          _StdOut.putText("Success! " + args.toString() + " was deleted to successfuly!");
+        } else {
+          _StdOut.putText("Error! File " + args[0] + " not found!");
+        }
       }
+
+      public shellLs() {
+        console.log("list files");
+      }
+
+      public shellFormat() {
+        console.log("format");
       }
     }
+  }
