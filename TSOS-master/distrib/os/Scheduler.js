@@ -85,6 +85,8 @@ var TSOS;
         };
         Scheduler.prototype.procesFin = function () {
             var cont = false;
+            console.log(_ReadyQueue.isEmpty());
+            _ReadyQueue.dequeue();
             if (!_ReadyQueue.isEmpty()) {
                 _activePCB[_currInd].isActive = false;
                 cont = true; //there's more programs in the readyQueue, we need to keep going.
