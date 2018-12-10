@@ -615,11 +615,17 @@ var TSOS;
                 _StdOut.putText("Success! " + args.toString() + " was deleted to successfuly!");
             }
             else {
-                _StdOut.putText("Error! File " + args[0] + " not found!");
+                _StdOut.putText("Error! File " + args.toString() + " not found!");
             }
         };
         Shell.prototype.shellLs = function () {
-            console.log("list files");
+            var listFiles;
+            for (var i = 0; i < _Files.length; i++) {
+                if (_Files[i] != undefined) {
+                    listFiles += _Files[i].fileName + " ";
+                }
+            }
+            _StdOut.putText(listFiles);
         };
         Shell.prototype.shellFormat = function () {
             console.log("format");
