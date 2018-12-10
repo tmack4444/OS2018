@@ -67,6 +67,15 @@ var TSOS;
             if (this.PC > 255) {
                 this.PC = this.PC - 256;
             }
+            console.log("PID " + _activePCB[_currInd].pid);
+            console.log("Partition " + _activePCB[_currInd].part);
+            console.log("Program Counter " + this.PC);
+            console.log("Acc " + this.Acc);
+            console.log("Xreg " + this.Xreg);
+            console.log("Yreg " + this.Yreg);
+            console.log("Zflag " + this.Zflag);
+            console.log("\n");
+            console.log("\n");
             var currentInstruction = _MemManager.get(this.PC); //fetch
             switch (currentInstruction) { //decode
                 case "A9":
@@ -143,7 +152,10 @@ var TSOS;
             this.Acc = parseInt(_MemManager.get(parseInt(address, 16)), 16);
         };
         Cpu.prototype.STA = function (address) {
-            _MemManager.put(parseInt(address, 16), this.Acc.toString(16));
+            if (this.Acc < 10) {
+                var store = "0" + this.Acc.toString(16);
+            }
+            _MemManager.put(parseInt(address, 16), store);
         };
         Cpu.prototype.ADC = function (address) {
             this.Acc += parseInt(_MemManager.get(parseInt(address, 16)), 16);
@@ -179,7 +191,12 @@ var TSOS;
         Cpu.prototype.INC = function (address) {
             var value = parseInt(_MemManager.get(parseInt(address, 16)), 16);
             value++;
-            _MemManager.put(parseInt(address, 16), value.toString(16));
+            if (value < 10) {
+                var store = "0" + value.toString(16);
+            }
+            console.log("Store accumulator" + value);
+            console.log("Edited Accumulator value" + store);
+            _MemManager.put(parseInt(address, 16), store);
         };
         Cpu.prototype.SYS = function () {
             if (this.Xreg == 1) {

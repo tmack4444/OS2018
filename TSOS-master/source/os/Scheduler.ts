@@ -118,8 +118,6 @@ module TSOS {
                   memPCB.part = newPCB.part; //now change the PCB's part numbers to their new partitions
                   newPCB.part = _currPart;
 
-                  _currPCB = _activePCB.indexOf(newPCB);//and set the currPCB to the "new" PCB's index
-
                   //and now they should be swapped correctly.
                   }
 
