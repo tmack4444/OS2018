@@ -528,7 +528,7 @@ module TSOS {
             _activePCB[_lastPart] = newPCB;
             _activePCB[_lastPart].init();
             _activePCB[_lastPart].isActive = true;
-            _currPCB = _lastPart;
+            _currInd = _lastPart;
             _assignedParts.push(_lastPart);
             if(_lastPart >= 0 && _lastPart <= 2) { //if the partition is 0 1 or 2, we want to store this in memory
               _MemManager.store(input);
@@ -561,7 +561,7 @@ module TSOS {
             args = parseInt(args);
             for(var i = 0; i < _activePCB.length; i++) {
               if(_activePCB[i].pid == args) {
-                _currPCB = i;
+                _currInd = i;
                 _PID = args;
                 _activePCB[i].isActive = true;
                 _CPU.PC = _activePCB[i].PC;
@@ -593,7 +593,7 @@ module TSOS {
           var PCBtoReady = [];
           for(var i = 0; i < _activePCB.length; i++) {
             if(_activePCB[i].pid != undefined && _activePCB[i].isActive) {
-              _currPCB = i;
+              _currInd = i;
               _activePCB[i].isActive = true;
               _ReadyQueue.enqueue(_activePCB[i]);
             }

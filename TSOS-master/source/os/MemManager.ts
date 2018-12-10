@@ -21,9 +21,9 @@ module TSOS {
           _StdOut.putText("Error! Code is larger than memory partition size (256 bytes)!");
           return;
         }
-        if(_activePCB[_currPCB].part == 1) {
+        if(_activePCB[_currInd].part == 1) {
           offset = 256;
-        } else if(_activePCB[_currPCB].part == 2) {
+        } else if(_activePCB[_currInd].part == 2) {
           offset = 512;
         }
         for(var i = 0; i < elems.length/2; i++) {

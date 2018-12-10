@@ -151,7 +151,11 @@ module TSOS {
         }
 
         public STA(address): void{
-          _MemManager.put(parseInt(address, 16), this.Acc.toString(16));
+          var storeValue = this.Acc.toString(16);
+          if(parseInt(storeValue, 16) < 10 ) {
+            storeValue = "0" + storeValue;
+          }
+          _MemManager.put(parseInt(address, 16), storeValue);
         }
 
         public ADC(address): void{

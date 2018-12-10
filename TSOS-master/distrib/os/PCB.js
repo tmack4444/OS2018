@@ -25,10 +25,6 @@ var TSOS;
         PCB.prototype.inactive = function () {
             this.isActive = false;
         };
-        PCB.prototype.setPriority = function (prio) {
-            this.priority = prio;
-            console.log(this.priority);
-        };
         return PCB;
     }());
     TSOS.PCB = PCB;
