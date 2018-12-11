@@ -6,6 +6,9 @@ var TSOS;
             this.tracks = 3;
             this.sectors = 3;
             this.blocks = 8;
+            this.init();
+        }
+        Storage.prototype.init = function () {
             var TSBKey = "";
             for (var t = 0; t < this.tracks; t++) {
                 for (var s = 0; s < this.sectors; s++) {
@@ -15,8 +18,6 @@ var TSOS;
                     }
                 }
             }
-        }
-        Storage.prototype.init = function () {
         };
         return Storage;
     }());

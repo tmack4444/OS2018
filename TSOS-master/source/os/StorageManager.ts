@@ -63,6 +63,18 @@ module TSOS {
       }
 
       public format(args?){
+        _Storage.init();
+        for(var i = 0; i < _DiskParts; i++){
+          _Files.splice(i, 1);
+          if(_activePCB[i] != undefined && _activePCB[i].part > 2) {
+            _activePCB.splice(i,1);
+          }
+        }
+        Control.updateStorageDisp();
+
+
+
+        /*
         var quickForm = true;
         if(args[0] == "full") {
           quickForm = false;
@@ -106,6 +118,7 @@ module TSOS {
       }
         Control.updateStorageDisp();
         Control.updatePCBDisp();
+        */
       }
 
       public swapper(newPCB, memPCB): void { //when something that's currently on disk is scheduled to be run next, we need to swap it for

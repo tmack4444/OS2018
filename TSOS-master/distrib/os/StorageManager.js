@@ -72,53 +72,59 @@ var TSOS;
             TSOS.Control.updateStorageDisp();
         };
         StorageManager.prototype.format = function (args) {
-            var quickForm = true;
-            if (args[0] == "full") {
-                quickForm = false;
-            }
-            for (var i = 3; i <= _DiskParts; i++) { //we start by overwriting all of our memory
-                var currStoreItem = sessionStorage.getItem(i.toString());
-                if (currStoreItem != null) {
-                    if (quickForm) {
-                        if (currStoreItem.length < 4) {
-                            currStoreItem = "0000";
-                        }
-                        else {
-                            currStoreItem = "0000" + currStoreItem.substr(4);
-                        }
-                        sessionStorage.setItem(i.toString(), currStoreItem);
-                    }
-                    else {
-                        if (currStoreItem.length < 68) {
-                            currStoreItem = "00000000000000000000000000000000000000000000000000000000000000000000";
-                        }
-                        else {
-                            currStoreItem = "00000000000000000000000000000000000000000000000000000000000000000000" + currStoreItem.substr(68);
-                        }
-                        sessionStorage.setItem(i.toString(), "00000000000000000000000000000000000000000000000000000000000000000000");
-                    }
-                }
-                else {
-                    if (quickForm) {
-                        sessionStorage.setItem(i.toString(), "0000");
-                    }
-                    else {
-                        sessionStorage.setItem(i.toString(), "00000000000000000000000000000000000000000000000000000000000000000000");
-                    }
-                }
-            }
-            for (var j = 0; j <= _DiskParts; j++) { //and then erasing all file and PCBs that are on Disk, as well as setting their partitions open
-                if (_Files[j] != undefined) {
-                    _assignedParts.splice(_assignedParts.indexOf(_Files[j].part), 1);
-                    _Files.splice(j, 1);
-                }
-                if (_activePCB[j] != undefined && _activePCB[j].part > 2) {
-                    _assignedParts.splice(_assignedParts.indexOf(_activePCB[j].part), 1);
-                    _activePCB.splice(j, 1);
+            _Storage.init();
+            for (var i = 0; i < _DiskParts; i++) {
+                _Files.splice(i, 1);
+                if (_activePCB[i] != undefined && _activePCB[i].part > 2) {
+                    _activePCB.splice(i, 1);
                 }
             }
             TSOS.Control.updateStorageDisp();
-            TSOS.Control.updatePCBDisp();
+            /*
+            var quickForm = true;
+            if(args[0] == "full") {
+              quickForm = false;
+            }
+            for(var i = 3; i <= _DiskParts; i++) { //we start by overwriting all of our memory
+              var currStoreItem = sessionStorage.getItem(i.toString());
+              if(currStoreItem != null) {
+                if(quickForm) {
+                  if(currStoreItem.length < 4) {
+                    currStoreItem = "0000";
+                  }else {
+                    currStoreItem = "0000" + currStoreItem.substr(4);
+                  }
+                    sessionStorage.setItem(i.toString(), currStoreItem);
+              } else {
+                if(currStoreItem.length < 68) {
+                  currStoreItem = "00000000000000000000000000000000000000000000000000000000000000000000";
+                }else {
+                  currStoreItem = "00000000000000000000000000000000000000000000000000000000000000000000" + currStoreItem.substr(68);
+                }
+                sessionStorage.setItem(i.toString(), "00000000000000000000000000000000000000000000000000000000000000000000")
+              }
+            } else {
+              if(quickForm) {
+                sessionStorage.setItem(i.toString(), "0000");
+              } else {
+                sessionStorage.setItem(i.toString(), "00000000000000000000000000000000000000000000000000000000000000000000");
+              }
+            }
+          }
+    
+          for(var j = 0; j <= _DiskParts; j++) { //and then erasing all file and PCBs that are on Disk, as well as setting their partitions open
+            if(_Files[j] != undefined) {
+              _assignedParts.splice(_assignedParts.indexOf(_Files[j].part), 1);
+              _Files.splice(j, 1);
+            }
+            if(_activePCB[j] != undefined && _activePCB[j].part > 2) {
+              _assignedParts.splice(_assignedParts.indexOf(_activePCB[j].part), 1);
+              _activePCB.splice(j,1);
+            }
+          }
+            Control.updateStorageDisp();
+            Control.updatePCBDisp();
+            */
         };
         StorageManager.prototype.swapper = function (newPCB, memPCB) {
             var key = this.convertPart(newPCB.part);

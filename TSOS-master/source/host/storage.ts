@@ -10,6 +10,10 @@ module TSOS {
       public blocks: number = 8;
 
         constructor () {
+          this.init();
+        }
+
+        public init(): void {
           var TSBKey = "";
           for(var t = 0; t < this.tracks; t++) {
             for(var s =0; s < this.sectors; s++) {
@@ -19,9 +23,6 @@ module TSOS {
               }
             }
           }
-        }
-
-        public init(): void {
         }
 
     }
