@@ -75,7 +75,7 @@ module TSOS {
               _Kernel.krnTrace("Context switch from PID " + _PID + " to PID " + switchto.pid);
 
               if(switchto.part > 2) { //if the new PCB is in memory, we need to swap it with something. We'll just use the last thing run since that should be efficent with round robin and first come first served
-                this.swapper(switchto, _activePCB[_currInd]);
+                _StorageManager.swapper(switchto, _activePCB[_currInd]);
               }
 
               _ReadyQueue.enqueue(_activePCB[_currInd]);
@@ -94,23 +94,6 @@ module TSOS {
 
           }
         }
-
-                public swapper(newPCB, memPCB): void { //when something that's currently on disk is scheduled to be run next, we need to swap it for
-                  var currStorage = sessionStorage.getItem(newPCB.part.toString()); //get the function we're swapping in that's currently in storage
-                  console.log(currStorage);
-                  var tempSave = [];  //much like a bubble sort swap, make a copy of the program in memory for us to spit back into memory
-                  _currPart = memPCB.part; //set what partition we're replacing in memory so the memory manager gets the right program out
-                  for(var i = 0; i < 256; i++) {
-                    tempSave[i] = _MemManager.get(i);  //get the entire program from memory as an array
-                  }
-
-                  sessionStorage.setItem(newPCB.part.toString(), tempSave.join(""));//now put what was in memory into storage...
-                  _MemManager.store(currStorage);//and what was in storage into memory
-                  _activePCB[_currInd].part = newPCB.part; //now change the PCB's part numbers to their new partitions
-                  newPCB.part = _currPart;
-
-                  //and now they should be swapped correctly.
-                  }
 
         public procesFin(): boolean{
           var cont = false;

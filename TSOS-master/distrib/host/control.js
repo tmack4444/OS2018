@@ -3,6 +3,7 @@
 ///<reference path="../os/MemManager.ts" />
 ///<reference path="../os/canvastext.ts" />
 ///<reference path="../os/kernel.ts" />
+///<reference path="Storage.ts"/>
 /* ------------
      Control.ts
 
@@ -82,6 +83,9 @@ var TSOS;
             _CPU.init(); //       There's more to do, like dealing with scheduling and such, but this would be a start. Pretty cool.
             _Memory = new TSOS.CoreMem();
             _Memory.init();
+            _Storage = new TSOS.Storage();
+            _Storage.init();
+            _DiskParts = _Storage.tracks * _Storage.sectors * _Storage.blocks;
             // ... then set the host clock pulse ...
             _hardwareClockID = setInterval(TSOS.Devices.hostClockPulse, CPU_CLOCK_INTERVAL);
             // .. and call the OS Kernel Bootstrap routine.
@@ -209,13 +213,10 @@ var TSOS;
             }
         };
         Control.updateStorageDisp = function () {
-            console.log("updating storage display");
             var diskParts = [];
             var j = 0;
             for (var i = 0; i <= _assignedParts.length; i++) {
-                console.log(_assignedParts[i]);
                 if (_assignedParts[i] > 2) {
-                    console.log(_assignedParts[i]);
                     diskParts[j] = _assignedParts[i];
                     j++;
                 }
@@ -224,7 +225,6 @@ var TSOS;
             var currDiskChunk;
             j--;
             for (var k = j; k >= 0; k--) {
-                console.log(diskParts[k]);
                 currDiskChunk = sessionStorage.getItem(diskParts[k].toString());
                 storageDisplay.rows[k].cells[1].innerHTML = currDiskChunk;
             }

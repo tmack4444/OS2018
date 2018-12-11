@@ -3,21 +3,25 @@
 
 module TSOS {
 
-    export class storage {
+    export class Storage {
 
-      public diskStorage: string[] = ["00"];
+      public tracks: number = 3;
+      public sectors: number = 3;
+      public blocks: number = 8;
 
-        constructor (numStorage) {
-          for(var i = 0; i < 768; i++) {
-            this.diskStorage[i] = "00";
+        constructor () {
+          var TSBKey = "";
+          for(var t = 0; t < this.tracks; t++) {
+            for(var s =0; s < this.sectors; s++) {
+              for(var b = 0; b < this.blocks; b++) {
+                TSBKey = "" + t + s + b;
+                sessionStorage.setItem(TSBKey, "00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"); //128 0s
+              }
+            }
           }
-          sessionStorage.setItem(numStorage, JSON.stringify(diskStorage);
         }
 
         public init(): void {
-          for(var i = 0; i < 768; i++) {
-            this.Storage[i] = "00";
-          }
         }
 
     }

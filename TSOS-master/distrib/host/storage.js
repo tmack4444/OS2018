@@ -1,20 +1,24 @@
 ///<reference path="../globals.ts" />
 var TSOS;
 (function (TSOS) {
-    var storage = /** @class */ (function () {
-        function storage(numStorage) {
-            this.diskStorage = ["00"];
-            for (var i = 0; i < 768; i++) {
-                this.diskStorage[i] = "00";
+    var Storage = /** @class */ (function () {
+        function Storage() {
+            this.tracks = 3;
+            this.sectors = 3;
+            this.blocks = 8;
+            var TSBKey = "";
+            for (var t = 0; t < this.tracks; t++) {
+                for (var s = 0; s < this.sectors; s++) {
+                    for (var b = 0; b < this.blocks; b++) {
+                        TSBKey = "" + t + s + b;
+                        sessionStorage.setItem(TSBKey, "00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"); //128 0s
+                    }
+                }
             }
-            sessionStorage.setItem(numStorage, JSON.stringify(diskStorage));
         }
-        storage.prototype.init = function () {
-            for (var i = 0; i < 768; i++) {
-                this.Storage[i] = "00";
-            }
+        Storage.prototype.init = function () {
         };
-        return storage;
+        return Storage;
     }());
-    TSOS.storage = storage;
+    TSOS.Storage = Storage;
 })(TSOS || (TSOS = {}));

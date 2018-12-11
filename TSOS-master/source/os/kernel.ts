@@ -60,7 +60,6 @@ module TSOS {
 
             this.krnTrace("Loading the disk driver.");
             _StorageManager = new StorageManager();     // Construct it.
-            _StorageManager.driverEntry();              // Call the driverEntry() initialization routine.
             this.krnTrace(_StorageManager.status);
 
             //

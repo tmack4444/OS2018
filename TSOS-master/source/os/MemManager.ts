@@ -55,7 +55,6 @@ module TSOS {
         } else if (_currPart == 2) {
           address += 512;
         }
-        console.log(value);
         //console.log("PUT: " + address);
         _Memory.Storage[address] = value;
         Control.updateMemDisp();
