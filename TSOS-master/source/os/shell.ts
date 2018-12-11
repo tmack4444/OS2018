@@ -800,44 +800,7 @@ module TSOS {
       }
 
       public shellFormat(args?) {
-        var quickForm = true;
-        if(args[0] == "full") {
-          quickForm = false;
-        }
-        for(var i = 0; i <= _DiskParts; i++) { //we start by overwriting all of our memory
-          var currStoreItem = sessionStorage.getItem(i.toString());
-          console.log(currStoreItem);
-          if(currStoreItem != null) {
-            if(quickForm) {
-            currStoreItem = "0000" + currStoreItem.substr(4);
-            sessionStorage.setItem(i.toString(), currStoreItem);
-          } else {
-            currStoreItem = "00000000000000000000000000000000000000000000000000000000000000000000" + currStoreItem.substr(68);
-            sessionStorage.setItem(i.toString(), "00000000000000000000000000000000000000000000000000000000000000000000")
-          }
-        } else {
-          if(quickForm) {
-            sessionStorage.setItem(i.toString(), "0000");
-          } else {
-            sessionStorage.setItem(i.toString(), "00000000000000000000000000000000000000000000000000000000000000000000");
-          }
-        }
-      }
-
-      for(var j = 0; j < _DiskParts; j++) { //and then erasing all file and PCBs that are on Disk, as well as setting their partitions open
-        if(_Files[j] != undefined) {
-          console.log("reap file " + _Files[j].fileName);
-          _assignedParts.splice(_assignedParts.indexOf(_Files[j].part), 1);
-          _Files.splice(j, 1);
-        }
-        if(_activePCB[j] != undefined && _activePCB[j].part > 2) {
-          console.log("reap process " + _activePCB[j].pid);
-          _assignedParts.splice(_assignedParts.indexOf(_activePCB[j].part), 1);
-          _activePCB.splice(j,1);
-        }
-      }
-        Control.updateStorageDisp();
-        Control.updatePCBDisp();
+        _StorageManager.format(args);
       }
     }
   }
