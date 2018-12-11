@@ -198,7 +198,7 @@ var TSOS;
         Control.initStorageDispl = function () {
             //remember functions table.insertRow();, row.insertCell, and remmeber to print an address
             var storageDisplay = document.getElementById("taStorageDisplay");
-            for (var i = 0; i < 20; i++) {
+            for (var i = 0; i < _DiskParts; i++) {
                 storageDisplay.insertRow(i); //insert a row
                 for (var x = 0; x < 2; x++) {
                     storageDisplay.rows[i].insertCell(x); //now insert 2 cells to each row
@@ -207,26 +207,30 @@ var TSOS;
             //So addressses for the storage table. Since the key is the partition number, instead of putting in a whole addressing scheme, each row will just be given its partition number for an address
             //The data will default to a bunch of 0s. Even if the part of the disk isn't in use this should be fine.
             //Also, i'm only making 20 rows. This is because I feel like this is a safely large enough amount for disk storage to max out at.
-            for (var j = 0; j < 20; j++) {
-                storageDisplay.rows[j].cells[0].innerHTML = (j + 3).toString();
-                storageDisplay.rows[j].cells[1].innerHTML = "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000";
+            var currRow = 0;
+            for (var t = 0; t < _Storage.tracks; t++) {
+                for (var s = 0; s < _Storage.sectors; s++) {
+                    for (var b = 0; b < _Storage.blocks; b++) {
+                        var TSBKey = "" + t + s + b;
+                        storageDisplay.rows[currRow].cells[0].innerHTML = TSBKey;
+                        storageDisplay.rows[currRow].cells[1].innerHTML = sessionStorage.getItem(TSBKey);
+                        currRow++;
+                    }
+                }
             }
         };
         Control.updateStorageDisp = function () {
-            var diskParts = [];
-            var j = 0;
-            for (var i = 0; i <= _assignedParts.length; i++) {
-                if (_assignedParts[i] > 2) {
-                    diskParts[j] = _assignedParts[i];
-                    j++;
-                }
-            }
+            var currRow = 0;
             var storageDisplay = document.getElementById("taStorageDisplay");
-            var currDiskChunk;
-            j--;
-            for (var k = j; k >= 0; k--) {
-                currDiskChunk = sessionStorage.getItem(diskParts[k].toString());
-                storageDisplay.rows[k].cells[1].innerHTML = currDiskChunk;
+            for (var t = 0; t < _Storage.tracks; t++) {
+                for (var s = 0; s < _Storage.sectors; s++) {
+                    for (var b = 0; b < _Storage.blocks; b++) {
+                        var TSBKey = "" + t + s + b;
+                        storageDisplay.rows[currRow].cells[0].innerHTML = TSBKey;
+                        storageDisplay.rows[currRow].cells[1].innerHTML = sessionStorage.getItem(TSBKey);
+                        currRow++;
+                    }
+                }
             }
         };
         Control.updateMemDisp = function () {
