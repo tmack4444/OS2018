@@ -788,8 +788,9 @@ module TSOS {
       }
 
       public shellLs() {
-        var listFiles: string;
+        var listFiles: string = "";
         for(var i = 0; i < _Files.length; i++) {
+          console.log(_Files[i] != undefined);
           if(_Files[i] != undefined) {
             listFiles += _Files[i].fileName + " ";
           }
@@ -802,24 +803,36 @@ module TSOS {
         if(args[0] == "full") {
           quickForm = false;
         }
+        var j = 0;
         for(var i = 3; i < _DiskParts+3; i++) {
           var currStoreItem = sessionStorage.getItem(i.toString());
-            if(currStoreItem != null) {
-              if(quickForm) {
-              currStoreItem = "0000" + currStoreItem.substr(4);
-              sessionStorage.setItem(i.toString(), currStoreItem);
-            } else {
-              currStoreItem = "00000000000000000000000000000000000000000000000000000000000000000000" + currStoreItem.substr(68);
-              sessionStorage.setItem(i.toString(), "00000000000000000000000000000000000000000000000000000000000000000000")
-            }
-          } else {
+          if(_Files[j] != undefined && _Files[j].part == i) {
+            console.log("reap file " + _Files[j].fileName);
+            _assignedParts.splice(_assignedParts.indexOf(_Files[j].part), 1);
+            _Files.splice(j, 1);
+          }
+          if(_activePCB[j] != undefined && _activePCB[j].part == i) {
+            console.log("reap process " + _activePCB[j].pid);
+            _assignedParts.splice(_assignedParts.indexOf(_activePCB[j].part), 1);
+            _activePCB.splice(j,1);
+          }
+          j++;
+          if(currStoreItem != null) {
             if(quickForm) {
-              sessionStorage.setItem(i.toString(), "0000");
-            } else {
-              sessionStorage.setItem(i.toString(), "00000000000000000000000000000000000000000000000000000000000000000000");
-            }
+            currStoreItem = "0000" + currStoreItem.substr(4);
+            sessionStorage.setItem(i.toString(), currStoreItem);
+          } else {
+            currStoreItem = "00000000000000000000000000000000000000000000000000000000000000000000" + currStoreItem.substr(68);
+            sessionStorage.setItem(i.toString(), "00000000000000000000000000000000000000000000000000000000000000000000")
+          }
+        } else {
+          if(quickForm) {
+            sessionStorage.setItem(i.toString(), "0000");
+          } else {
+            sessionStorage.setItem(i.toString(), "00000000000000000000000000000000000000000000000000000000000000000000");
           }
         }
+      }
         Control.updateStorageDisp();
       }
     }

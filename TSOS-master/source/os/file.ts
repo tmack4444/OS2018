@@ -5,12 +5,10 @@ module TSOS {
     export class File {
       public fileName: string;
       public part: number;
-      public data: string;
 
         constructor(public partition: number, public name: string) {
           this.fileName = name;
           this.part = partition;
-          this.data = "";
         }
 
         public init(): void {
@@ -22,8 +20,8 @@ module TSOS {
           var firstQuote = writeData.indexOf("\"");
           var secondQuote = writeData.lastIndexOf("\"");
           if(firstQuote > -1 && secondQuote > -1) {
-            this.data = writeData.substring(firstQuote + 1, secondQuote);
-            sessionStorage.setItem(this.part.toString(), this.data);
+            writeData = writeData.substring(firstQuote + 1, secondQuote);
+            sessionStorage.setItem(this.part.toString(), writeData);
             written = true;
           } else {
             written = false;
@@ -33,7 +31,7 @@ module TSOS {
         }
 
         public read(): string{
-          return this.data;
+          return sessionStorage.getItem(this.part.toString());
         }
     }
 }

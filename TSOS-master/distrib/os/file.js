@@ -7,7 +7,6 @@ var TSOS;
             this.name = name;
             this.fileName = name;
             this.part = partition;
-            this.data = "";
         }
         File.prototype.init = function () {
         };
@@ -17,8 +16,8 @@ var TSOS;
             var firstQuote = writeData.indexOf("\"");
             var secondQuote = writeData.lastIndexOf("\"");
             if (firstQuote > -1 && secondQuote > -1) {
-                this.data = writeData.substring(firstQuote + 1, secondQuote);
-                sessionStorage.setItem(this.part.toString(), this.data);
+                writeData = writeData.substring(firstQuote + 1, secondQuote);
+                sessionStorage.setItem(this.part.toString(), writeData);
                 written = true;
             }
             else {
@@ -28,7 +27,7 @@ var TSOS;
             return written;
         };
         File.prototype.read = function () {
-            return this.data;
+            return sessionStorage.getItem(this.part.toString());
         };
         return File;
     }());
