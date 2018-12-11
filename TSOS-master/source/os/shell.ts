@@ -710,9 +710,10 @@ module TSOS {
               i = 0; //we reset i to 0 since this array probably isn't sorted. While this will add some time to searching, it's probably better than running a sorting algorithm.
             }
           }
-          if(nextPart <= 20) { // my current storage display only lets us see 20 partitions of memory, so I'm limiting the number of files you can store to 20
+          if(nextPart <= _DiskParts) { // my current storage display only lets us see 20 partitions of memory, so I'm limiting the number of files you can store to 20
             for(var i = 0; i <= _Files.length; i++) {
               if(_Files[i] == undefined) {
+                console.log(i);
                 var nextFile = i;
                 break;
               }
@@ -790,8 +791,8 @@ module TSOS {
       public shellLs() {
         var listFiles: string = "";
         for(var i = 0; i < _Files.length; i++) {
-          console.log(_Files[i] != undefined);
           if(_Files[i] != undefined) {
+            console.log(_Files[i].fileName);
             listFiles += _Files[i].fileName + " ";
           }
         }
@@ -803,20 +804,9 @@ module TSOS {
         if(args[0] == "full") {
           quickForm = false;
         }
-        var j = 0;
-        for(var i = 3; i < _DiskParts+3; i++) {
+        for(var i = 0; i <= _DiskParts; i++) { //we start by overwriting all of our memory
           var currStoreItem = sessionStorage.getItem(i.toString());
-          if(_Files[j] != undefined && _Files[j].part == i) {
-            console.log("reap file " + _Files[j].fileName);
-            _assignedParts.splice(_assignedParts.indexOf(_Files[j].part), 1);
-            _Files.splice(j, 1);
-          }
-          if(_activePCB[j] != undefined && _activePCB[j].part == i) {
-            console.log("reap process " + _activePCB[j].pid);
-            _assignedParts.splice(_assignedParts.indexOf(_activePCB[j].part), 1);
-            _activePCB.splice(j,1);
-          }
-          j++;
+          console.log(currStoreItem);
           if(currStoreItem != null) {
             if(quickForm) {
             currStoreItem = "0000" + currStoreItem.substr(4);
@@ -833,7 +823,21 @@ module TSOS {
           }
         }
       }
+
+      for(var j = 0; j < _DiskParts; j++) { //and then erasing all file and PCBs that are on Disk, as well as setting their partitions open
+        if(_Files[j] != undefined) {
+          console.log("reap file " + _Files[j].fileName);
+          _assignedParts.splice(_assignedParts.indexOf(_Files[j].part), 1);
+          _Files.splice(j, 1);
+        }
+        if(_activePCB[j] != undefined && _activePCB[j].part > 2) {
+          console.log("reap process " + _activePCB[j].pid);
+          _assignedParts.splice(_assignedParts.indexOf(_activePCB[j].part), 1);
+          _activePCB.splice(j,1);
+        }
+      }
         Control.updateStorageDisp();
+        Control.updatePCBDisp();
       }
     }
   }
