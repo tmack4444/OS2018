@@ -15,7 +15,6 @@ module TSOS {
       }
 
       public convertPart(part) { //take a partition, and figure out what Track sector and block it's really in.
-        console.log(this.partitionKeys[part]);
         return this.partitionKeys[part];
       }
 
@@ -41,11 +40,9 @@ module TSOS {
             }
           }
           key = trackNum.toString() + sectorNum.toString() + blockNum.toString();
-          console.log(key);
-          if(this.partitionKeys.indexOf(key) == -1 ) { //that location is in use, increment the block number. If we overflow, we will catch it at the next pass through
+          if(this.partitionKeys.indexOf(key) != -1 ) { //that location is in use, increment the block number. If we overflow, we will catch it at the next pass through
             blockNum++;
           } else {
-            console.log(key);
             this.partitionKeys[part] = key;
             return key;
           }
@@ -72,7 +69,6 @@ module TSOS {
         }
         for(var i = 3; i <= _DiskParts; i++) { //we start by overwriting all of our memory
           var currStoreItem = sessionStorage.getItem(i.toString());
-          console.log(currStoreItem);
           if(currStoreItem != null) {
             if(quickForm) {
               if(currStoreItem.length < 4) {
@@ -100,12 +96,10 @@ module TSOS {
 
       for(var j = 0; j <= _DiskParts; j++) { //and then erasing all file and PCBs that are on Disk, as well as setting their partitions open
         if(_Files[j] != undefined) {
-          console.log("reap file " + _Files[j].fileName);
           _assignedParts.splice(_assignedParts.indexOf(_Files[j].part), 1);
           _Files.splice(j, 1);
         }
         if(_activePCB[j] != undefined && _activePCB[j].part > 2) {
-          console.log("reap process " + _activePCB[j].pid);
           _assignedParts.splice(_assignedParts.indexOf(_activePCB[j].part), 1);
           _activePCB.splice(j,1);
         }
@@ -116,9 +110,7 @@ module TSOS {
 
       public swapper(newPCB, memPCB): void { //when something that's currently on disk is scheduled to be run next, we need to swap it for
         var key = this.convertPart(newPCB.part);
-        console.log(key);
         var currStorage = sessionStorage.getItem(key); //get the function we're swapping in that's currently in storage
-        console.log(currStorage);
         var tempSave = [];  //much like a bubble sort swap, make a copy of the program in memory for us to spit back into memory
         _currPart = memPCB.part; //set what partition we're replacing in memory so the memory manager gets the right program out
         for(var i = 0; i < 256; i++) {

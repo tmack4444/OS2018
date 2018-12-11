@@ -97,7 +97,6 @@ module TSOS {
 
         public procesFin(): boolean{
           var cont = false;
-          console.log(_ReadyQueue.getSize());
           if(_ReadyQueue.getSize() > 0) { //if there's only one element left, then we're done. but if there's more than one, then we're not done
             _activePCB[_currInd].isActive = false;
             cont = true;  //there's more programs in the readyQueue, we need to keep going.
@@ -125,16 +124,18 @@ module TSOS {
             _OsShell.putPrompt();
 
             if(switchto.part > 2) {
-              var currStorage = sessionStorage.getItem(switchto.part.toString());
+              var currStorage = sessionStorage.getItem(_StorageManager.convertPart(switchto.part));
               _MemManager.store(currStorage);
               //so instead of swapping everything out of memory and disk and around, we just need to replace what was in memory with what's in Storage
               //So we basically just replace the old process with the new one, and swap their partitions too so we can reap the one in storage.
               switchto.part = _currPart
               _currPart = _activePCB[_currInd].part;
+              _StorageManager.partitionKeys[_currPart] = "";//if it was in memory, then we reap that location's partition key. Lets something else reuse that track sector and block
             }
 
             var index = _assignedParts.indexOf(_currPart);
             _assignedParts.splice(index, 1); //remove that partition from the array of assigned partitions
+            _StorageManager.partitionKeys[_currPart] = "";//if it was in memory, then we reap that location's partition key. Lets something else reuse that track sector and block
             //We remove it here, so we don't accidentaly reap what we swap into (That's what I did before and it worked for running 12done 4 times, but not for this)
 
             _CPU.PC = switchto.PC;
