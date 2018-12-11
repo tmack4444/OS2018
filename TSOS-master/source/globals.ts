@@ -7,6 +7,7 @@
 ///<reference path="os/scheduler.ts"/>
 ///<reference path="os/file.ts"/>
 ///<reference path="os/StorageManager.ts"/>
+///<reference path="host/Storage.ts"/>
 /* ------------
    Globals.ts
 
@@ -72,7 +73,8 @@ var _currInd: number = 0; //keeps of track of the index in activePCB that is cur
 var _assignedParts: number[] = []; //keeps track of which partitions are already in use. Partitions 0 1 and 2 are in main memory, but anything over 2 will be on disk. Now I can check for the next free partition from this list, and ensure that new PCBs are stored on disk or in memory
 var _ReadyQueue: TSOS.Queue;
 var _Scheduler: TSOS.Scheduler;
-var _DiskParts: number = 20;
+var _Storage : TSOS.Storage;
+var _DiskParts: number;
 
 
 var _Files: TSOS.File[] = [];
