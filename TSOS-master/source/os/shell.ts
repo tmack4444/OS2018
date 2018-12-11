@@ -710,7 +710,7 @@ module TSOS {
               i = 0; //we reset i to 0 since this array probably isn't sorted. While this will add some time to searching, it's probably better than running a sorting algorithm.
             }
           }
-          if(nextPart <= _DiskParts) { // my current storage display only lets us see 20 partitions of memory, so I'm limiting the number of files you can store to 20
+          if(nextPart <= _DiskParts) {
             for(var i = 0; i <= _Files.length; i++) {
               if(_Files[i] == undefined) {
                 console.log(i);

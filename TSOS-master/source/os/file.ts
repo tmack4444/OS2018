@@ -21,7 +21,7 @@ module TSOS {
           var secondQuote = writeData.lastIndexOf("\"");
           if(firstQuote > -1 && secondQuote > -1) {
             writeData = writeData.substring(firstQuote + 1, secondQuote);
-            sessionStorage.setItem(this.part.toString(), writeData);
+            _StorageManager.store(writeData, this.part);
             written = true;
           } else {
             written = false;
@@ -31,7 +31,7 @@ module TSOS {
         }
 
         public read(): string{
-          return sessionStorage.getItem(this.part.toString());
+          return sessionStorage.getItem(_StorageManager.convertPart(this.part.toString()));
         }
     }
 }
